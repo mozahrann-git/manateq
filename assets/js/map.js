@@ -71,6 +71,15 @@
       });
       addTiles();
       draw();
+      /* القسم بيتفتح مع السكرول، فالخريطة بتتبني وهي مخفية ومقاسها بيطلع غلط.
+         بنراقب الحاوية ونعيد الحساب أول ما يبقى ليها مقاس حقيقي. */
+      function fix() { try { map.invalidateSize(false); } catch (e) {} }
+      if (w.ResizeObserver) {
+        var ro = new w.ResizeObserver(function () { fix(); });
+        ro.observe(host);
+      }
+      w.addEventListener("resize", fix);
+      [60, 300, 900].forEach(function (ms) { setTimeout(fix, ms); });
       return true;
     }
 
