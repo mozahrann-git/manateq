@@ -70,11 +70,19 @@
   function render() {
     var p = D.PROJECTS[cur][sel], base = basePpm(p);
     d.getElementById("cReg").textContent = cur;
-    d.getElementById("cDist").textContent = p.dist;
+    var cd = d.getElementById("cDist");
+    cd.innerHTML = '<a href="' + M.LINK.district(p.dist) + '" style="color:inherit">' + p.dist + '</a>';
     d.getElementById("cProj").textContent = p.nm;
     d.getElementById("pCode").textContent = p.id + " · PROJECT FILE";
     d.getElementById("pName").textContent = p.nm;
     d.getElementById("pReview").textContent = "رأي محلل مناطق: " + p.review;
+    var chips = d.getElementById("pChips");
+    if (chips) {
+      chips.innerHTML =
+        '<a class="chip" href="' + M.LINK.developer(p.dev) + '" style="text-decoration:none">المطوّر <b class="sig">' + p.dev + '</b> ←</a>' +
+        '<a class="chip" href="' + M.LINK.district(p.dist) + '" style="text-decoration:none">الحي <b class="sig">' + p.dist + '</b> ←</a>' +
+        '<span class="chip">المنطقة <b>' + cur + '</b></span>';
+    }
     d.getElementById("pVisit").textContent = p.visit;
     M.count(d.getElementById("pPct"), p.pct, function (v) { return Math.round(v) + "%"; }, 1000);
     var bar = d.getElementById("pBar");

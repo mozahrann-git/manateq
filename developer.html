@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ملف المطوّر · مناطق</title>
+<meta name="description" content="ملف المطوّر في مناطق: أوراقه وأدلته المؤرخة، نسب إنجاز مشاريعه، سلوكه السعري المحسوب من سجله، ووحداته المتاحة.">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <p class="crumb"><a href="index.html"><b>مناطق</b></a><i>/</i><b id="cReg">—</b><i>/</i><b id="cDev" class="sig">—</b></p>
+
+  <div class="head">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><p class="lbl" id="vCode">DEVELOPER FILE</p><h1 id="vName">—</h1></div>
+        <span class="grade" id="vGrade">—</span>
+      </div>
+      <p class="review" id="vNote"></p>
+      <div class="srcrow" id="vChips"></div>
+      <div class="kpi">
+        <div><p class="l">مشاريع مرصودة</p><p class="v" id="kProj">—</p></div>
+        <div><p class="l">وحدات متاحة</p><p class="v" id="kUnits">—</p></div>
+        <div><p class="l">متوسط الإنجاز</p><p class="v sig" id="kPct">—</p></div>
+        <div><p class="l">أدلة موثّقة</p><p class="v" id="kEv">—</p></div>
+      </div>
+    </div>
+    <div>
+      <p class="lbl">الأوراق والأدلة</p>
+      <p class="note" style="margin:8px 0 12px">التصنيف مش رأي. دي ستة بنود بنسأل عنها كل مطوّر، وكل بند إما موثّق بتاريخه أو مكتوب إنه ناقص.</p>
+      <div class="ev" id="evList"></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="rowhead">
+      <h2>سلوكه السعري</h2>
+      <p class="note">محسوب من سجل أسعاره نفسه — كل تحديث وصلنا من جروباته اتسجّل بتاريخه. المطوّر اللي بيرفع مرة واحدة في السنة غير اللي بينزّل كل أسبوعين.</p>
+    </div>
+    <div class="two">
+      <div>
+        <div class="sl" id="beh"></div>
+        <p class="note" style="margin-top:11px" id="behRead"></p>
+      </div>
+      <div>
+        <p class="lbl">خط أسعار مشاريعه</p>
+        <div id="curves" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>مشاريعه</h2>
+      <p class="note">نسبة الإنجاز المكتوبة مرصودة بزيارة ميدانية بتاريخها — مش النسبة اللي المطوّر بيعلنها.</p>
+    </div>
+    <div class="cards" id="projs"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>وحداته الاستثمارية</h2>
+      <p class="note" id="uNote"></p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>الحي</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="uTb"></tbody></table></div>
+  </section>
+
+  <div class="foot">
+    الأدلة الستة بتتجمّع من الجريدة الرسمية، ومن زيارات ميدانية بفريق مناطق، ومن سجل رسائل جروب المطوّر نفسه.<br>
+    <b>فئة أ</b> = 5 أدلة فأكتر موثّقة وسجل تسليم نظيف · <b>فئة ب</b> = 4 أدلة · <b>فئة ج</b> = أقل من 4، أو تأخير تسليم موثّق.<br>
+    التصنيف بيتغيّر مع أي دليل جديد، والتاريخ مكتوب جنب كل بند عشان تعرف الرقم قديم قد إيه.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-developer.js"></script>
+</body>
+</html>

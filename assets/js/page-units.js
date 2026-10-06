@@ -54,7 +54,8 @@
         v = M.vsDistrict(u), vd = M.verdict(u), rk = M.riskGrade(u), L = M.liquidity(u);
 
     d.getElementById("cReg").textContent = cur;
-    d.getElementById("cDist").textContent = u.d;
+    d.getElementById("cDist").innerHTML =
+      '<a href="' + M.LINK.district(u.d) + '" style="color:inherit">' + u.d + '</a>';
     d.getElementById("cU").textContent = u.id;
     d.getElementById("uCode").textContent = u.id + " · UNIT FILE";
     d.getElementById("uName").textContent = u.t;
@@ -63,7 +64,9 @@
     vdE.textContent = vd[0];
     d.getElementById("uWhy").textContent = vd[2];
     d.getElementById("uChips").innerHTML =
-      '<span class="chip">المصدر <b>' + u.src + (u.dev ? " · " + u.dev : "") + '</b></span>' +
+      (u.dev ? '<a class="chip" href="' + M.LINK.developer(u.dev) + '" style="text-decoration:none">المطوّر <b class="sig">' + u.dev + '</b> ←</a>'
+             : '<span class="chip">المصدر <b>' + u.src + '</b></span>') +
+      '<a class="chip" href="' + M.LINK.district(u.d) + '" style="text-decoration:none">الحي <b class="sig">' + u.d + '</b> ←</a>' +
       '<span class="chip">المساحة <b class="n">' + u.a + '</b> م²</span>' +
       '<span class="chip">التسليم <b>' + u.del + '</b></span>' +
       '<span class="chip">درجة المخاطرة <b class="' + rk[1] + '">فئة ' + rk[0] + '</b></span>' +

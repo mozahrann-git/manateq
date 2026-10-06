@@ -25,7 +25,7 @@
       <h1>استخبارات الاستثمار العقاري</h1>
       <p class="cl">السوق مليان أرقام، وإحنا بنقولك الرقم الصح. كل يوم بتوصلنا مئات الرسائل من <b>50 جروب مطوّر</b> في أربع مناطق — بنقراها، بنطلّع منها التكلفة الحقيقية، وبنقارنها بمتوسط <b>الحي نفسه</b> مش متوسط المدينة. ابدأ من المنطقة اللي بتفكر فيها.</p>
     </div>
-    <div class="cst" id="cst"></div>
+    <div class="doors" id="doors"></div>
   </div>
 
   <div class="pickhead">
@@ -61,44 +61,58 @@
   <section>
     <div class="rowhead">
       <h2>أحياء المنطقة</h2>
-      <p class="note">سعر المتر لكل حي محسوب من المعروض والعقود. الحي اللي عيّنته صغيرة بيتعلّم عليه <b>تقديري</b> بدل ما نعرض رقم واثق.</p>
+      <p class="note">سعر المتر لكل حي محسوب من المعروض والعقود. اضغط على أي حي تفتح ملفه الكامل — ليه سعره كده، مشاريعه، ووحداته. الحي اللي عيّنته صغيرة بيتعلّم عليه <b>تقديري</b>.</p>
     </div>
     <div class="tw"><table><thead><tr>
-      <th>الحي</th><th>سعر المتر</th><th>مقابل المنطقة</th><th>العائد الصافي</th><th>مؤشر الطلب</th><th>الحالة</th>
+      <th>الحي</th><th>سعر المتر</th><th>مقابل المنطقة</th><th>العائد الصافي</th><th>مؤشر الطلب</th><th>الحالة</th><th></th>
     </tr></thead><tbody id="dTb"></tbody></table></div>
   </section>
 
   <section>
     <div class="rowhead">
       <h2>المطوّرون داخل المنطقة</h2>
-      <p class="note">التصنيف مش رأي — ده حصيلة أدلة. كل دليل إما موجود وموثّق بتاريخه، أو ناقص ومكتوب إنه ناقص.</p>
+      <p class="note">التصنيف مش رأي — ده حصيلة أدلة. اضغط على أي مطوّر تفتح ملفه: أوراقه، نسب إنجازه، سلوكه السعري، ووحداته.</p>
     </div>
     <div class="devs" id="devs"></div>
   </section>
 
-  <section>
+  <section id="oppSec">
     <div class="rowhead">
-      <h2>المعروض في المنطقة</h2>
-      <p class="note" id="uNote"></p>
+      <h2>فرص مناطق في <span id="oppReg" class="sig">—</span></h2>
+      <p class="note">الوحدات اللي عدّت القاعدة المنشورة. مفيش فرصة بتدخل هنا من غير دليل — واضغط على أي واحدة تفتح ملفها الكامل.</p>
     </div>
-    <div class="tw"><table><thead><tr>
-      <th>الكود</th><th>الوحدة</th><th>المصدر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th>
-      <th>مقابل الحي</th><th>العائد</th><th>التسليم</th><th>حكم مناطق</th>
-    </tr></thead><tbody id="uTb"></tbody></table></div>
+    <div class="opps" id="opps"></div>
   </section>
 
   <section>
-    <div class="two">
-      <div>
-        <p class="lbl">نبض المنطقة · آخر 24 ساعة</p>
-        <div id="pulse" style="margin-top:10px"></div>
-      </div>
-      <div>
-        <p class="lbl">فرص مناطق في <span id="oppReg"></span></p>
-        <p class="note" style="margin:8px 0 12px">الوحدات اللي عدّت القاعدة. دي اللي بتتعرض على المستثمرين، ومش بتدخل هنا إلا بدليل.</p>
-        <div id="opps"></div>
-      </div>
+    <div class="rowhead">
+      <h2>ريسيل من الملاك</h2>
+      <p class="note">وحدات جاهزة بعقود مسجّلة واستلام فوري. دي اللي ليها عائد إيجاري محسوب دلوقتي — مش بعد سنتين.</p>
     </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>الحي</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th>
+      <th>مقابل الحي</th><th>العائد الصافي</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="resTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>وحدات المطوّرين</h2>
+      <p class="note" id="uNote"></p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المطوّر</th><th>الحي</th><th>المساحة</th><th>التكلفة الحقيقية</th>
+      <th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="offTb"></tbody></table></div>
+  </section>
+
+  <section id="pulseTeaser">
+    <div class="rowhead">
+      <h2>نبض <span id="pulseReg"></span></h2>
+      <p class="note">أهم اللي وصلنا من جروبات المطوّرين النهاردة. التفاصيل الكاملة ومترجمة للمستثمر والمشتري والبروكر في <a href="pulse.html" class="lnk">نبض السوق</a>.</p>
+    </div>
+    <div class="feed" id="pulse"></div>
+    <a class="b1" href="pulse.html" style="display:inline-block;margin-top:13px;text-decoration:none">افتح نبض السوق كامل ←</a>
   </section>
 
   <section>

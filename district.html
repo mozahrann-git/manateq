@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ملف الحي · مناطق</title>
+<meta name="description" content="ملف الحي في مناطق: ليه سعره كده، مشاريعه، وحداته، ومقارنته بجيرانه — بأدلة وأرقام مصدرها عقود ورسائل مؤرخة.">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <p class="crumb"><a href="index.html"><b>مناطق</b></a><i>/</i><a id="cRegLink"><b id="cReg">—</b></a><i>/</i><b id="cDist" class="sig">—</b></p>
+
+  <div class="head">
+    <div>
+      <p class="lbl" id="dCode">DISTRICT FILE</p>
+      <h1 id="dName">—</h1>
+      <p class="review" id="dBrief"></p>
+      <div class="srcrow" id="dChips"></div>
+      <div class="kpi">
+        <div><p class="l">سعر المتر</p><p class="v sig" id="kPpm">—</p></div>
+        <div><p class="l">مقابل المنطقة</p><p class="v" id="kVs">—</p></div>
+        <div><p class="l">العائد الصافي</p><p class="v up" id="kY">—</p></div>
+        <div><p class="l">أفق السيولة</p><p class="v" id="kLiq">—</p></div>
+      </div>
+    </div>
+    <div>
+      <p class="lbl">ليه سعره كده</p>
+      <p class="note" style="margin:8px 0 12px">السعر مش رقم نزل من السما. دي الأسباب اللي رصدناها، وكل واحد فيهم ليه أثر على الرقم اللي فوق.</p>
+      <div class="ev" id="why"></div>
+      <div class="gap" id="watch" style="margin-top:14px"></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="rowhead">
+      <h2>مناسب لمين</h2>
+    </div>
+    <div class="two">
+      <div>
+        <p class="lbl">المشتري المناسب</p>
+        <p class="review" id="best" style="margin-top:9px"></p>
+      </div>
+      <div>
+        <p class="lbl">الحي مقابل جيرانه</p>
+        <p class="note" style="margin:8px 0 10px">نفس المنطقة، أحياء مختلفة. اضغط على أي حي عشان تفتح ملفه.</p>
+        <div class="tw" style="border:0"><table style="min-width:0"><tbody id="sibs"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>مشاريع الحي</h2>
+      <p class="note" id="projNote"></p>
+    </div>
+    <div class="cards" id="projs"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>ريسيل من الملاك</h2>
+      <p class="note">وحدات جاهزة بعقود مسجّلة واستلام فوري — وبعائد إيجاري محسوب على التكلفة الحقيقية.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>العائد الصافي</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="resTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>وحدات المطوّرين</h2>
+      <p class="note">تحت الإنشاء أو إطلاقات — العائد الإيجاري فيها مبيتحسبش قبل التسليم، ومناطق مبتفترضوش.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المطوّر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="offTb"></tbody></table></div>
+  </section>
+
+  <section id="opps">
+    <div class="rowhead">
+      <h2>فرص الحي</h2>
+      <p class="note">اللي عدّى القاعدة بس. اضغط على أي فرصة تفتح ملفها الكامل.</p>
+    </div>
+    <div class="cards" id="oppCards"></div>
+  </section>
+
+  <div class="foot">
+    سعر متر الحي محسوب من المعروض والعقود المسجّلة عند مناطق. الحي اللي عيّنته أقل من 5 عمليات بيتعلّم عليه <b>تقديري</b>.<br>
+    <b>أفق السيولة</b> = متوسط أيام البيع المسجّلة في الحي نفسه — ومكتوب جنبه من كام عملية.<br>
+    قواعد الحكم منشورة: <b>فرصة</b> = أقل من متوسط الحي بـ5%+ ومعاه استلام فوري أو خصم كاش 25%+ · <b>متضخّم</b> = أعلى بـ8%+ · <b>انتظر</b> = ورقة ناقصة.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-district.js"></script>
+</body>
+</html>

@@ -139,6 +139,82 @@
     return out;
   }
 
+
+  /* ---------- قوائم حسب الحي والمطوّر ---------- */
+  function unitsInDistrict(dist) {
+    return D.UNITS.filter(function (u) { return u.d === dist; });
+  }
+  function projectsInDistrict(dist) {
+    var out = [];
+    Object.keys(D.PROJECTS).forEach(function (r) {
+      D.PROJECTS[r].forEach(function (p) { if (p.dist === dist) out.push({ region: r, p: p }); });
+    });
+    return out;
+  }
+  function developerByName(nm) {
+    var out = null;
+    Object.keys(D.DEVS).forEach(function (r) {
+      D.DEVS[r].forEach(function (x) { if (x.nm === nm) out = { region: r, dev: x }; });
+    });
+    return out;
+  }
+  function projectsOfDeveloper(nm) {
+    var out = [];
+    Object.keys(D.PROJECTS).forEach(function (r) {
+      D.PROJECTS[r].forEach(function (p) { if (p.dev === nm) out.push({ region: r, p: p }); });
+    });
+    return out;
+  }
+  function unitsOfDeveloper(nm) {
+    var short = nm.split(" ")[0];
+    return D.UNITS.filter(function (u) { return u.dev === nm || (u.dev && nm.indexOf(u.dev) === 0) || u.dev === short; });
+  }
+  /* سلوك المطوّر السعري محسوب من سجل مشاريعه */
+  function priceBehaviour(nm) {
+    var ups = 0, downs = 0, total = 0, first = null, last = null, span = [];
+    projectsOfDeveloper(nm).forEach(function (x) {
+      var h = x.p.hist;
+      for (var i = 1; i < h.length; i++) {
+        var dv = (h[i][1] - h[i - 1][1]) / h[i - 1][1] * 100;
+        if (dv > 0.5) ups++; else if (dv < -0.5) downs++;
+        total++;
+      }
+      if (h.length > 1) span.push((h[h.length - 1][1] - h[0][1]) / h[0][1] * 100);
+      if (!first || h[0][0] < first) first = h[0][0];
+      last = h[h.length - 1][0];
+    });
+    var avg = span.length ? span.reduce(function (a, b) { return a + b; }, 0) / span.length : 0;
+    return { ups: ups, downs: downs, moves: total, avgSpan: avg, first: first, last: last };
+  }
+  /* الأحياء المجاورة في نفس المنطقة */
+  function siblingDistricts(region, dist) {
+    var R = D.REGIONS[region];
+    if (!R) return [];
+    return R.districts.filter(function (x) { return x[0] !== dist; });
+  }
+  function regionOfDistrict(dist) {
+    var info = D.DISTRICT_INFO && D.DISTRICT_INFO[dist];
+    if (info) return info.region;
+    var found = null;
+    Object.keys(D.REGIONS).forEach(function (r) {
+      D.REGIONS[r].districts.forEach(function (x) { if (x[0] === dist) found = r; });
+    });
+    return found;
+  }
+  function districtRow(region, dist) {
+    var R = D.REGIONS[region];
+    if (!R) return null;
+    return R.districts.filter(function (x) { return x[0] === dist; })[0] || null;
+  }
+  /* لينكات موحّدة — عشان مفيش صفحة تخترع مسار بنفسها */
+  var LINK = {
+    district: function (dist) { return "district.html?d=" + encodeURIComponent(dist); },
+    developer: function (nm) { return "developer.html?dev=" + encodeURIComponent(nm); },
+    project: function (id) { return "projects.html?p=" + encodeURIComponent(id); },
+    unit: function (id) { return "units.html?u=" + encodeURIComponent(id); }
+  };
+  function qs(name) { return new URLSearchParams(w.location.search).get(name); }
+
   /* ---------- الحركة ---------- */
   var RM = w.matchMedia && w.matchMedia("(prefers-reduced-motion:reduce)").matches;
   var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
@@ -242,7 +318,7 @@
       '<a class="brand" href="index.html">' +
       '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
       '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
-      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>مناطق</a>' +
+      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg><span>مناطق<i class="bi">Manateq investment</i></span></a>' +
       '<nav class="tabs">' + NAV.map(function (x) {
         return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
           '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
@@ -301,6 +377,11 @@
     scenario: scenario, matchRequest: matchRequest, matchesFor: matchesFor,
     unitsOf: unitsOf, rankByValue: rankByValue, opportunities: opportunities,
     unitById: unitById, projectById: projectById,
+    unitsInDistrict: unitsInDistrict, projectsInDistrict: projectsInDistrict,
+    developerByName: developerByName, projectsOfDeveloper: projectsOfDeveloper,
+    unitsOfDeveloper: unitsOfDeveloper, priceBehaviour: priceBehaviour,
+    siblingDistricts: siblingDistricts, regionOfDistrict: regionOfDistrict,
+    districtRow: districtRow, LINK: LINK, qs: qs,
     RM: RM, count: count, reveal: reveal, onSeen: onSeen, stagger: stagger,
     growBars: growBars, swap: swap, drawSpark: drawSpark,
     buildHeader: buildHeader, markSections: markSections, renderProof: renderProof

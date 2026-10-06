@@ -436,3 +436,83 @@ tbody tr{animation:rise .5s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(v
   html{scroll-behavior:auto}
   .cell{transform:none;opacity:1}
 }
+
+/* ============================================================
+   الأبواب الأربعة — كل رقم باب، وكل باب لصاحبه
+   ============================================================ */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);padding:0 !important}
+.door{background:var(--panel);padding:14px 15px;display:flex;flex-direction:column;gap:4px;
+  text-decoration:none;color:var(--txt);position:relative;overflow:hidden;
+  transition:background .18s;min-width:0}
+.door:not(.locked){cursor:pointer}
+.door:not(.locked):hover{background:var(--raised)}
+.door:not(.locked):hover .go{color:var(--sig)}
+.door:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
+.door .en{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;color:var(--dim)}
+.door .ar{font-family:var(--disp);font-weight:700;font-size:12.5px;color:var(--muted)}
+.door .v{font-family:var(--mono);font-size:26px;font-weight:700;direction:ltr;color:var(--sig);line-height:1.1}
+.door .l{font-size:10.5px;color:var(--muted);line-height:17px}
+.door .go{font-size:11px;color:var(--dim);margin-top:5px;transition:color .18s;white-space:nowrap}
+.door.locked{opacity:.62}
+.door.locked .v{color:var(--muted)}
+.door::after{content:"";position:absolute;inset-block-start:0;inset-inline-start:0;width:2px;height:0;
+  background:var(--sig);transition:height .3s cubic-bezier(.16,1,.3,1)}
+.door:not(.locked):hover::after{height:100%}
+.door{animation:rise .55s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--i) * 80ms + .25s)}
+
+/* الفرص البارزة */
+.opps{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:12px}
+.opps .opp{margin-bottom:0;transition:background .18s}
+.opps a.opp:hover{background:#19212B}
+.opps a.opp:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.opp .fig b{color:var(--txt)}
+
+/* كارت المطوّر قابل للنقر */
+a.dev{transition:background .18s}
+a.dev:hover{background:var(--raised)}
+a.dev:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
+a.dev .devfoot .sig{opacity:0;transition:opacity .2s}
+a.dev:hover .devfoot .sig{opacity:1}
+
+/* كارت عام قابل للنقر (مشاريع · فرص الحي) */
+a.card{text-decoration:none;color:var(--txt)}
+a.card:hover{background:var(--raised)}
+
+/* صف جدول قابل للنقر */
+tbody tr.link:hover td:last-child{color:var(--sig)}
+
+/* نتيجة الطلب قابلة للنقر */
+a.hit{text-decoration:none;color:var(--txt);transition:background .16s}
+a.hit:hover{background:var(--raised)}
+a.hit:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
+
+/* اسم البراند بالإنجليزي تحته */
+.brand span{display:flex;flex-direction:column;line-height:1.12}
+.brand .bi{font-family:var(--mono);font-size:7.5px;font-weight:500;letter-spacing:.1em;
+  color:var(--dim);font-style:normal;text-transform:uppercase}
+
+/* ليه سعره كده — بنود الحي */
+#why span{align-items:flex-start}
+#why b{color:var(--sig)}
+
+@media (max-width:980px){
+  .doors{grid-template-columns:1fr 1fr}
+  .opps{grid-template-columns:1fr}
+}
+
+/* أقسام نفق المبيعات في الفيد */
+.fgrp{background:var(--raised);padding:0}
+.fhead{padding:11px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.fn{font-family:var(--disp);font-weight:700;font-size:13px}
+.fn.attract{color:var(--sig)}
+.fn.close{color:var(--down)}
+.fn.protect{color:var(--warn)}
+.fn.record{color:var(--muted)}
+.fc{font-family:var(--mono);font-size:10.5px;color:var(--dim);border:1px solid var(--line2);padding:1px 6px}
+.fx{font-size:11px;color:var(--dim);line-height:18px;margin:0;flex:1 1 100%}
+
+/* عناوين بنود «ليه سعره كده» */
+.ev .wt{display:block;font-style:normal;font-family:var(--disp);font-weight:700;font-size:12.5px;
+  color:var(--txt);margin-bottom:3px}
+#why span{align-items:flex-start;gap:9px}
+#why > span{padding-bottom:4px}

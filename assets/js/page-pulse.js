@@ -54,25 +54,53 @@
   bind("segReg", "data-g", function (v) { reg = v; });
   bind("segImp", "data-i", function (v) { imp = v; });
 
+  /* ---------- تقسيم النفق ----------
+     الخبر مش كله واحد. فيه خبر بيجيب عميل، وخبر بيقفل عميل متردد،
+     وخبر بيحميك أنت والعميل، وخبر بيغذّي ملفاتنا بس. */
+  var FUNNEL = [
+    ["attract", "يجيب عميل جديد", "إطلاقات وتخفيضات ومعروض نزل — ده اللي بتبني عليه إعلان أو رسالة أول تواصل."],
+    ["close", "يقفل عميل متردد", "رفع أسعار وعروض بتنتهي بتاريخ. الإلحاح هنا حقيقي ومكتوب، مش مصنوع."],
+    ["protect", "يحمي عميلك ومصداقيتك", "تأخير تسليم أو ورقة ناقصة. بلّغ عميلك قبل ما يكتشف — ده اللي بيجيبلك العميل اللي بعده."],
+    ["record", "يغذّي ملفات مناطق", "رصد ميداني وتثبيت أسعار. مش خبر تبيع بيه، بس هو اللي بيخلي باقي الأرقام تستاهل الثقة."]
+  ];
+  function funnelOf(x) {
+    if (x.k === "cons") return "protect";
+    if (x.k === "up2" || x.exp) return "close";
+    if (x.k === "launch" || x.k === "disc" || x.k === "resale") return "attract";
+    return "record";
+  }
+
   function feed() {
     var list = D.EVENTS.filter(function (x) {
       return (reg === "الكل" || x.r === reg) && (imp === "all" || x.i === imp);
     });
     var h = d.getElementById("feed");
-    h.innerHTML = list.length ? list.map(function (x) {
-      return '<article class="evt"><span class="tm"><b>' + x.t + '</b>' + x.d + '</span><div>' +
-        '<div class="hd"><span class="tg ' + x.k + '">' + x.kT + '</span>' +
-        '<span class="imp ' + x.i + '">' + (x.i === "hot" ? "عاجل" : x.i === "mid" ? "مؤثر" : "روتيني") + '</span>' +
-        '<span class="reg">' + x.r + '</span>' +
-        (x.exp ? '<span class="exp">' + x.exp + '</span>' : '') + '</div>' +
-        '<p class="bd">' + x[aud] + '</p>' +
-        '<p class="src">' + x.src +
-        (x.proj ? '<a class="lnk" href="projects.html?p=' + x.proj + '">افتح ملف المشروع</a>' : '') +
-        (aud === "brk" ? '<span class="lnk">انسخ النص للعميل</span>' : '') +
-        (aud === "inv" ? '<a class="lnk" href="units.html">افتح الوحدات</a>' : '') +
-        '</p></div></article>';
-    }).join("") : '<p class="empty">مفيش أحداث بالفلتر ده. جرّب منطقة تانية أو شيل فلتر الأهمية.</p>';
-    M.stagger(h);
+    if (!list.length) {
+      h.innerHTML = '<p class="empty">مفيش أحداث بالفلتر ده. جرّب منطقة تانية أو شيل فلتر الأهمية.</p>';
+      return;
+    }
+    var html = "", n = 0;
+    FUNNEL.forEach(function (g) {
+      var items = list.filter(function (x) { return funnelOf(x) === g[0]; });
+      if (!items.length) return;
+      html += '<div class="fgrp"><div class="fhead"><span class="fn ' + g[0] + '">' + g[1] +
+        '</span><span class="fc n">' + items.length + '</span><p class="fx">' + g[2] + '</p></div></div>';
+      html += items.map(function (x) {
+        n++;
+        return '<article class="evt" style="--i:' + n + '"><span class="tm"><b>' + x.t + '</b>' + x.d + '</span><div>' +
+          '<div class="hd"><span class="tg ' + x.k + '">' + x.kT + '</span>' +
+          '<span class="imp ' + x.i + '">' + (x.i === "hot" ? "عاجل" : x.i === "mid" ? "مؤثر" : "روتيني") + '</span>' +
+          '<span class="reg">' + x.r + '</span>' +
+          (x.exp ? '<span class="exp">' + x.exp + '</span>' : '') + '</div>' +
+          '<p class="bd">' + x[aud] + '</p>' +
+          '<p class="src">' + x.src +
+          (x.proj ? '<a class="lnk" href="projects.html?p=' + x.proj + '">افتح ملف المشروع</a>' : '') +
+          (aud === "brk" ? '<span class="lnk">انسخ النص للعميل</span>' : '') +
+          (aud === "inv" ? '<a class="lnk" href="units.html">افتح الوحدات</a>' : '') +
+          '</p></div></article>';
+      }).join("");
+    });
+    h.innerHTML = html;
   }
   feed();
 
