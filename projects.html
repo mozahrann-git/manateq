@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>المشاريع · مناطق</title>
+<meta name="description" content="ملف المشروع في مناطق: سجل أسعار مؤرخ من جروبات المطوّرين، خطط السداد بتكلفتها الحقيقية، والرسالة الخام جنب اللي قرأته مناطق منها.">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <p class="crumb"><a href="index.html"><b>مناطق</b></a><i>/</i><b id="cReg">—</b><i>/</i><b id="cDist">—</b><i>/</i><b id="cProj" class="sig">—</b></p>
+  <div class="picker" id="picker"></div>
+  <div class="cards" id="plist"></div>
+
+  <div class="head">
+    <div>
+      <p class="lbl" id="pCode">PROJECT FILE</p>
+      <h1 id="pName">—</h1>
+      <p class="review" id="pReview"></p>
+      <div class="prog">
+        <p class="t"><span>الإنجاز المرصود ميدانياً · <span id="pVisit" class="mut"></span></span><b id="pPct">0%</b></p>
+        <div class="ptrack"><i id="pBar"></i><u style="inset-inline-start:25%"></u><u style="inset-inline-start:50%"></u><u style="inset-inline-start:75%"></u></div>
+        <p class="plegend"><span>الأساسات</span><span>الهيكل</span><span>التشطيب</span><span>التسليم</span></p>
+      </div>
+    </div>
+    <div>
+      <p class="lbl">مؤشرات المشروع</p>
+      <div class="kpi" style="margin-top:10px">
+        <div><p class="l">سعر المتر الحقيقي</p><p class="v sig" id="kPpm">—</p></div>
+        <div><p class="l">مقابل متوسط الحي</p><p class="v" id="kVs">—</p></div>
+        <div><p class="l">تغيّر مسجّل</p><p class="v" id="kChg">—</p></div>
+        <div><p class="l">أقل مقدّم</p><p class="v" id="kDown">—</p></div>
+        <div><p class="l">أطول تقسيط</p><p class="v" id="kYears">—</p></div>
+        <div><p class="l">التسليم المعلن</p><p class="v" id="kDel">—</p></div>
+      </div>
+      <p class="note" style="margin-top:11px" id="kSrc"></p>
+    </div>
+  </div>
+
+  <section>
+    <div class="rowhead">
+      <h2>سجل الأسعار</h2>
+      <p class="note">ده اللي محدش تاني عنده. كل رسالة جات من جروب المطور بتتسجّل بتاريخها، فالمشتري بيشوف سعر النهاردة <b>مقارنة بإمتى اتغيّر وكام مرة</b> — مش رقم معلّق في الهوا.</p>
+    </div>
+    <div class="hist">
+      <div>
+        <p class="lbl">خط السعر · سعر المتر</p>
+        <svg class="spark" id="spk" style="height:92px" viewBox="0 0 300 92" preserveAspectRatio="none" aria-label="تطور سعر المتر"></svg>
+        <p class="note" id="histNote" style="margin-top:8px"></p>
+      </div>
+      <div>
+        <p class="lbl">الأحداث المسجّلة</p>
+        <div class="tl" id="tl"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>خطط السداد المعلنة</h2>
+      <p class="note">زي ما وصلت من المطور بالظبط. <b>التكلفة الفعلية</b> = السعر بعد الخصم + الجراج + وديعة الصيانة — عشان الخطة الأرخص تبان من غير حسابات.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الخطة</th><th>المقدّم</th><th>المدة</th><th>القسط الشهري</th><th>الخصم</th><th>التكلفة الفعلية</th><th>سعر المتر الفعلي</th>
+    </tr></thead><tbody id="planTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>الوحدات المتاحة في المشروع</h2>
+      <p class="note" id="uNote"></p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>النوع</th><th>المساحة</th><th>السعر المعلن</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="uTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div>
+        <p class="lbl">آخر رسالة واردة من جروب المطور</p>
+        <p class="note" style="margin:8px 0 10px" id="msgMeta"></p>
+        <div class="raw" id="raw"></div>
+      </div>
+      <div>
+        <p class="lbl">اللي قرأته مناطق من الرسالة</p>
+        <div class="ext" id="ext"></div>
+        <div class="flag" id="flag"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>أوراق المشروع</h2>
+      <p class="note">مفيش تقييم من غير ورقة. اللي ناقص مكتوب إنه ناقص بدل ما نسكت عنه.</p>
+    </div>
+    <div class="two">
+      <div><p class="lbl">الأدلة</p><div class="ev" id="docs" style="margin-top:11px"></div></div>
+      <div>
+        <p class="lbl">قراءة محلل مناطق</p>
+        <p class="review" id="analyst" style="margin-top:10px"></p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    سعر المتر الحقيقي محسوب على التكلفة الكاملة (السعر + الجراج + وديعة الصيانة) مقسومة على المساحة — مش على السعر المعلن.<br>
+    قواعد الحكم منشورة: <b>فرصة</b> = أقل من متوسط الحي بـ5%+ ومعاه استلام فوري أو خصم كاش 25%+ · <b>متضخّم</b> = أعلى بـ8%+ · <b>انتظر</b> = ورقة ناقصة أو إنجاز غير مرصود.<br>
+    الأسعار قابلة للتغيير من المطور وتُراجَع قبل التعاقد. تاريخ آخر تحديث مكتوب مع كل رقم.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-projects.js"></script>
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نبض السوق · مناطق</title>
+<meta name="description" content="نبض السوق في مناطق: نفس الحدث مترجم للمستثمر والمشتري والبروكر، مع نشرة اليوم وكثافة الطرح من 50 جروب مطوّر.">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <div class="macro" id="macro"></div>
+
+  <div class="brief">
+    <h2>نشرة مناطق · <span id="today" class="n sig" style="font-size:14px"></span></h2>
+    <p class="note" style="margin-top:7px">مكتوبة من أحداث النهاردة نفسها — مش رأي، تلخيص لللي اتسجّل.</p>
+    <div class="bl2" id="brief"></div>
+  </div>
+
+  <div class="ops" id="ops"></div>
+
+  <section>
+    <div class="rowhead">
+      <h2>الفيد الحي</h2>
+      <p class="note">نفس الحدث بيتقال بتلات طرق. <b>المستثمر</b> عايز يعرف الرقم والعائد، <b>المشتري</b> عايز يعرف هيدفع كام وهيستلم إمتى، و<b>البروكر</b> عايز يعرف يقفل بيه إزاي. بدّل من فوق.</p>
+    </div>
+    <div class="ctrl">
+      <div class="cg"><span class="lbl">بيقرا</span>
+        <div class="seg" id="segAud">
+          <button type="button" data-a="inv" aria-pressed="true">مستثمر</button>
+          <button type="button" data-a="buy" aria-pressed="false">مشتري</button>
+          <button type="button" data-a="brk" aria-pressed="false">بروكر</button>
+        </div></div>
+      <div class="cg"><span class="lbl">المنطقة</span><div class="seg" id="segReg"></div></div>
+      <div class="cg"><span class="lbl">الأهمية</span>
+        <div class="seg" id="segImp">
+          <button type="button" data-i="all" aria-pressed="true">الكل</button>
+          <button type="button" data-i="hot" aria-pressed="false">عاجل</button>
+          <button type="button" data-i="mid" aria-pressed="false">مؤثر</button>
+        </div></div>
+    </div>
+    <div class="feed" id="feed"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>كثافة الطرح · آخر 7 أيام</h2>
+      <p class="note">عدد الرسائل المسجّلة من كل منطقة في كل يوم. الكثافة العالية مش معناها سوق قوي بالضرورة — ساعات معناها ضغط بيع. المربع البرتقالي الغامق = يوم مزدحم.</p>
+    </div>
+    <div class="heat">
+      <div class="hgrid" id="heat"></div>
+      <p class="hleg"><span>أقل</span>
+        <i style="background:#141B24"></i><i style="background:rgba(255,122,26,.25)"></i>
+        <i style="background:rgba(255,122,26,.5)"></i><i style="background:rgba(255,122,26,.75)"></i>
+        <i style="background:#FF7A1A"></i><span>أكتر</span>
+        <span style="margin-inline-start:auto" id="heatTot"></span></p>
+    </div>
+  </section>
+
+  <div class="foot">
+    مصدر كل سطر هنا رسالة واتساب من جروب مطوّر مسجّل عند مناطق، بتاريخها وبرقم السيلز اللي بعتها. اللي بيتكرر بيتعدّ كـ«كثافة طرح» مش كخبر جديد.<br>
+    العروض المؤقتة بتختفي من الفيد لوحدها بعد تاريخ انتهائها. المؤشرات الاقتصادية للمقارنة بس — مناطق مبتديش توصية شراء أو بيع لأي أصل تاني.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-pulse.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الوحدات · مناطق</title>
+<meta name="description" content="ملف الوحدة في مناطق: التكلفة الحقيقية، أركان الاستثمار الخمسة، سيناريو 5 سنين مقابل البنك والذهب، والعملاء اللي طلبهم ينطبق عليها.">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <p class="crumb"><a href="index.html"><b>مناطق</b></a><i>/</i><b id="cReg">—</b><i>/</i><b id="cDist">—</b><i>/</i><b id="cU" class="sig">—</b></p>
+  <div class="picker" id="picker"></div>
+  <div class="cards" id="ulist"></div>
+
+  <div class="head">
+    <div>
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+        <div><p class="lbl" id="uCode">UNIT FILE</p><h1 id="uName">—</h1></div>
+        <span class="vd" id="uVd">—</span>
+      </div>
+      <p class="review" id="uWhy"></p>
+      <div class="srcrow" id="uChips"></div>
+      <div class="gal" id="gal"></div>
+      <p class="locknote" id="lockNote"></p>
+    </div>
+    <div>
+      <p class="lbl">الوحدة المحسوبة</p>
+      <p class="note" style="margin:8px 0 11px">السعر المعلن مش التكلفة. ده كل اللي هتدفعه فعلاً لحد ما المفتاح يبقى في إيدك.</p>
+      <div class="calc" id="calc"></div>
+      <div class="gap" id="gapNote"></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="rowhead">
+      <h2>أركان الاستثمار الخمسة</h2>
+      <p class="note">نفس المصطلحات اللي بيتكلم بيها أي مستثمر في العالم — ومكتوب تحت كل رقم اتحسب إزاي ومن كام عيّنة.</p>
+    </div>
+    <div class="pil" id="pil"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>سيناريو الاحتفاظ 5 سنين</h2>
+      <p class="note">مش وعد. ده حساب على افتراضات مكتوبة صريحة — غيّر الافتراض يتغيّر الرقم، واللي بيخبّي افتراضاته بيبيعلك وهم.</p>
+    </div>
+    <div class="scen">
+      <div>
+        <p class="lbl">العائد الكلي بعد 5 سنين · مقابل البدائل</p>
+        <div id="cmp" style="margin-top:12px"></div>
+      </div>
+      <div>
+        <p class="lbl">تفكيك الحساب</p>
+        <div class="sl" id="sl"></div>
+        <p class="note" style="margin-top:11px" id="assump"></p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>العملاء اللي طلبهم ينطبق على الوحدة دي</h2>
+      <p class="note" id="mNote"></p>
+    </div>
+    <div class="mt" id="mt"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>البدائل في نفس الحي</h2>
+      <p class="note">مقارنة مباشرة بالمعروض اللي ينافسها فعلاً. الوحدة اللي بتشوفها متعلّمة بالبرتقالي.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>العائد الصافي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="altTb"></tbody></table></div>
+  </section>
+
+  <div class="foot">
+    <b>التكلفة الحقيقية</b> = السعر المعلن + وديعة الصيانة + الجراج + اشتراك النادي. <b>سعر المتر الحقيقي</b> = التكلفة الحقيقية ÷ المساحة.<br>
+    <b>العائد الصافي (Cap Rate)</b> = (الإيجار السنوي − 10% إدارة وشواغر) ÷ التكلفة الحقيقية. <b>أفق السيولة</b> = متوسط أيام البيع المسجّلة عند مناطق في نفس الحي.<br>
+    البيانات الناقصة مكتوبة إنها ناقصة — مناطق مبتملاش فراغ بتقدير وتعرضه كأنه رقم. صور الوحدات بتتشفّر وتتقفل لو المالك طلب كده.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-units.js"></script>
+</body>
+</html>

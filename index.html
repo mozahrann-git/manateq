@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>مناطق · استخبارات الاستثمار العقاري</title>
+<meta name="description" content="مناطق · منصة استخبارات الاستثمار العقاري في مصر. التكلفة الحقيقية للوحدة، مقارنة بمتوسط الحي نفسه، بحكم منشور ومصدر مؤرخ.">
+<meta name="theme-color" content="#07090C">
+<meta property="og:title" content="مناطق · استخبارات الاستثمار العقاري">
+<meta property="og:description" content="السوق مليان أرقام. إحنا بنقولك الرقم الصح.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body>
+
+<header data-header></header>
+
+<main class="wrap">
+  <div class="claim">
+    <div>
+      <p class="lbl">MANATEQ · REAL ESTATE INVESTMENT INTELLIGENCE</p>
+      <h1>استخبارات الاستثمار العقاري</h1>
+      <p class="cl">السوق مليان أرقام، وإحنا بنقولك الرقم الصح. كل يوم بتوصلنا مئات الرسائل من <b>50 جروب مطوّر</b> في أربع مناطق — بنقراها، بنطلّع منها التكلفة الحقيقية، وبنقارنها بمتوسط <b>الحي نفسه</b> مش متوسط المدينة. ابدأ من المنطقة اللي بتفكر فيها.</p>
+    </div>
+    <div class="cst" id="cst"></div>
+  </div>
+
+  <div class="pickhead">
+    <h2>ابدأ من المنطقة</h2>
+    <p class="note">كل منطقة ملف كامل: أحياؤها، مطوّروها بأدلتهم، والمعروض فيها بحكم منشور. مفيش مشروع ولا وحدة بره منطقتها.</p>
+  </div>
+  <div class="picker" id="picker"></div>
+
+  <div class="head">
+    <div>
+      <p class="lbl" id="rCode">MQ · REGION FILE</p>
+      <h1 id="rName">—</h1>
+      <p class="review" id="rReview"></p>
+      <div class="kpi">
+        <div><p class="l">متوسط المتر</p><p class="v sig" id="kPpm">—</p></div>
+        <div><p class="l">العائد الصافي · ريسيل</p><p class="v up" id="kY">—</p></div>
+        <div><p class="l">أفق السيولة</p><p class="v" id="kLiq">—</p></div>
+        <div><p class="l">نشاط آخر 7 أيام</p><p class="v" id="kAct">—</p></div>
+      </div>
+    </div>
+    <div>
+      <p class="lbl">حركة متوسط المتر · 7 أسابيع</p>
+      <svg class="spark" id="spk" style="height:44px" viewBox="0 0 300 44" preserveAspectRatio="none" aria-label="منحنى متوسط المتر"></svg>
+      <div class="kpi" style="margin-top:4px">
+        <div><p class="l">عقود مسجّلة</p><p class="v" id="kC">—</p></div>
+        <div><p class="l">مؤشر الطلب</p><p class="v" id="kD">—</p></div>
+        <div><p class="l">ريسيل متاح</p><p class="v" id="kR">—</p></div>
+        <div><p class="l">تحت الإنشاء</p><p class="v" id="kO">—</p></div>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="rowhead">
+      <h2>أحياء المنطقة</h2>
+      <p class="note">سعر المتر لكل حي محسوب من المعروض والعقود. الحي اللي عيّنته صغيرة بيتعلّم عليه <b>تقديري</b> بدل ما نعرض رقم واثق.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الحي</th><th>سعر المتر</th><th>مقابل المنطقة</th><th>العائد الصافي</th><th>مؤشر الطلب</th><th>الحالة</th>
+    </tr></thead><tbody id="dTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>المطوّرون داخل المنطقة</h2>
+      <p class="note">التصنيف مش رأي — ده حصيلة أدلة. كل دليل إما موجود وموثّق بتاريخه، أو ناقص ومكتوب إنه ناقص.</p>
+    </div>
+    <div class="devs" id="devs"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>المعروض في المنطقة</h2>
+      <p class="note" id="uNote"></p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المصدر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th>
+      <th>مقابل الحي</th><th>العائد</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="uTb"></tbody></table></div>
+  </section>
+
+  <section>
+    <div class="two">
+      <div>
+        <p class="lbl">نبض المنطقة · آخر 24 ساعة</p>
+        <div id="pulse" style="margin-top:10px"></div>
+      </div>
+      <div>
+        <p class="lbl">فرص مناطق في <span id="oppReg"></span></p>
+        <p class="note" style="margin:8px 0 12px">الوحدات اللي عدّت القاعدة. دي اللي بتتعرض على المستثمرين، ومش بتدخل هنا إلا بدليل.</p>
+        <div id="opps"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="proof">
+      <div class="pin">
+        <p class="lbl">البرهان · رسالة واحدة من جروب مطوّر</p>
+        <h2 style="margin-top:9px">نفس الوحدة. تلات أسعار متر. فرق 49%.</h2>
+        <p class="note" style="margin-top:9px">دي رسالة حقيقية وصلت من جروب مطوّر لوحدة 130 م² في التوسعات الشرقية. السوق كله بيقارن بالرقم الأول، وده السبب اللي خلّى كل مقارنة في السوق غلط.</p>
+      </div>
+      <div class="reads" id="reads"></div>
+      <p class="out">
+        الرقم الوحيد اللي يتقارن هو التالت: <b>السعر اللي هتدفعه فعلاً ÷ المساحة</b>. البروكر بيقول «58 ألف المتر»، والعميل بيقارنه بمشروع تاني محسوب بطريقة تالتة، والنتيجة إن الاتنين بيتفاوضوا على وهم. مناطق بتنشر الحساب ومصدره، فمفيش مجال للتلاعب — ولا حتى من غير قصد.
+      </p>
+    </div>
+  </section>
+
+  <section id="request">
+    <div class="rowhead">
+      <h2>سجّل طلبك</h2>
+      <p class="note">مش بنسألك على بياناتك عشان نكلمك. بنسألك عشان لما تنزل وحدة مطابقة من أي جروب، تكون أنت أول واحد يعرف — قبل ما تتنشر.</p>
+    </div>
+    <div class="req">
+      <div>
+        <div class="fld"><span class="lbl">المنطقة</span><div class="seg" id="qReg"></div></div>
+        <div class="fld"><span class="lbl">الغرض</span><div class="seg" id="qNeed">
+          <button type="button" data-v="عائد" aria-pressed="true">استثمار بعائد</button>
+          <button type="button" data-v="سكن" aria-pressed="false">سكن</button>
+        </div></div>
+        <div class="fld"><span class="lbl">الاستلام</span><div class="seg" id="qDel">
+          <button type="button" data-v="أي" aria-pressed="true">مايفرقش</button>
+          <button type="button" data-v="فوري" aria-pressed="false">فوري بس</button>
+        </div></div>
+        <div class="fld">
+          <span class="lbl">أقصى ميزانية</span>
+          <input class="rng" id="qBud" type="range" min="1500000" max="15000000" step="50000" value="3500000" aria-label="أقصى ميزانية">
+          <div class="rv"><b id="qBudV">0</b><span>جنيه · التكلفة الحقيقية مش السعر المعلن</span></div>
+        </div>
+        <div class="fld" style="margin-bottom:0">
+          <span class="lbl">أقل مساحة</span>
+          <input class="rng" id="qArea" type="range" min="70" max="260" step="5" value="110" aria-label="أقل مساحة">
+          <div class="rv"><b id="qAreaV">0</b><span>متر مربع</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="res">
+          <p class="lbl">ينطبق على طلبك دلوقتي</p>
+          <p class="big" id="hitN" style="margin-top:9px">0</p>
+          <p class="cap" id="hitCap"></p>
+        </div>
+        <div class="hits" id="hits"></div>
+        <button class="b1" style="width:100%;margin-top:13px" type="button" id="saveBtn">احفظ الطلب · وابلّغني أول ما تنزل وحدة مطابقة</button>
+        <p class="note" style="margin-top:10px" id="saveNote">هيتسجّل في حوض الطلبات، وكل رسالة جديدة بتتقارن بيه آلياً. مفيش مكالمات متكررة — بنكلمك لما يبقى في حاجة فعلاً.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="foot">
+    <b>التكلفة الحقيقية</b> = السعر المعلن + وديعة الصيانة + الجراج + اشتراك النادي · <b>سعر المتر الحقيقي</b> = التكلفة الحقيقية ÷ المساحة · <b>العائد الصافي</b> = (الإيجار السنوي − 10% إدارة وشواغر) ÷ التكلفة الحقيقية.<br>
+    قواعد الحكم منشورة: <b>فرصة</b> = أقل من متوسط الحي بـ5%+ ومعاه استلام فوري أو خصم كاش 25%+ · <b>متضخّم</b> = أعلى بـ8%+ · <b>انتظر</b> = ورقة ناقصة أو إنجاز غير مرصود.<br>
+    كل رقم أصله رسالة واتساب مؤرخة من جروب مطوّر مسجّل، أو عقد، أو زيارة ميدانية موثّقة. صور الوحدات بتتشفّر وتتقفل لو المالك طلب كده. الأسعار قابلة للتغيير وتُراجَع قبل التعاقد.<br>
+    مناطق بتاخد عمولتها من البيع، ومش بتاخد فلوس مقابل ترتيب وحدة في القايمة. الترتيب محسوب، مش مباع.
+  </div>
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/page-regions.js"></script>
+</body>
+</html>
