@@ -464,6 +464,35 @@
     for (var i = 0; i < ns.length; i++) ns[i].setAttribute("data-rv", "");
   }
 
+
+  /* ---------- شريط لوحة التشغيل ---------- */
+  var ANAV = [
+    ["01", "خط الإنتاج", "admin.html"],
+    ["02", "الاستقبال", "admin-inbox.html"],
+    ["03", "الأرقام والجروبات", "admin-directory.html"],
+    ["04", "اقتناص الفرص", "admin-radar.html"],
+    ["05", "البيانات", "admin-data.html"],
+    ["06", "الإحصائيات", "admin-stats.html"]
+  ];
+  function buildAdminHeader(active) {
+    var host = d.querySelector("[data-adminhead]");
+    if (!host) return;
+    host.className = "bar admin";
+    host.innerHTML = '<div class="wrap">' +
+      '<a class="brand" href="admin.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
+      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
+      '<span>مناطق<i class="bi">OPERATIONS</i></span></a>' +
+      '<nav class="tabs">' + ANAV.map(function (x) {
+        return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
+          '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
+      }).join("") + '</nav>' +
+      '<span class="tick"><a href="index.html" class="tb-x" style="margin:0 0 0 9px">الموقع ←</a>' +
+      '<span class="bl"></span><span id="mqClock" class="n">00:00:00</span></span>' +
+      '</div>';
+    tickClock();
+  }
+
   /* ---------- بلوك البرهان (بيتكرر في أكتر من صفحة) ---------- */
   var READS = [
     ["السعر المعلن ÷ المساحة<br><span class='mut' style='font-size:10.5px'>اللي السوق كله بيقارن بيه</span>",
@@ -507,7 +536,7 @@
     districtRow: districtRow, LINK: LINK, qs: qs,
     RM: RM, count: count, reveal: reveal, onSeen: onSeen, stagger: stagger,
     growBars: growBars, swap: swap, drawSpark: drawSpark,
-    buildHeader: buildHeader, markSections: markSections, renderProof: renderProof,
+    buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
     tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal
   };
 })(window, document);

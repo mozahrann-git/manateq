@@ -201,8 +201,16 @@
     }
     if (f.cashDisc && f.cashDisc.v >= 25) hits.push({ k: "disc", t: "خصم استثنائي", c: "up",
       why: "خصم كاش " + f.cashDisc.v + "% — السعر المعلن بقى مرجع غير صالح" });
-    if (ctx.dupCount >= 3) hits.push({ k: "dup", t: "كثافة طرح", c: "wrn",
-      why: "نفس الوحدة في " + ctx.dupCount + " جروبات — مؤشر ضغط بيع مش خبر جديد" });
+    /* كل مطوّر له جروب واحد — فالتكرار معناه إن المطوّر نفسه بيعيد طرح نفس الوحدة.
+       وده أقوى من التكرار بين جروبات: معناه الوحدة مش بتتباع. */
+    if (ctx.repost && ctx.repost.times >= 3) {
+      var tr = ctx.repost.trend;
+      hits.push({ k: "repost", t: "إعادة طرح", c: tr < -2 ? "up" : "wrn",
+        why: "رابع طرح لنفس الوحدة من نفس الجروب خلال " + ctx.repost.days + " يوم"
+          .replace("رابع", ctx.repost.times === 3 ? "تالت" : ctx.repost.times === 4 ? "رابع" : ctx.repost.times + " طرح") +
+          (tr ? " · السعر " + (tr < 0 ? "نزل " : "طلع ") + Math.abs(tr).toFixed(1) + "% من أول طرح" : "") +
+          (tr < -2 ? " — فرصة تفاوض حقيقية" : " — الوحدة مش بتتباع") });
+    }
     if (ctx.matches && ctx.matches.length) hits.push({ k: "match", t: "عميل مستني", c: "up",
       why: ctx.matches.length + " طلب مسجّل بينطبق على الوحدة دي" });
     if (ctx.prev && f.area && ctx.prev.area && f.area.v !== ctx.prev.area)

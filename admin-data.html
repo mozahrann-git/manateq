@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>البيانات · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <section>
+    <div class="rowhead">
+      <h2>إدارة البيانات</h2>
+      <p class="note">كل ركن في الموقع بيتعدّل من هنا. أي تعديل بيتسجّل بوقته وصاحبه.</p>
+    </div>
+    <div class="ctrl">
+      <div class="cg"><span class="lbl">الجدول</span><div class="seg" id="segT">
+        <button type="button" data-t="units" aria-pressed="true">الوحدات</button>
+        <button type="button" data-t="projects" aria-pressed="false">المشاريع</button>
+        <button type="button" data-t="devs" aria-pressed="false">المطوّرون</button>
+        <button type="button" data-t="districts" aria-pressed="false">الأحياء</button>
+        <button type="button" data-t="pool" aria-pressed="false">طلبات العملاء</button>
+      </div></div>
+      <div class="cg" style="flex:0 0 auto"><button class="b1" type="button" id="addRow">+ إضافة</button></div>
+    </div>
+    <div class="tw" style="margin-top:1px"><table><thead id="dHead"></thead><tbody id="dBody"></tbody></table></div>
+    <p class="hint" id="dHint"></p>
+  </section>
+
+  <section>
+    <div class="rowhead"><h2>سجل التعديلات</h2></div>
+    <div class="tw"><table><thead><tr><th>الوقت</th><th>مين</th><th>العملية</th><th>على إيه</th></tr></thead>
+      <tbody id="editLog"></tbody></table></div>
+  </section>
+
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/parser.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/page-datadmin.js"></script>
+</body>
+</html>

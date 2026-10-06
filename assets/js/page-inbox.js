@@ -6,35 +6,7 @@
   var M = w.MQ, P = w.MQParse, A = w.MQ_ADMIN, D = M.D;
   var f0 = M.f0, pc = M.pc;
 
-  M.buildAdminHeader ? M.buildAdminHeader("admin-inbox.html") : adminHead("admin-inbox.html");
-
-  /* شريط اللوحة — مستقل عن هيدر الموقع العام */
-  function adminHead(active) {
-    var host = d.querySelector("[data-adminhead]");
-    if (!host) return;
-    var NAV = [
-      ["الاستقبال", "admin-inbox.html"],
-      ["دليل الأرقام", "admin-directory.html"],
-      ["الموقع", "index.html"]
-    ];
-    host.className = "bar admin";
-    host.innerHTML = '<div class="wrap">' +
-      '<span class="brand"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
-      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
-      '<span>مناطق<i class="bi">OPERATIONS</i></span></span>' +
-      '<nav class="tabs">' + NAV.map(function (x) {
-        return '<a href="' + x[1] + '"' + (x[1] === active ? ' class="on"' : '') + '>' + x[0] + '</a>';
-      }).join("") + '</nav>' +
-      '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
-      '</div>';
-    (function tick() {
-      var el = d.getElementById("mqClock");
-      function go() { var t = new Date(), p = function (x) { return String(x).padStart(2, "0"); };
-        el.textContent = p(t.getHours()) + ":" + p(t.getMinutes()) + ":" + p(t.getSeconds()); }
-      go(); setInterval(go, 1000);
-    })();
-  }
+  M.buildAdminHeader("admin-inbox.html");
 
   /* ---------- حالة ---------- */
   var queue = A.QUEUE.slice();
@@ -186,7 +158,7 @@
     /* كواشف الفرص */
     var hits = P.detect({
       fields: F, prev: prev, districtPpm: dPpm, realPpm: realPpm,
-      dupCount: A.DUPES[m.id] || 0,
+      repost: fp ? A.repostOf(fp) : null,
       matches: F.price && F.area ? matchPool(trueCost, F.area.v, r.reg) : []
     });
     d.getElementById("sigs").innerHTML = hits.length

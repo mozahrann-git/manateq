@@ -124,8 +124,41 @@
     "Nile Developments|135": { price: 3100000, area: 135, date: "12 Sep 2026" }
   };
 
-  /* كام جروب نزّل نفس الوحدة — مؤشر كثافة الطرح */
-  var DUPES = { "M-5512": 2, "M-5513": 3, "M-5514": 1, "M-5515": 1, "M-5516": 4, "M-5519": 2 };
+  /* ---------- أرشيف الطرح ----------
+     كل مطوّر له جروب واحد، فتكرار نفس الوحدة معناه إنه بيعيد طرحها —
+     وده مؤشر إن الوحدة مش بتتباع. بنسجّل كل طرح بتاريخه وسعره. */
+  var POSTS = [
+    /* Zahw A3-12 من جروب Ghoniem */
+    { rep:"R-002", fp:"Ghoniem Group|130", at:"09 Jun 2026", price:7332000 },
+    { rep:"R-002", fp:"Ghoniem Group|130", at:"21 Jul 2026", price:7430000 },
+    { rep:"R-002", fp:"Ghoniem Group|130", at:"30 Sep 2026", price:7585301 },
+    /* Verona 137 من جروب Xland — أربع طرحات والسعر بينزل */
+    { rep:"R-001", fp:"Xland Developments|137", at:"12 Apr 2026", price:3342800 },
+    { rep:"R-001", fp:"Xland Developments|137", at:"05 Sep 2026", price:3315400 },
+    { rep:"R-001", fp:"Xland Developments|137", at:"16 Sep 2026", price:3192100 },
+    { rep:"R-001", fp:"Xland Developments|137", at:"04 Oct 2026", price:3082500 },
+    /* Median 155 من جروب EgyGab — نفس السعر بيتكرر بخصم متجدد */
+    { rep:"R-007", fp:"EgyGab|155", at:"18 Jul 2026", price:14112000 },
+    { rep:"R-007", fp:"EgyGab|155", at:"26 Aug 2026", price:14112000 },
+    { rep:"R-007", fp:"EgyGab|155", at:"02 Oct 2026", price:14112000 },
+    /* Story 61 من جروب Urbnlanes */
+    { rep:"R-010", fp:"Urbnlanes|61", at:"30 Aug 2026", price:7990269 },
+    { rep:"R-010", fp:"Urbnlanes|61", at:"22 Sep 2026", price:7990269 },
+    { rep:"R-010", fp:"Urbnlanes|61", at:"06 Oct 2026", price:7990269 },
+    { rep:"R-010", fp:"Urbnlanes|61", at:"06 Oct 2026", price:7990269 }
+  ];
+
+  /* بيرجع: كام مرة اتطرحت · خلال كام يوم · والسعر اتغيّر قد إيه من أول طرح */
+  function repostOf(fp) {
+    var list = POSTS.filter(function (x) { return x.fp === fp; });
+    if (list.length < 2) return null;
+    var first = list[0], last = list[list.length - 1];
+    var d1 = new Date(first.at), d2 = new Date(last.at);
+    var days = Math.max(1, Math.round((d2 - d1) / 86400000));
+    return { times: list.length, days: days,
+             trend: (last.price - first.price) / first.price * 100,
+             from: first.at, to: last.at, prices: list.map(function (x) { return x.price; }) };
+  }
 
   /* سجل القرارات — كل رسالة اتعمل فيها إيه ومين قرر */
   var LOG = [
@@ -139,5 +172,6 @@
   LINE.reps = REPS.length;
   LINE.groups = REPS.reduce(function (a, r) { return a + r.projects.length; }, 0);
 
-  w.MQ_ADMIN = { LINE: LINE, REPS: REPS, QUEUE: QUEUE, HISTORY: HISTORY, DUPES: DUPES, LOG: LOG };
+  w.MQ_ADMIN = { LINE: LINE, REPS: REPS, QUEUE: QUEUE, HISTORY: HISTORY,
+                 POSTS: POSTS, repostOf: repostOf, LOG: LOG };
 })(window);
