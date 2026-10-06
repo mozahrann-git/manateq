@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الأخبار · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <div class="opsline" id="nline"></div>
+
+  <section>
+    <div class="rowhead">
+      <h2>الأخبار المبنية على الاستقبال</h2>
+      <p class="note">كل خبر هنا أصله رسالة معتمدة. اكتب صياغته للتلاتة، حدّد أهميته وتاريخ انتهائه، وانشره أو اسحبه من نبض السوق.</p>
+    </div>
+    <div class="ctrl">
+      <div class="cg"><span class="lbl">الحالة</span><div class="seg" id="segSt">
+        <button type="button" data-s="all" aria-pressed="true">الكل</button>
+        <button type="button" data-s="live" aria-pressed="false">منشور</button>
+        <button type="button" data-s="draft" aria-pressed="false">مسودة</button>
+        <button type="button" data-s="exp" aria-pressed="false">منتهي</button>
+      </div></div>
+      <div class="cg"><span class="lbl">المنطقة</span><div class="seg" id="segReg"></div></div>
+    </div>
+    <div class="newsgrid">
+      <div class="nlist" id="nlist"></div>
+      <div class="nedit" id="nedit"></div>
+    </div>
+  </section>
+
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/parser.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/page-news.js"></script>
+</body>
+</html>

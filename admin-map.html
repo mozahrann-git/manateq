@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>خريطة العمليات · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/leaflet.css">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <div class="opsline" id="mline"></div>
+
+  <section>
+    <div class="rowhead">
+      <h2>خريطة العمليات</h2>
+      <p class="note">كل وحدة مرصودة على مكانها، ولونها حكم مناطق. اضغط على أي نقطة تفتح ملفها، وعلى أي حي تفتح تقريره.</p>
+    </div>
+    <div class="opsmap">
+      <div class="mapwrap" style="border:0">
+        <div class="maphead">
+          <h2>منطقة <span id="mReg" class="sig">—</span></h2>
+          <div class="seg" id="segReg"></div>
+        </div>
+        <div class="mapbox" id="map"></div>
+        <div class="maplegend">
+          <span class="lg"><b>الوحدات:</b></span>
+          <span class="lg"><i style="border-color:#3AD483"></i>فرصة</span>
+          <span class="lg"><i style="border-color:#F2B233"></i>محايد</span>
+          <span class="lg"><i style="border-color:#FF5E55"></i>متضخّم</span>
+          <span class="lg" style="margin-inline-start:12px"><b>الأحياء:</b> لونها سعر مترها</span>
+        </div>
+      </div>
+      <aside class="msde">
+        <p class="lbl">اللي على الخريطة دلوقتي</p>
+        <div id="mlist" style="margin-top:10px"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>تغطية الفريق</h2>
+      <p class="note">كل منطقة وجروباتها المرصودة ونسبة نضج نماذجها — ده بيوريك إحنا عمينا فين.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>المنطقة</th><th>جروبات</th><th>وحدات مرصودة</th><th>أحياء مغطّاة</th><th>نماذج ناضجة</th><th>التغطية</th>
+    </tr></thead><tbody id="covTb"></tbody></table></div>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/parser.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/map.js"></script>
+<script src="assets/js/page-opsmap.js"></script>
+</body>
+</html>

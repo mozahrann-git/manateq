@@ -587,8 +587,12 @@
     ["02", "الاستقبال", "admin-inbox.html"],
     ["03", "الأرقام والجروبات", "admin-directory.html"],
     ["04", "اقتناص الفرص", "admin-radar.html"],
-    ["05", "البيانات", "admin-data.html"],
-    ["06", "الإحصائيات", "admin-stats.html"]
+    ["05", "الخريطة", "admin-map.html"],
+    ["06", "الأخبار", "admin-news.html"],
+    ["07", "البيانات", "admin-data.html"],
+    ["08", "الإحصائيات", "admin-stats.html"],
+    ["09", "المستخدمين", "admin-users.html"],
+    ["10", "الإعدادات", "admin-settings.html"]
   ];
   function buildAdminHeader(active) {
     var host = d.querySelector("[data-adminhead]");

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>الإعدادات · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <section>
+    <div class="rowhead">
+      <h2>قواعد الحكم</h2>
+      <p class="note">دي أخطر شاشة في النظام. تغيير رقم هنا بيغيّر حكم مناطق على <b>كل وحدة في الموقع</b> في نفس اللحظة — والمنهجية المنشورة بتتحدّث لوحدها.</p>
+    </div>
+    <div class="setwrap" id="rules"></div>
+    <div class="gap" id="impact" style="margin-top:12px"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>ثوابت الحساب</h2>
+      <p class="note">الأرقام اللي كل المعادلات بتقف عليها.</p>
+    </div>
+    <div class="setwrap" id="consts"></div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>الاستقبال</h2>
+      <p class="note">إمتى النظام يعتمد رسالة لوحده، وإمتى يوقّف ويستنى بني آدم.</p>
+    </div>
+    <div class="setwrap" id="intake"></div>
+  </section>
+
+  <section>
+    <div class="rowhead"><h2>سجل تغيير الإعدادات</h2></div>
+    <div class="tw"><table><thead><tr><th>الوقت</th><th>مين</th><th>الإعداد</th><th>من</th><th>إلى</th><th>الأثر</th></tr></thead>
+      <tbody id="sLog"></tbody></table></div>
+  </section>
+
+</main>
+
+<script src="assets/js/data.js"></script>
+<script src="assets/js/core.js"></script>
+<script src="assets/js/parser.js"></script>
+<script src="assets/js/admin-data.js"></script>
+<script src="assets/js/page-settings.js"></script>
+</body>
+</html>
