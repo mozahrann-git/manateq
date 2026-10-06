@@ -47,10 +47,9 @@
       var t = TILES[tileIdx];
       if (!t) return;                         // خلصت البدائل — الحدود لوحدها هتفضل باينة
       var errs = 0, settled = false;
-      tileLayer = w.L.tileLayer(t.url, {
-        attribution: t.attr, maxZoom: t.max, className: t.cls,
-        subdomains: t.url.indexOf("{s}") > -1 ? "abc" : undefined
-      });
+      var tOpts = { attribution: t.attr, maxZoom: t.max, className: t.cls };
+      if (t.url.indexOf("{s}") > -1) tOpts.subdomains = "abc";   // undefined بتكسر Leaflet
+      tileLayer = w.L.tileLayer(t.url, tOpts);
       tileLayer.on("tileerror", function () {
         errs++;
         if (errs >= 4 && !settled) {          // المصدر ده مش شغال
@@ -174,7 +173,14 @@
     }
 
     var useLeaflet = !!(w.L && w.L.map);
-    if (useLeaflet) { try { buildLeaflet(); } catch (e) { useLeaflet = false; } }
+    if (useLeaflet) {
+      try { buildLeaflet(); }
+      catch (e) {
+        useLeaflet = false;
+        try { if (map) { map.remove(); map = null; } } catch (e2) {}
+        host.innerHTML = "";
+      }
+    }
     if (!useLeaflet) { host.classList.add("svgmode"); buildSvg(); }
 
     return {
