@@ -421,6 +421,71 @@
     } catch (e) { /* بعض المتصفحات القديمة */ }
   }
 
+
+  /* ============================================================
+     الطبقات — تقليل النص بالنقر
+     ------------------------------------------------------------
+     كل مربع بيبان بعنوانه ورقمه بس. كل نقرة بتفتح طبقة زيادة،
+     وعدد الطبقات بييجي من محتوى المربع نفسه مش من رقم ثابت —
+     عشان مفيش نقرة تطلع فاضية. وفي آخر طبقة بيظهر شريط
+     «فتح بالكامل» بعرض المربع.
+     ============================================================ */
+  function peelInit(root) {
+    var boxes = (root || d).querySelectorAll(".peel:not([data-ready])");
+    for (var i = 0; i < boxes.length; i++) (function (box) {
+      var ls = box.querySelectorAll("[data-l]");
+      var max = 0;
+      for (var j = 0; j < ls.length; j++) max = Math.max(max, +ls[j].getAttribute("data-l"));
+      box.setAttribute("data-max", max);
+      box.setAttribute("data-lv", "0");
+      box.setAttribute("data-ready", "1");
+      if (max > 0) {
+        box.setAttribute("tabindex", "0");
+        box.setAttribute("role", "button");
+        box.setAttribute("aria-expanded", "false");
+        var h = d.createElement("span");
+        h.className = "peelhint";
+        h.innerHTML = '<i class="pdots"><b></b>' + (max > 1 ? '<b></b>' : '') + (max > 2 ? '<b></b>' : '') + '</i>' +
+          '<span>اضغط للتفاصيل</span>';
+        box.appendChild(h);
+      }
+      function open(n) {
+        var lv = Math.min(max, n);
+        box.setAttribute("data-lv", lv);
+        box.setAttribute("aria-expanded", lv > 0 ? "true" : "false");
+        var dots = box.querySelectorAll(".pdots b");
+        for (var k = 0; k < dots.length; k++) dots[k].classList.toggle("on", k < lv);
+        var hint = box.querySelector(".peelhint span");
+        if (hint) hint.textContent = lv >= max ? "" : (lv ? "كمّل" : "اضغط للتفاصيل");
+      }
+      box._peel = open;
+      box.addEventListener("click", function (e) {
+        if (e.target.closest("a,button,input,.peelgo")) return;
+        open((+box.getAttribute("data-lv")) + 1 > max ? 0 : (+box.getAttribute("data-lv")) + 1);
+      });
+      box.addEventListener("keydown", function (e) {
+        if (e.key !== "Enter" && e.key !== " ") return;
+        if (e.target.closest("a,button")) return;
+        e.preventDefault();
+        open((+box.getAttribute("data-lv")) + 1 > max ? 0 : (+box.getAttribute("data-lv")) + 1);
+      });
+    })(boxes[i]);
+  }
+  /* زرار افتح الكل / اقفل الكل */
+  function peelAll(btn, root) {
+    if (!btn) return;
+    var open = false;
+    btn.addEventListener("click", function () {
+      open = !open;
+      var boxes = (root || d).querySelectorAll(".peel[data-ready]");
+      for (var i = 0; i < boxes.length; i++) {
+        if (boxes[i]._peel) boxes[i]._peel(open ? +boxes[i].getAttribute("data-max") : 0);
+      }
+      btn.textContent = open ? "اقفل الكل" : "افتح الكل";
+      btn.setAttribute("aria-pressed", open);
+    });
+  }
+
   /* ---------- الهيكل المشترك ---------- */
   var NAV = [
     ["01", "المناطق", "index.html"],
@@ -536,6 +601,7 @@
     districtRow: districtRow, LINK: LINK, qs: qs,
     RM: RM, count: count, reveal: reveal, onSeen: onSeen, stagger: stagger,
     growBars: growBars, swap: swap, drawSpark: drawSpark,
+    peelInit: peelInit, peelAll: peelAll,
     buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
     tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal
   };

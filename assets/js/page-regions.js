@@ -18,7 +18,7 @@
     { en: "DEVELOPER", ar: "للمطوّر", n: 12, l: "مشروع بملف وأدلة موثّقة",
       cta: "شوف ملفات المطوّرين", href: "developer.html", gate: null },
     { en: "OPERATIONS", ar: "للإدارة", n: 187, l: "رسالة اتقرت النهاردة في الرادار",
-      cta: "دخول الفريق", href: null, gate: null, locked: true }
+      cta: "ادخل لوحة التشغيل", href: "admin.html", gate: null }
   ];
   var doors = d.getElementById("doors");
   doors.innerHTML = DOORS.map(function (x) {

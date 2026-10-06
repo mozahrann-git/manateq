@@ -807,3 +807,61 @@ body.admin{font-size:13px}
   .farr{display:none}
 }
 @media (max-width:640px){ .flow{grid-template-columns:1fr} }
+
+/* ============================================================
+   الطبقات — العنوان بس، والتفاصيل بالنقر
+   ============================================================ */
+.peel{position:relative;cursor:pointer;transition:background .18s}
+.peel[data-max="0"]{cursor:default}
+.peel:hover{background:var(--raised)}
+.peel:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
+.peel [data-l]{display:grid;grid-template-rows:0fr;opacity:0;
+  transition:grid-template-rows .4s cubic-bezier(.16,1,.3,1),opacity .3s ease,margin .3s}
+.peel [data-l] > *{overflow:hidden;min-height:0}
+.peel[data-lv="1"] [data-l="1"],
+.peel[data-lv="2"] [data-l="1"],.peel[data-lv="2"] [data-l="2"],
+.peel[data-lv="3"] [data-l="1"],.peel[data-lv="3"] [data-l="2"],.peel[data-lv="3"] [data-l="3"]{
+  grid-template-rows:1fr;opacity:1;margin-top:9px}
+
+/* مؤشر الطبقات */
+.peelhint{display:flex;align-items:center;gap:7px;margin-top:10px;font-size:10px;color:var(--dim);
+  transition:opacity .25s}
+.pdots{display:flex;gap:3px}
+.pdots b{width:12px;height:2px;background:var(--line2);display:block;transition:background .25s}
+.pdots b.on{background:var(--sig)}
+.peel[data-lv="0"]:hover .peelhint{color:var(--muted)}
+
+/* شريط «فتح بالكامل» — بيغطي عرض المربع في آخر طبقة */
+.peelgo{display:block;width:calc(100% + 28px);margin:12px -14px -14px;
+  background:var(--sig);color:#07090C;font-family:var(--body);font-weight:700;font-size:12.5px;
+  border:0;padding:11px;cursor:pointer;text-align:center;text-decoration:none;
+  opacity:0;transform:translateY(6px);pointer-events:none;
+  transition:opacity .3s ease,transform .3s cubic-bezier(.16,1,.3,1),filter .16s;
+  position:relative;z-index:2}
+.peel[data-lv="1"][data-max="1"] .peelgo,
+.peel[data-lv="2"][data-max="2"] .peelgo,
+.peel[data-lv="3"][data-max="3"] .peelgo{opacity:1;transform:none;pointer-events:auto}
+.peelgo:hover{filter:brightness(1.12)}
+.peelgo:focus-visible{outline:2px solid var(--txt);outline-offset:-3px}
+
+/* زرار افتح الكل */
+.allbtn{font-family:var(--body);font-size:11.5px;background:transparent;color:var(--muted);
+  border:1px solid var(--line2);padding:6px 13px;cursor:pointer;white-space:nowrap;transition:.16s}
+.allbtn:hover{color:var(--sig);border-color:var(--sig)}
+.allbtn[aria-pressed="true"]{background:var(--raised);color:var(--sig);border-color:var(--sig)}
+.allbtn:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+
+@media (prefers-reduced-motion:reduce){
+  .peel [data-l],.peelgo{transition:none}
+}
+
+/* بنود «ليه سعره كده» كطبقات */
+.whyb{padding:10px 11px;border:1px solid var(--line);background:var(--panel)}
+#why{display:grid;gap:7px;margin-top:11px}
+.wrow{display:flex;align-items:baseline;gap:9px}
+.wrow b{color:var(--sig);font-size:11px}
+.wtx{font-size:11.5px;color:var(--muted);line-height:20px;margin:0;padding-inline-start:20px}
+.whyb .peelhint{margin-top:7px;padding-inline-start:20px}
+/* الكارت المتدرّج */
+.card.peel{cursor:pointer;overflow:hidden}
+.card.peel .gauge{width:100%}

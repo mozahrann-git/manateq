@@ -43,7 +43,8 @@
   /* ليه سعره كده */
   var why = d.getElementById("why");
   why.innerHTML = info.why.map(function (x) {
-    return '<span class="y"><b>▪</b><span><i class="wt">' + x[0] + '</i>' + x[1] + '</span></span>';
+    return '<div class="peel whyb"><div class="wrow"><b>▪</b><i class="wt">' + x[0] + '</i></div>' +
+      '<div data-l="1"><p class="wtx">' + x[1] + '</p></div></div>';
   }).join("");
   M.stagger(why);
   d.getElementById("watch").innerHTML = "<b>خد بالك:</b> " + info.watch;
@@ -72,12 +73,18 @@
   d.getElementById("projs").innerHTML = projs.map(function (x) {
     var p = x.p, rp = (p.base + (p.garage || 0) + p.base * p.maintPct / 100) / p.area;
     var v = (rp - row[1]) / row[1] * 100;
-    return '<a class="card" href="' + L.project(p.id) + '">' +
-      '<span class="cd">' + p.id + ' · ' + p.stT + ' ' + p.pct + '%</span>' +
-      '<span class="nm">' + p.nm + '</span><span class="dv">' + p.dev + '</span>' +
+    return '<div class="card peel">' +
+      '<span class="cd">' + p.id + '</span>' +
+      '<span class="nm">' + p.nm + '</span>' +
       '<span class="rw"><span>متر حقيقي</span><b>' + f0(rp) + '</b></span>' +
-      '<span class="rw"><span>مقابل الحي</span><b class="' + (v < 0 ? "up" : "dn") +
-      '" style="font-size:11.5px">' + pc(v) + '</b></span></a>';
+      '<div data-l="1">' +
+        '<span class="rw"><span>مقابل الحي</span><b class="' + (v < 0 ? "up" : "dn") + '">' + pc(v) + '</b></span>' +
+        '<span class="dv" style="display:block;margin-top:5px">' + p.dev + '</span></div>' +
+      '<div data-l="2">' +
+        '<span class="rw"><span>الإنجاز المرصود</span><b class="sig">' + p.pct + '%</b></span>' +
+        '<span class="gauge" style="margin-top:4px"><i data-w="' + p.pct + '" style="background:var(--sig)"></i></span>' +
+        '<span class="dv" style="display:block;margin-top:6px">' + p.visit + ' · التسليم ' + p.del + '</span></div>' +
+      '<a class="peelgo" href="' + L.project(p.id) + '">فتح ملف المشروع بالكامل ←</a></div>';
   }).join("");
   M.stagger(d.getElementById("projs"));
 
@@ -129,12 +136,16 @@
   var oc = d.getElementById("oppCards");
   oc.innerHTML = opps.length ? opps.map(function (u) {
     var vd = M.verdict(u), cr = M.capRate(u);
-    return '<a class="card" href="' + L.unit(u.id) + '" style="border-inline-start-color:var(--sig)">' +
+    return '<div class="card peel" style="border-inline-start-color:var(--sig)">' +
       '<span class="cd">' + u.id + '</span><span class="nm">' + u.t + '</span>' +
-      '<span class="dv">' + vd[2] + '</span>' +
       '<span class="rw"><span>' + (cr ? "العائد الصافي" : "التكلفة الحقيقية") + '</span><b class="' +
-      (cr ? "up" : "") + '">' + (cr ? cr.toFixed(1) + "%" : f0(M.cost(u))) + '</b></span>' +
-      '<span class="rw"><span>افتح الملف</span><b class="sig" style="font-size:11.5px">←</b></span></a>';
+        (cr ? "up" : "") + '">' + M.val(cr ? cr.toFixed(1) + "%" : f0(M.cost(u))) + '</b></span>' +
+      '<div data-l="1"><span class="dv">' + vd[2] + '</span></div>' +
+      '<div data-l="2">' +
+        '<span class="rw"><span>متر حقيقي</span><b class="sig">' + M.val(f0(M.realPpm(u))) + '</b></span>' +
+        '<span class="rw"><span>المساحة والتسليم</span><b>' + u.a + ' م² · ' + u.del + '</b></span>' +
+        '<span class="dv" style="display:block;margin-top:5px">' + u.src + '</span></div>' +
+      '<a class="peelgo" href="' + L.unit(u.id) + '">فتح ملف الوحدة بالكامل ←</a></div>';
   }).join("") : '<p class="empty">مفيش وحدة عدّت القاعدة في ' + dist +
     ' دلوقتي. مناطق مبتعرضش فرصة من غير دليل.</p>';
   M.stagger(oc);
@@ -147,6 +158,8 @@
     });
   }
 
+  M.peelInit();
+  M.peelAll(d.getElementById("allBtn"));
   M.markSections();
   M.growBars();
   M.reveal();
