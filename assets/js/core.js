@@ -368,14 +368,38 @@
       }
       IO.unobserve(e.target);
     });
-  }, { threshold: 0.12, rootMargin: "0px 0px -8% 0px" }) : null;
+  }, { threshold: 0, rootMargin: "0px 0px -24px 0px" }) : null;
 
+  /* أي حاجة قريبة من الشاشة بتتفتح على طول — ومفيش حاجة بتفضل مخفية
+     لو المتصفح اتأخر أو المراقب مشتغلش. الحركة زينة، والمحتوى أهم. */
+  function showNow(el) { el.classList.add("in"); if (IO) { try { IO.unobserve(el); } catch (e) {} } }
   function reveal(root) {
     var ns = (root || d).querySelectorAll("[data-rv]:not(.in)");
     for (var i = 0; i < ns.length; i++) {
-      if (RM || !IO) ns[i].classList.add("in"); else IO.observe(ns[i]);
+      var el = ns[i];
+      if (RM || !IO) { el.classList.add("in"); continue; }
+      var r = el.getBoundingClientRect();
+      if (r.top < w.innerHeight * 1.35) showNow(el);   // في الشاشة أو قريب منها
+      else IO.observe(el);
     }
+    clearTimeout(reveal._t);
+    reveal._t = setTimeout(function () {               // شبكة أمان
+      var rest = (root || d).querySelectorAll("[data-rv]:not(.in)");
+      for (var j = 0; j < rest.length; j++) {
+        if (rest[j].getBoundingClientRect().top < w.innerHeight * 2.2) showNow(rest[j]);
+      }
+    }, 1400);
   }
+  /* ولو المستخدم سكرول بسرعة، نلحق اللي فات */
+  w.addEventListener("scroll", function () {
+    clearTimeout(reveal._s);
+    reveal._s = setTimeout(function () {
+      var ns = d.querySelectorAll("[data-rv]:not(.in)");
+      for (var i = 0; i < ns.length; i++) {
+        if (ns[i].getBoundingClientRect().top < w.innerHeight * 1.2) showNow(ns[i]);
+      }
+    }, 90);
+  }, { passive: true });
   function onSeen(el, fn) {
     if (RM || !IO || !el) { fn(); return; }
     var o = new IntersectionObserver(function (es) {
