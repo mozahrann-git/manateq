@@ -303,9 +303,11 @@
     var host = d.querySelector("[data-tierbar]");
     if (!host) return;
     if (t === "guest") {
-      host.className = "tbar";
-      host.innerHTML = '<div class="wrap"><span class="tb-l">بتتصفح كزائر — الأحكام وأسبابها مفتوحة، والأرقام التفصيلية بعد تسجيل مجاني.</span>' +
-        '<button class="tb-b" type="button" data-gate="member">سجّل وافتح الأرقام ←</button></div>';
+      host.className = "tbar mini";
+      host.innerHTML = '<div class="wrap">' +
+        '<button class="tb-b" type="button" data-gate="member">🔓 افتح الأرقام</button>' +
+        '<button class="tb-c" type="button" data-hidebar aria-label="إخفاء">✕</button></div>';
+      try { if (localStorage.getItem("mq_barhid") === "1") host.hidden = true; } catch (e) {}
     } else {
       host.className = "tbar on";
       host.innerHTML = '<div class="wrap"><span class="tb-l">' +
@@ -326,6 +328,11 @@
       var l = e.target.closest(".lk");
       if (l) { e.preventDefault(); gateModal(l.getAttribute("data-need") || "member"); return; }
       if (e.target.closest("[data-signout]")) { setTier("guest"); w.location.reload(); }
+      if (e.target.closest("[data-hidebar]")) {
+        var bar = d.querySelector("[data-tierbar]");
+        if (bar) bar.hidden = true;
+        try { localStorage.setItem("mq_barhid", "1"); } catch (e2) {}
+      }
     });
     d.addEventListener("keydown", function (e) {
       if (e.key !== "Enter" && e.key !== " ") return;
@@ -500,15 +507,16 @@
     host.className = "bar";
     host.innerHTML =
       '<div class="wrap">' +
-      '<a class="brand" href="index.html">' +
-      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
-      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg><span>مناطق<i class="bi">Manateq investment</i></span></a>' +
+      '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
       '<nav class="tabs">' + NAV.map(function (x) {
         return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
           '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
       }).join("") + '</nav>' +
-      '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
+      '<a class="brand" href="index.html">' +
+      '<svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
+      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
+      '<span class="bn">Manateq<i>investment</i></span></a>' +
       '</div>';
     tickClock();
     d.body.setAttribute("data-tier", tier());
@@ -544,16 +552,16 @@
     if (!host) return;
     host.className = "bar admin";
     host.innerHTML = '<div class="wrap">' +
-      '<a class="brand" href="admin.html"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
-      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
-      '<span>مناطق<i class="bi">OPERATIONS</i></span></a>' +
+      '<span class="tick"><a href="index.html" class="tb-x" style="margin:0 9px 0 0">الموقع ←</a>' +
+      '<span class="bl"></span><span id="mqClock" class="n">00:00:00</span></span>' +
       '<nav class="tabs">' + ANAV.map(function (x) {
         return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
           '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
       }).join("") + '</nav>' +
-      '<span class="tick"><a href="index.html" class="tb-x" style="margin:0 0 0 9px">الموقع ←</a>' +
-      '<span class="bl"></span><span id="mqClock" class="n">00:00:00</span></span>' +
+      '<a class="brand" href="admin.html"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
+      '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
+      '<span class="bn">Manateq<i>operations</i></span></a>' +
       '</div>';
     tickClock();
   }

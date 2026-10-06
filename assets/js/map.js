@@ -36,10 +36,10 @@
        سلسلة بدائل: Esri داكن (من غير مفتاح) ← OSM بفلتر داكن ← الرسم بأنفسنا.
        لو مصدر وقع أو طلب مفتاح، بننتقل للي بعده لوحدنا. */
     var TILES = [
-      { url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
-        attr: "&copy; Esri · OpenStreetMap contributors", max: 16, cls: "" },
       { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        attr: "&copy; OpenStreetMap contributors", max: 19, cls: "osmdark" }
+        attr: "&copy; OpenStreetMap contributors", max: 19, cls: "osmdark" },
+      { url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        attr: "&copy; Esri", max: 16, cls: "" }
     ];
     var tileIdx = 0, tileLayer = null;
 
@@ -89,8 +89,10 @@
       var geo = D.REGION_GEO[region];
       map.setView(geo.center, geo.zoom);
 
+      var bounds = [];
       /* الأحياء */
       districtsOf(region).forEach(function (x) {
+        D.DISTRICT_GEO[x[0]].forEach(function (p) { bounds.push(p); });
         var c = heat(x[1]);
         var on = focus && x[0] === focus;
         var poly = w.L.polygon(D.DISTRICT_GEO[x[0]], {
@@ -99,15 +101,20 @@
           dashArray: x[4] ? "4 4" : null
         }).addTo(map);
         if (on) { try { map.fitBounds(poly.getBounds().pad(1.1)); } catch (e) {} }
+        /* الاسم والسعر ثابتين فوق الحي — مش بالهوفر، عشان الموبايل */
         poly.bindTooltip(
-          '<b>' + x[0] + '</b><br><span class="n">' + M.f0(x[1]) + '</span> ج.م/م²' +
-          (x[4] ? '<br><i>تقديري · عيّنة صغيرة</i>' : ''),
-          { className: "mqtip", direction: "top", sticky: true });
+          '<b>' + x[0] + '</b><i class="n">' + M.f0(x[1]) + '</i>' + (x[4] ? '<u>تقديري</u>' : ''),
+          { className: "mqlbl" + (on ? " on" : ""), permanent: true, direction: "center",
+            offset: [0, 0], opacity: 1 });
         poly.on("click", function () { onDistrict(x[0]); });
         poly.on("mouseover", function () { poly.setStyle({ weight: 2.6 }); });
         poly.on("mouseout", function () { poly.setStyle({ weight: on ? 3 : 1.4 }); });
         layers.push(poly);
       });
+
+      if (!focus && bounds.length) {
+        try { map.fitBounds(w.L.latLngBounds(bounds).pad(0.18)); } catch (e) {}
+      }
 
       /* الوحدات */
       M.unitsOf(region).forEach(function (u) {
@@ -115,7 +122,8 @@
         if (!pt) return;
         var vd = M.verdict(u), col = VD[vd[0]] || "#94A0AF";
         var mk = w.L.circleMarker(pt, {
-          radius: 6, color: col, weight: 2, fillColor: "#07090C", fillOpacity: 1
+          radius: 8, color: col, weight: 3, fillColor: "#07090C", fillOpacity: 1,
+          className: "umk"
         }).addTo(map);
         mk.bindPopup(
           '<div class="mqpop"><span class="cd">' + u.id + '</span>' +

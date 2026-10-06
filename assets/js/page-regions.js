@@ -6,33 +6,97 @@
 
   M.buildHeader("index.html");
 
-  /* ---------- الأبواب الأربعة ----------
-     الأرقام هنا مش فخر — كل رقم باب، وكل باب لصاحبه. */
-  var tier = M.tier();
-  var DOORS = [
-    { en: "INVESTOR", ar: "للمستثمر", n: D.UNITS.length, l: "وحدة بحكم منشور ومصدر مؤرخ",
-      cta: "شوف الفرص", href: "#oppSec", gate: null },
-    { en: "BROKER", ar: "للبروكر", n: 50, l: "جروب مطوّر بيتترجموا لك كل يوم",
-      cta: tier === "pro" ? "افتح نبض السوق" : "اشترك · أدوات البروكر",
-      href: tier === "pro" ? "pulse.html" : null, gate: tier === "pro" ? null : "pro" },
-    { en: "DEVELOPER", ar: "للمطوّر", n: 12, l: "مشروع بملف وأدلة موثّقة",
-      cta: "شوف ملفات المطوّرين", href: "developer.html", gate: null },
-    { en: "OPERATIONS", ar: "للإدارة", n: 187, l: "رسالة اتقرت النهاردة في الرادار",
-      cta: "ادخل لوحة التشغيل", href: "admin.html", gate: null }
+  /* ---------- السداسي ----------
+     ستة محاور بتوصف المنطقة. كل محور رقمه الحقيقي مكتوب عليه،
+     والشكل البرتقالي هو المنطقة والرمادي متوسط الأربع مناطق. */
+  function regionAxes(k) {
+    var z = D.REGIONS[k];
+    var liq = [], grow = [], cnt = 0;
+    z.districts.forEach(function (x) {
+      var L = D.LIQUIDITY[x[0]]; if (L && L[0]) { liq.push(L[0]); }
+      if (D.GROWTH[x[0]]) grow.push(D.GROWTH[x[0]]);
+    });
+    var avg = function (a) { return a.length ? a.reduce(function (p, c) { return p + c; }, 0) / a.length : 0; };
+    return {
+      ppm:    z.ppm,
+      yld:    z.yld,
+      liq:    z.saleDays,
+      demand: z.demand,
+      grow:   avg(grow),
+      supply: M.unitsOf(k).length
+    };
+  }
+  var AX = [
+    { k: "ppm",    ar: "سعر الدخول",  en: "ENTRY",     inv: 1, fmt: function (v) { return f0(v); },            u: "ج.م/م²" },
+    { k: "yld",    ar: "العائد الصافي", en: "YIELD",   inv: 0, fmt: function (v) { return v.toFixed(1) + "%"; }, u: "سنوي" },
+    { k: "liq",    ar: "السيولة",     en: "LIQUIDITY", inv: 1, fmt: function (v) { return Math.round(v) + "ي"; }, u: "متوسط البيع" },
+    { k: "demand", ar: "الطلب",       en: "DEMAND",    inv: 0, fmt: function (v) { return Math.round(v); },     u: "من 100" },
+    { k: "grow",   ar: "النمو",       en: "GROWTH",    inv: 0, fmt: function (v) { return v.toFixed(1) + "%"; }, u: "سنوي مسجّل" },
+    { k: "supply", ar: "المعروض",     en: "SUPPLY",    inv: 0, fmt: function (v) { return Math.round(v); },     u: "وحدة مرصودة" }
   ];
-  var doors = d.getElementById("doors");
-  doors.innerHTML = DOORS.map(function (x) {
-    var tag = x.href ? "a" : (x.gate ? "button" : "div");
-    var attrs = x.href ? ' href="' + x.href + '"' : (x.gate ? ' type="button" data-gate="' + x.gate + '"' : "");
-    return "<" + tag + ' class="door' + (x.locked ? " locked" : "") + '"' + attrs + '>' +
-      '<span class="en">' + x.en + '</span><span class="ar">' + x.ar + '</span>' +
-      '<span class="v">0</span><span class="l">' + x.l + '</span>' +
-      '<span class="go">' + x.cta + (x.locked ? ' 🔒' : ' ←') + '</span></' + tag + '>';
-  }).join("");
-  M.stagger(doors);
-  doors.querySelectorAll(".v").forEach(function (el, i) {
-    M.count(el, DOORS[i].n, function (x) { return String(Math.round(x)); }, 1000 + i * 110);
+  var ALLAX = {}, MINMAX = {};
+  Object.keys(D.REGIONS).forEach(function (k) { ALLAX[k] = regionAxes(k); });
+  AX.forEach(function (a) {
+    var vals = Object.keys(ALLAX).map(function (k) { return ALLAX[k][a.k]; });
+    MINMAX[a.k] = [Math.min.apply(null, vals), Math.max.apply(null, vals)];
   });
+  function norm01(a, v) {
+    var mm = MINMAX[a.k], r = (mm[1] - mm[0]) || 1;
+    var t = (v - mm[0]) / r;
+    return 0.22 + (a.inv ? 1 - t : t) * 0.78;      // أرخص وأسرع = أبعد للخارج
+  }
+
+  function hexagon() {
+    var host = d.getElementById("hexa");
+    if (!host) return;
+    var cur2 = ALLAX[cur];
+    var mean = {};
+    AX.forEach(function (a) {
+      mean[a.k] = Object.keys(ALLAX).reduce(function (p, k) { return p + ALLAX[k][a.k]; }, 0) / 4;
+    });
+    var S = 300, C = S / 2, R = 96;
+    function pt(i, rad) {
+      var ang = -Math.PI / 2 + i * Math.PI / 3;
+      return [C + Math.cos(ang) * R * rad, C + Math.sin(ang) * R * rad];
+    }
+    function poly(obj) {
+      return AX.map(function (a, i) { var p = pt(i, norm01(a, obj[a.k])); return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ");
+    }
+    var grid = [0.25, 0.5, 0.75, 1].map(function (r) {
+      return '<polygon class="hgrid2" points="' + AX.map(function (a, i) {
+        var p = pt(i, r); return p[0].toFixed(1) + "," + p[1].toFixed(1); }).join(" ") + '"/>';
+    }).join("");
+    var spokes = AX.map(function (a, i) {
+      var p = pt(i, 1);
+      return '<line class="hspoke" x1="' + C + '" y1="' + C + '" x2="' + p[0].toFixed(1) + '" y2="' + p[1].toFixed(1) + '"/>';
+    }).join("");
+    var dots = AX.map(function (a, i) {
+      var p = pt(i, norm01(a, cur2[a.k]));
+      return '<circle class="hdot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.4" style="animation-delay:' + (0.5 + i * 0.07) + 's"/>';
+    }).join("");
+
+    host.innerHTML =
+      '<div class="hxchart">' +
+        '<svg viewBox="0 0 ' + S + ' ' + S + '" class="hx" role="img" aria-label="مؤشرات ' + cur + '">' +
+          grid + spokes +
+          '<polygon class="hmean" points="' + poly(mean) + '"/>' +
+          '<polygon class="hcur" points="' + poly(cur2) + '"/>' + dots +
+        '</svg>' +
+        '<p class="hleg2"><span><i class="sw1"></i>' + cur + '</span><span><i class="sw2"></i>متوسط الأربع مناطق</span></p>' +
+      '</div>' +
+      '<div class="hxvals">' + AX.map(function (a, i) {
+        var v = cur2[a.k], m = mean[a.k];
+        var better = a.inv ? v < m : v > m;
+        var diff = m ? (v - m) / m * 100 : 0;
+        return '<div class="hv" style="--i:' + i + '">' +
+          '<span class="en">' + a.en + '</span>' +
+          '<span class="ar">' + a.ar + '</span>' +
+          '<span class="v ' + (better ? "up" : "dn") + '">' + a.fmt(v) + '</span>' +
+          '<span class="u">' + a.u + '</span>' +
+          '<span class="d ' + (better ? "up" : "dn") + '">' + (better ? "أفضل من المتوسط بـ" : "أقل من المتوسط بـ") +
+            Math.abs(diff).toFixed(0) + '%</span></div>';
+      }).join("") + '</div>';
+  }
 
   /* ---------- منتقي المناطق ---------- */
   function picker() {
@@ -185,6 +249,7 @@
       ' دلوقتي. مناطق مبتعرضش فرصة من غير دليل — والقايمة بتتحدّث مع كل تحديث جديد.</p>';
     M.stagger(oc);
 
+    hexagon();
     d.getElementById("mapReg").textContent = cur;
     if (mqmap) mqmap.setRegion(cur);
 

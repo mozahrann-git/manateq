@@ -37,15 +37,24 @@
     }).join("");
     M.stagger(h);
   }
+  function goTo(el) {
+    if (!el) return;
+    try { el.scrollIntoView({ behavior: M.RM ? "auto" : "smooth", block: "start" }); }
+    catch (e) { el.scrollIntoView(); }
+  }
   d.getElementById("picker").addEventListener("click", function (e) {
     var b = e.target.closest("[data-r]");
     if (!b) return;
     cur = b.dataset.r; sel = 0; picker(); ulist(); render();
+    /* اخترت منطقة ← انزل على وحداتها */
+    goTo(d.getElementById("ulist"));
   });
   d.getElementById("ulist").addEventListener("click", function (e) {
     var b = e.target.closest("[data-u]");
     if (!b) return;
     sel = +b.dataset.u; ulist(); render();
+    /* اخترت وحدة ← ارجع لتفاصيلها فوق */
+    goTo(d.querySelector(".crumb"));
   });
 
   function render() {
