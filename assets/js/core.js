@@ -215,6 +215,125 @@
   };
   function qs(name) { return new URLSearchParams(w.location.search).get(name); }
 
+
+  /* ============================================================
+     طبقات الوصول
+     ------------------------------------------------------------
+     مفتوح للكل : صورة السوق، الخريطة، كلمة الحكم وسببها، المنهجية
+     بعد تسجيل : الأرقام اللي بتخليك تتحرك — التكلفة، المتر، العائد، السيناريو، الأدلة
+     اشتراك    : أدوات البروكر — الجروبات مترجمة، سجل الأسعار، مطابقة عملائه
+
+     القاعدة: مبنخبّيش حكم ولا سبب. بنخبّي الرقم اللي بتتصرف بيه.
+     ============================================================ */
+  var TIERS = { guest: 0, member: 1, pro: 2 };
+  function tier() {
+    try { return localStorage.getItem("mq_tier") || "guest"; } catch (e) { return "guest"; }
+  }
+  function setTier(t) {
+    try { localStorage.setItem("mq_tier", t); } catch (e) {}
+    try { d.body.setAttribute("data-tier", t); } catch (e) {}
+  }
+  function can(need) { return TIERS[tier()] >= TIERS[need || "member"]; }
+
+  /* يلفّ أي قيمة: لو المستخدم مش مؤهّل بترجع مموّهة وجنبها قفل */
+  function val(text, need) {
+    need = need || "member";
+    if (can(need)) return String(text);
+    return '<span class="lk" data-need="' + need + '" role="button" tabindex="0" ' +
+      'title="سجّل عشان تشوف الرقم">' + String(text) + '</span>';
+  }
+
+  /* نافذة التسجيل */
+  function gateModal(need) {
+    var pro = need === "pro";
+    var el = d.createElement("div");
+    el.className = "gate";
+    el.innerHTML =
+      '<div class="gbox" role="dialog" aria-modal="true" aria-label="تسجيل">' +
+      '<button class="gx" type="button" aria-label="إغلاق">✕</button>' +
+      '<p class="lbl">' + (pro ? "MANATEQ PRO" : "MANATEQ · تسجيل") + '</p>' +
+      '<h2>' + (pro ? "أدوات البروكر" : "الرقم ده ليك — بس سجّل الأول") + '</h2>' +
+      '<p class="gnote">' + (pro
+        ? "الـ50 جروب مترجمين ومرتبين كل يوم، سجل أسعار كامل لكل مشروع، مطابقة عملائك أنت بالوحدات الجديدة، وأدوات إعلان بلينكات متتبعة."
+        : "الحكم وسببه مفتوحين للكل — دي مسؤوليتنا. بس التكلفة الحقيقية وسعر المتر والعائد دي الأرقام اللي بتتصرف بيها، وبنطلب مقابلها رقم واتساب واحد.") + '</p>' +
+      (pro
+        ? '<div class="glist">' +
+          '<span><b>✓</b>فيد الجروبات مترجم للمستثمر والمشتري والبروكر</span>' +
+          '<span><b>✓</b>سجل أسعار كل مشروع بتواريخه</span>' +
+          '<span><b>✓</b>مطابقة عملائك بالوحدات أول ما تنزل</span>' +
+          '<span><b>✓</b>نصوص إعلانات ولينكات متتبعة باسمك</span></div>'
+        : '<div class="glist">' +
+          '<span><b>✓</b>التكلفة الحقيقية مفصّلة بندًا بند</span>' +
+          '<span><b>✓</b>سعر المتر الحقيقي والعائد الصافي</span>' +
+          '<span><b>✓</b>سيناريو 5 سنين مقابل البنك والذهب</span>' +
+          '<span><b>✓</b>ملفات أدلة المطوّرين كاملة</span></div>') +
+      '<label class="glab" for="gphone">رقم الواتساب</label>' +
+      '<input id="gphone" class="ginp" type="tel" inputmode="numeric" placeholder="01xxxxxxxxx" autocomplete="tel">' +
+      '<button class="b1 gbtn" type="button">' + (pro ? "اشترك · 499 ج.م شهرياً" : "سجّل وافتح الأرقام") + '</button>' +
+      '<p class="gfine">' + (pro
+        ? "فيه نسخة تجريبية 7 أيام. تقدر تلغي في أي وقت."
+        : "مجاني. مبنبعتش إعلانات — بنبعت لما تنزل وحدة مطابقة لطلبك بس.") + '</p>' +
+      '</div>';
+    d.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add("in"); });
+
+    function close() { el.classList.remove("in"); setTimeout(function () { el.remove(); }, 220); }
+    el.querySelector(".gx").onclick = close;
+    el.onclick = function (e) { if (e.target === el) close(); };
+    d.addEventListener("keydown", function esc(e) {
+      if (e.key === "Escape") { close(); d.removeEventListener("keydown", esc); }
+    });
+    var inp = el.querySelector(".ginp");
+    setTimeout(function () { inp.focus(); }, 120);
+    el.querySelector(".gbtn").onclick = function () {
+      if (!/^0?1[0-9]{9}$/.test(inp.value.replace(/\s/g, ""))) {
+        inp.classList.add("bad"); inp.focus();
+        setTimeout(function () { inp.classList.remove("bad"); }, 900);
+        return;
+      }
+      setTier(pro ? "pro" : "member");
+      close();
+      setTimeout(function () { w.location.reload(); }, 240);
+    };
+  }
+
+  /* شريط علوي بيقول للمستخدم هو في أي طبقة */
+  function tierBar() {
+    var t = tier();
+    var host = d.querySelector("[data-tierbar]");
+    if (!host) return;
+    if (t === "guest") {
+      host.className = "tbar";
+      host.innerHTML = '<div class="wrap"><span class="tb-l">بتتصفح كزائر — الأحكام وأسبابها مفتوحة، والأرقام التفصيلية بعد تسجيل مجاني.</span>' +
+        '<button class="tb-b" type="button" data-gate="member">سجّل وافتح الأرقام ←</button></div>';
+    } else {
+      host.className = "tbar on";
+      host.innerHTML = '<div class="wrap"><span class="tb-l">' +
+        (t === "pro" ? '<b class="sig">Manateq Pro</b> · كل الأدوات مفتوحة'
+                     : '<b class="up">مسجّل</b> · الأرقام التفصيلية مفتوحة · أدوات البروكر لسه مقفولة') + '</span>' +
+        (t === "pro" ? '<button class="tb-x" type="button" data-signout>خروج</button>'
+                     : '<span><button class="tb-b" type="button" data-gate="pro">اشترك كبروكر</button>' +
+                       '<button class="tb-x" type="button" data-signout>خروج</button></span>') +
+        '</div>';
+    }
+  }
+
+  /* أي ضغطة على رقم مقفول أو زر بوابة بتفتح النافذة */
+  function bindGate() {
+    d.addEventListener("click", function (e) {
+      var g = e.target.closest("[data-gate]");
+      if (g) { e.preventDefault(); gateModal(g.getAttribute("data-gate")); return; }
+      var l = e.target.closest(".lk");
+      if (l) { e.preventDefault(); gateModal(l.getAttribute("data-need") || "member"); return; }
+      if (e.target.closest("[data-signout]")) { setTier("guest"); w.location.reload(); }
+    });
+    d.addEventListener("keydown", function (e) {
+      if (e.key !== "Enter" && e.key !== " ") return;
+      var l = e.target.closest && e.target.closest(".lk");
+      if (l) { e.preventDefault(); gateModal(l.getAttribute("data-need") || "member"); }
+    });
+  }
+
   /* ---------- الحركة ---------- */
   var RM = w.matchMedia && w.matchMedia("(prefers-reduced-motion:reduce)").matches;
   var ease = function (t) { return 1 - Math.pow(1 - t, 3); };
@@ -327,6 +446,9 @@
       '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
       '</div>';
     tickClock();
+    d.body.setAttribute("data-tier", tier());
+    tierBar();
+    bindGate();
   }
   function tickClock() {
     var el = d.getElementById("mqClock");
@@ -385,6 +507,7 @@
     districtRow: districtRow, LINK: LINK, qs: qs,
     RM: RM, count: count, reveal: reveal, onSeen: onSeen, stagger: stagger,
     growBars: growBars, swap: swap, drawSpark: drawSpark,
-    buildHeader: buildHeader, markSections: markSections, renderProof: renderProof
+    buildHeader: buildHeader, markSections: markSections, renderProof: renderProof,
+    tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal
   };
 })(window, document);

@@ -584,3 +584,69 @@ a.hit:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
 /* هالة داكنة حوالين أسماء الأحياء عشان متتلخبطش مع نقط الوحدات */
 .dlbl,.dnum{paint-order:stroke;stroke:#07090C;stroke-width:4px;stroke-linejoin:round}
 .upt{filter:drop-shadow(0 0 3px rgba(7,9,12,.9))}
+
+/* تحويل خرائط OSM الفاتحة لداكنة بهوية مناطق (بديل بدون مفتاح) */
+.osmdark{filter:invert(1) hue-rotate(185deg) brightness(.78) contrast(1.15) saturate(.45)}
+
+/* ============================================================
+   طبقات الوصول
+   الرقم المقفول بيبان إنه رقم — مموّه مش مخفي.
+   ============================================================ */
+.lk{position:relative;cursor:pointer;color:transparent !important;
+  text-shadow:0 0 9px rgba(233,237,242,.55);user-select:none;
+  padding-inline-end:15px;display:inline-block}
+.lk::after{content:"🔒";position:absolute;inset-inline-end:0;top:50%;transform:translateY(-50%);
+  font-size:9px;text-shadow:none;opacity:.75;filter:grayscale(1)}
+.lk:hover,.lk:focus-visible{text-shadow:0 0 9px rgba(255,122,26,.75)}
+.lk:hover::after,.lk:focus-visible::after{opacity:1;filter:none}
+.lk:focus-visible{outline:2px solid var(--sig);outline-offset:3px}
+
+/* شريط الطبقة */
+.tbar{background:var(--raised);border-bottom:1px solid var(--line);font-size:11.5px}
+.tbar .wrap{display:flex;align-items:center;justify-content:space-between;gap:12px;
+  min-height:38px;padding-block:7px;flex-wrap:wrap}
+.tb-l{color:var(--muted)}
+.tb-b{font-family:var(--body);font-size:11.5px;font-weight:700;background:var(--sig);color:#07090C;
+  border:0;padding:6px 13px;cursor:pointer;transition:filter .16s;white-space:nowrap}
+.tb-b:hover{filter:brightness(1.12)}
+.tb-x{font-family:var(--body);font-size:11px;background:transparent;color:var(--dim);
+  border:1px solid var(--line2);padding:6px 11px;cursor:pointer;margin-inline-start:7px;white-space:nowrap}
+.tb-x:hover{color:var(--txt);border-color:var(--muted)}
+.tb-b:focus-visible,.tb-x:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.tbar.on{background:var(--panel)}
+
+/* نافذة التسجيل */
+.gate{position:fixed;inset:0;z-index:200;background:rgba(7,9,12,.82);backdrop-filter:blur(6px);
+  display:flex;align-items:center;justify-content:center;padding:18px;
+  opacity:0;transition:opacity .22s ease}
+.gate.in{opacity:1}
+.gbox{background:var(--panel);border:1px solid var(--sig);max-width:430px;width:100%;
+  padding:24px 22px;position:relative;transform:translateY(14px) scale(.98);
+  transition:transform .26s cubic-bezier(.16,1,.3,1);max-height:92vh;overflow:auto}
+.gate.in .gbox{transform:none}
+.gbox::before{content:"";position:absolute;top:-1px;right:-1px;width:16px;height:16px;
+  border:2px solid var(--sig);border-left:0;border-bottom:0}
+.gbox h2{font-size:18px;margin-top:9px}
+.gx{position:absolute;top:12px;inset-inline-start:14px;background:transparent;border:0;
+  color:var(--dim);font-size:15px;cursor:pointer;line-height:1}
+.gx:hover{color:var(--txt)}
+.gnote{font-size:12.5px;color:var(--muted);line-height:23px;margin-top:11px}
+.glist{display:grid;gap:7px;margin:15px 0}
+.glist span{display:flex;gap:9px;align-items:baseline;font-size:12px;color:var(--muted)}
+.glist b{color:var(--up);font-family:var(--mono);font-size:11px}
+.glab{display:block;font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;
+  color:var(--dim);margin-bottom:6px}
+.ginp{width:100%;background:var(--raised);border:1px solid var(--line2);color:var(--txt);
+  font-family:var(--mono);font-size:15px;padding:11px 12px;direction:ltr;text-align:start;outline:none}
+.ginp:focus{border-color:var(--sig)}
+.ginp.bad{border-color:var(--down);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.gbtn{width:100%;margin-top:12px}
+.gfine{font-size:11px;color:var(--dim);line-height:18px;margin-top:11px;text-align:center}
+
+@media (prefers-reduced-motion:reduce){
+  .gate,.gbox{transition:none}
+  .ginp.bad{animation:none}
+}
+/* الباب كزرار */
+button.door{font-family:var(--body);text-align:start;border:0;width:100%}

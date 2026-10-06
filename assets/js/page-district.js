@@ -95,9 +95,9 @@
     var vd = M.verdict(u), cr = M.capRate(u);
     return "<tr class='link' data-u='" + u.id + "'><td><span class='cd'>" + u.id + "</span></td>" +
       "<td><b>" + u.t + "</b><br><span class='mut' style='font-size:11px'>" + u.src + "</span></td>" +
-      "<td class='num'>" + u.a + "</td><td class='num'>" + f0(M.cost(u)) + "</td>" +
-      "<td class='num sig'>" + f0(M.realPpm(u)) + "</td>" + cmpCell(M.vsDistrict(u)) +
-      "<td class='num " + (cr >= 8 ? "up" : "") + "'>" + (cr ? cr.toFixed(1) + "%" : "—") + "</td>" +
+      "<td class='num'>" + u.a + "</td><td class='num'>" + M.val(f0(M.cost(u))) + "</td>" +
+      "<td class='num sig'>" + M.val(f0(M.realPpm(u))) + "</td>" + cmpCell(M.vsDistrict(u)) +
+      "<td class='num " + (cr >= 8 ? "up" : "") + "'>" + (cr ? M.val(cr.toFixed(1) + "%") : "—") + "</td>" +
       "<td><span class='vd " + vd[1] + "'>" + vd[0] + "</span></td></tr>";
   }).join("") : "<tr><td colspan='8' class='mut' style='padding:20px;text-align:center'>مفيش ريسيل متاح في الحي ده دلوقتي.</td></tr>";
   M.stagger(d.getElementById("resTb"));
@@ -109,8 +109,8 @@
     return "<tr class='link' data-u='" + u.id + "'><td><span class='cd'>" + u.id + "</span></td>" +
       "<td><b>" + u.t + "</b></td>" +
       "<td class='mut' style='font-size:11.5px'>" + (u.dev || "—") + "</td>" +
-      "<td class='num'>" + u.a + "</td><td class='num'>" + f0(M.cost(u)) + "</td>" +
-      "<td class='num sig'>" + f0(M.realPpm(u)) + "</td>" + cmpCell(M.vsDistrict(u)) +
+      "<td class='num'>" + u.a + "</td><td class='num'>" + M.val(f0(M.cost(u))) + "</td>" +
+      "<td class='num sig'>" + M.val(f0(M.realPpm(u))) + "</td>" + cmpCell(M.vsDistrict(u)) +
       "<td class='num'>" + u.del + "</td>" +
       "<td><span class='vd " + vd[1] + "'>" + vd[0] + "</span></td></tr>";
   }).join("") : "<tr><td colspan='9' class='mut' style='padding:20px;text-align:center'>مفيش وحدات مطوّرين مرصودة في الحي ده دلوقتي.</td></tr>";

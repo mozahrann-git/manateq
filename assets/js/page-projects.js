@@ -90,7 +90,8 @@
     requestAnimationFrame(function () { bar.style.width = p.pct + "%"; });
 
     var rp = realPpm(p, p.base, p.area), v = (rp - base) / base * 100;
-    M.count(d.getElementById("kPpm"), rp, f0, 1000);
+    var kp = d.getElementById("kPpm");
+    if (M.can("member")) { M.count(kp, rp, f0, 1000); } else { kp.innerHTML = M.val(f0(rp)); }
     var kv = d.getElementById("kVs");
     kv.className = "v " + (v < 0 ? "up" : "dn");
     M.count(kv, v, pc, 900);
@@ -139,8 +140,8 @@
         "<td class='num'>" + (pl[2] ? pl[2] + " شهر" : "—") + "</td>" +
         "<td class='num'>" + (inst ? f0(inst) : "—") + "</td>" +
         "<td class='num " + (pl[4] ? "up" : "") + "'>" + (pl[4] ? pl[4] + "%" : "—") + "</td>" +
-        "<td class='num'>" + f0(c) + "</td>" +
-        "<td class='num sig'>" + f0(ppm) + "</td></tr>";
+        "<td class='num'>" + M.val(f0(c)) + "</td>" +
+        "<td class='num sig'>" + M.val(f0(ppm)) + "</td></tr>";
     }).join("");
     M.stagger(d.getElementById("planTb"));
 
@@ -154,8 +155,8 @@
       var r = realPpm(p, u[2], u[1]), uv = (r - base) / base * 100,
           wd = Math.min(46, Math.abs(uv) * 1.6), vd = verdictOf(p, u[2], u[1], u[3]);
       return "<tr><td><b>" + u[0] + "</b></td><td class='num'>" + u[1] + "</td>" +
-        "<td class='num'>" + f0(u[2]) + "</td><td class='num'>" + f0(trueCost(p, u[2])) + "</td>" +
-        "<td class='num sig'>" + f0(r) + "</td>" +
+        "<td class='num'>" + f0(u[2]) + "</td><td class='num'>" + M.val(f0(trueCost(p, u[2]))) + "</td>" +
+        "<td class='num sig'>" + M.val(f0(r)) + "</td>" +
         "<td><span class='cmpcell'><span class='bar2'><i data-w='" + (50 + (uv < 0 ? -wd : wd)) +
         "' style='background:" + (uv < 0 ? "var(--up)" : "var(--down)") + "'></i></span>" +
         "<span class='n " + (uv < 0 ? "up" : "dn") + "' style='font-size:11.5px'>" + pc(uv) + "</span></span></td>" +

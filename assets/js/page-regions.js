@@ -8,24 +8,26 @@
 
   /* ---------- الأبواب الأربعة ----------
      الأرقام هنا مش فخر — كل رقم باب، وكل باب لصاحبه. */
+  var tier = M.tier();
   var DOORS = [
-    { k: "inv", ar: "للمستثمر", en: "INVESTOR", n: D.UNITS.length, l: "وحدة بحكم منشور ومصدر مؤرخ",
-      cta: "شوف الفرص", href: "#oppSec", open: true },
-    { k: "brk", ar: "للبروكر", en: "BROKER", n: 50, l: "جروب مطوّر بيتترجموا لك كل يوم",
-      cta: "بوابة البروكر", href: "pulse.html", open: true },
-    { k: "dev", ar: "للمطوّر", en: "DEVELOPER", n: 12, l: "مشروع بملف وأدلة موثّقة",
-      cta: "بوابة المطوّر", href: "developer.html", open: true },
-    { k: "ops", ar: "للإدارة", en: "OPERATIONS", n: 187, l: "رسالة اتقرت النهاردة في الرادار",
-      cta: "تسجيل دخول", href: "", open: false }
+    { en: "INVESTOR", ar: "للمستثمر", n: D.UNITS.length, l: "وحدة بحكم منشور ومصدر مؤرخ",
+      cta: "شوف الفرص", href: "#oppSec", gate: null },
+    { en: "BROKER", ar: "للبروكر", n: 50, l: "جروب مطوّر بيتترجموا لك كل يوم",
+      cta: tier === "pro" ? "افتح نبض السوق" : "اشترك · أدوات البروكر",
+      href: tier === "pro" ? "pulse.html" : null, gate: tier === "pro" ? null : "pro" },
+    { en: "DEVELOPER", ar: "للمطوّر", n: 12, l: "مشروع بملف وأدلة موثّقة",
+      cta: "شوف ملفات المطوّرين", href: "developer.html", gate: null },
+    { en: "OPERATIONS", ar: "للإدارة", n: 187, l: "رسالة اتقرت النهاردة في الرادار",
+      cta: "دخول الفريق", href: null, gate: null, locked: true }
   ];
   var doors = d.getElementById("doors");
   doors.innerHTML = DOORS.map(function (x) {
-    var tag = x.open ? "a" : "div";
-    return "<" + tag + ' class="door' + (x.open ? "" : " locked") + '"' +
-      (x.open ? ' href="' + x.href + '"' : "") + '>' +
+    var tag = x.href ? "a" : (x.gate ? "button" : "div");
+    var attrs = x.href ? ' href="' + x.href + '"' : (x.gate ? ' type="button" data-gate="' + x.gate + '"' : "");
+    return "<" + tag + ' class="door' + (x.locked ? " locked" : "") + '"' + attrs + '>' +
       '<span class="en">' + x.en + '</span><span class="ar">' + x.ar + '</span>' +
       '<span class="v">0</span><span class="l">' + x.l + '</span>' +
-      '<span class="go">' + x.cta + (x.open ? ' ←' : ' 🔒') + '</span></' + tag + '>';
+      '<span class="go">' + x.cta + (x.locked ? ' 🔒' : ' ←') + '</span></' + tag + '>';
   }).join("");
   M.stagger(doors);
   doors.querySelectorAll(".v").forEach(function (el, i) {
@@ -125,9 +127,9 @@
       return "<tr class='link' data-u='" + u.id + "'><td><span class='cd'>" + u.id + "</span></td>" +
         "<td><b>" + u.t + "</b><br><span class='mut' style='font-size:11px'>" + u.src + "</span></td>" +
         "<td><a href='" + M.LINK.district(u.d) + "' class='lnk' style='font-size:11.5px'>" + u.d + "</a></td>" +
-        "<td class='num'>" + u.a + "</td><td class='num'>" + f0(M.cost(u)) + "</td>" +
-        "<td class='num sig'>" + f0(M.realPpm(u)) + "</td>" + cmpCell(M.vsDistrict(u)) +
-        "<td class='num " + (cr >= 8 ? "up" : "") + "'>" + (cr ? cr.toFixed(1) + "%" : "—") + "</td>" +
+        "<td class='num'>" + u.a + "</td><td class='num'>" + M.val(f0(M.cost(u))) + "</td>" +
+        "<td class='num sig'>" + M.val(f0(M.realPpm(u))) + "</td>" + cmpCell(M.vsDistrict(u)) +
+        "<td class='num " + (cr >= 8 ? "up" : "") + "'>" + (cr ? M.val(cr.toFixed(1) + "%") : "—") + "</td>" +
         "<td><span class='vd " + vd[1] + "'>" + vd[0] + "</span></td></tr>";
     }).join("") : "<tr><td colspan='9' class='mut' style='padding:20px;text-align:center'>مفيش ريسيل متاح في " + cur + " دلوقتي.</td></tr>";
     M.stagger(d.getElementById("resTb"));
@@ -140,8 +142,8 @@
         "<td><b>" + u.t + "</b></td>" +
         "<td>" + (u.dev ? "<a href='" + M.LINK.developer(u.dev) + "' class='lnk' style='font-size:11.5px'>" + u.dev + "</a>" : "—") + "</td>" +
         "<td><a href='" + M.LINK.district(u.d) + "' class='lnk' style='font-size:11.5px'>" + u.d + "</a></td>" +
-        "<td class='num'>" + u.a + "</td><td class='num'>" + f0(M.cost(u)) + "</td>" +
-        "<td class='num sig'>" + f0(M.realPpm(u)) + "</td>" + cmpCell(M.vsDistrict(u)) +
+        "<td class='num'>" + u.a + "</td><td class='num'>" + M.val(f0(M.cost(u))) + "</td>" +
+        "<td class='num sig'>" + M.val(f0(M.realPpm(u))) + "</td>" + cmpCell(M.vsDistrict(u)) +
         "<td class='num'>" + u.del + "</td>" +
         "<td><span class='vd " + vd[1] + "'>" + vd[0] + "</span></td></tr>";
     }).join("") : "<tr><td colspan='10' class='mut' style='padding:20px;text-align:center'>مفيش وحدات مطوّرين مرصودة في " + cur + " دلوقتي.</td></tr>";
@@ -173,9 +175,9 @@
         '<span class="vd o">' + vd[0] + '</span></div>' +
         '<p class="why">' + vd[2] + ' متوسط ' + u.d + ' <span class="n">' + f0(base) + '</span> ج.م/م².' +
         (u.src === "مالك مباشر" ? " مالك مباشر وأوراق كاملة." : "") + '</p>' +
-        '<div class="fig"><span>التكلفة الحقيقية<b>' + f0(M.cost(u)) + '</b></span>' +
-        '<span>سعر المتر<b class="sig">' + f0(M.realPpm(u)) + '</b></span>' +
-        (y ? '<span>العائد الصافي<b class="up">' + y.toFixed(1) + '%</b></span>'
+        '<div class="fig"><span>التكلفة الحقيقية<b>' + M.val(f0(M.cost(u))) + '</b></span>' +
+        '<span>سعر المتر<b class="sig">' + M.val(f0(M.realPpm(u))) + '</b></span>' +
+        (y ? '<span>العائد الصافي<b class="up">' + M.val(y.toFixed(1) + '%') + '</b></span>'
            : '<span>التسليم<b>' + u.del + '</b></span>') +
         '<span>السيولة<b>' + D.REGIONS[cur].saleDays + ' يوم</b></span>' +
         '<span style="margin-inline-start:auto;align-self:center"><b class="sig">افتح الملف ←</b></span></div></a>';
@@ -253,7 +255,7 @@
       var cr = M.capRate(u);
       return '<a class="hit" href="' + M.LINK.unit(u.id) + '" style="text-decoration:none"><div><p class="nm">' + u.t + '</p>' +
         '<p class="sb">' + u.r + ' · ' + u.d + ' · ' + u.a + ' م² · ' + u.del + '</p></div>' +
-        '<p class="pp ' + (cr >= 8 ? "up" : "sig") + '">' + (cr ? cr.toFixed(1) + "%" : f0(M.realPpm(u))) +
+        '<p class="pp ' + (cr >= 8 ? "up" : "sig") + '">' + M.val(cr ? cr.toFixed(1) + "%" : f0(M.realPpm(u))) +
         '<u>' + (cr ? "عائد صافي" : "متر حقيقي") + '</u></p></a>';
     }).join("");
     M.stagger(h);

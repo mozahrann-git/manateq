@@ -94,11 +94,11 @@
     ];
     d.getElementById("calc").innerHTML = rows.map(function (x) {
       return x[2]
-        ? "<div class='cr'><span>" + x[0] + "</span><b>" + (x[1] ? f0(x[1]) : "غير مطلوبة") + "</b></div>"
+        ? "<div class='cr'><span>" + x[0] + "</span><b>" + (x[1] ? M.val(f0(x[1])) : "غير مطلوبة") + "</b></div>"
         : "<div class='cr miss'><span>" + x[0] + "</span><b>غير محددة من المطور</b></div>";
     }).join("") +
-      "<div class='cr tot'><span>التكلفة الحقيقية</span><b>" + f0(c) + "</b></div>" +
-      "<div class='cr tot'><span>سعر المتر الحقيقي</span><b>" + f0(r) + "</b></div>";
+      "<div class='cr tot'><span>التكلفة الحقيقية</span><b>" + M.val(f0(c)) + "</b></div>" +
+      "<div class='cr tot'><span>سعر المتر الحقيقي</span><b>" + M.val(f0(r)) + "</b></div>";
     M.stagger(d.getElementById("calc"));
 
     var unk = M.unknownCount(u), naive = M.listedPpm(u);
@@ -122,9 +122,9 @@
     /* الأركان الخمسة */
     var cr = M.capRate(u), nDocs = u.docs.filter(function (x) { return x[1]; }).length;
     var pil = [
-      ["ENTRY PRICE", "سعر الدخول", f0(r), v < 0 ? "up" : "dn", Math.min(100, 50 - v * 2),
+      ["ENTRY PRICE", "سعر الدخول", M.val(f0(r)), v < 0 ? "up" : "dn", Math.min(100, 50 - v * 2),
         "متوسط " + u.d + " = " + f0(base) + " ج.م/م². الفرق " + pc(v) + " محسوب على التكلفة الحقيقية مش السعر المعلن."],
-      ["CAP RATE", "العائد الصافي", cr ? cr.toFixed(1) + "%" : "—", cr >= 8 ? "up" : cr ? "wrn" : "mut",
+      ["CAP RATE", "العائد الصافي", cr ? M.val(cr.toFixed(1) + "%") : "—", cr >= 8 ? "up" : cr ? "wrn" : "mut",
         cr ? Math.min(100, cr * 8) : 0,
         cr ? "الإيجار " + f0(u.rent) + " شهرياً، ناقص 10% إدارة وشواغر، على التكلفة الحقيقية."
            : "مفيش إيجار قبل التسليم — العائد يتحسب بعد " + u.del + "، ومناطق مبتفترضوش."],
@@ -135,7 +135,7 @@
       ["RISK GRADE", "درجة المخاطرة", "فئة " + rk[0], rk[1], rk[2],
         nDocs + " من " + u.docs.length + " أدلة موثّقة" +
         (unk ? " · " + unk + " بند تكلفة غير محدد" : " · كل بنود التكلفة محددة")],
-      ["TOTAL COST", "التكلفة الكلية 5 سنين", f0(c + (u.k === "resale" ? c * 0.01 * 5 : 0)), "mut", 62,
+      ["TOTAL COST", "التكلفة الكلية 5 سنين", M.val(f0(c + (u.k === "resale" ? c * 0.01 * 5 : 0))), "mut", 62,
         u.k === "resale" ? "التكلفة + 1% سنوياً صيانة وضرايب عقارية تقديرية على 5 سنين."
                          : "بعد التسليم بتضاف صيانة سنوية — مش محسوبة قبل الاستلام."]
     ];
@@ -164,15 +164,15 @@
         '" style="background:var(--' + col + ')"></i></div><p class="s">' + x[3] + '</p></div>';
     }).join("");
     d.getElementById("sl").innerHTML =
-      "<div><span>التكلفة الحقيقية اليوم</span><b>" + f0(s.cost) + "</b></div>" +
+      "<div><span>التكلفة الحقيقية اليوم</span><b>" + M.val(f0(s.cost)) + "</b></div>" +
       "<div><span>إيجار صافي × 5 سنين</span><b class='" + (s.rentTot ? "up" : "mut") + "'>" +
-        (s.rentTot ? f0(s.rentTot) : "— قبل التسليم") + "</b></div>" +
-      "<div><span>نمو سعري " + s.growth.toFixed(1) + "% سنوي</span><b class='up'>" + f0(s.gain) + "</b></div>" +
+        (s.rentTot ? M.val(f0(s.rentTot)) : "— قبل التسليم") + "</b></div>" +
+      "<div><span>نمو سعري " + s.growth.toFixed(1) + "% سنوي</span><b class='up'>" + M.val(f0(s.gain)) + "</b></div>" +
       "<div><span>تكاليف احتفاظ 5 سنين</span><b class='" + (s.holdCost ? "dn" : "mut") + "'>" +
         (s.holdCost ? "−" + f0(s.holdCost) : "— بعد التسليم") + "</b></div>" +
-      "<div class='f'><span>قيمة متوقعة بعد 5 سنين</span><b class='sig'>" + f0(s.endVal) + "</b></div>" +
+      "<div class='f'><span>قيمة متوقعة بعد 5 سنين</span><b class='sig'>" + M.val(f0(s.endVal)) + "</b></div>" +
       "<div class='f'><span>صافي العائد الكلي</span><b class='" +
-        (s.totalPct >= s.bankPct ? "up" : "wrn") + "'>" + pc(s.totalPct) + "</b></div>";
+        (s.totalPct >= s.bankPct ? "up" : "wrn") + "'>" + M.val(pc(s.totalPct)) + "</b></div>";
     d.getElementById("assump").innerHTML =
       "<b>الافتراضات:</b> نمو " + u.d + " <span class='n'>" + s.growth.toFixed(1) +
       "%</span> سنوي — ده المسجّل عندنا من عقود الحي نفسه، مش متوسط قومي. الإيجار ثابت بدون زيادة (افتراض متحفّظ). " +
@@ -180,7 +180,18 @@
       "%</span> للمقارنة. الأرقام دي حساب مش ضمان، والسوق ممكن يتحرك عكسها.";
 
     /* المطابقة */
-    var ms = M.matchesFor(u);
+    var ms = M.can("pro") ? M.matchesFor(u) : [];
+    if (!M.can("pro")) {
+      d.getElementById("mNote").innerHTML =
+        "<b>" + M.matchesFor(u).length + " عميل</b> في حوض الطلبات مواصفاتهم بتنطبق على الوحدة دي. " +
+        "أسماؤهم وتفاصيل طلبهم وأزرار التواصل معاهم في <b>أدوات البروكر</b>.";
+      d.getElementById("mt").innerHTML =
+        '<div class="m" style="grid-template-columns:1fr"><div>' +
+        '<p class="who">المطابقة العكسية · أداة بروكر</p>' +
+        '<p class="req2">كل عميل سجّل طلبه على مناطق بيتقارن آلياً بكل وحدة جديدة، والمطابقة محسوبة على 5 شروط كل واحد مكتوب اتحقق ولا لأ.</p>' +
+        '<div class="act"><button class="b1" type="button" data-gate="pro">افتح أدوات البروكر</button></div>' +
+        '</div></div>';
+    } else {
     d.getElementById("mNote").innerHTML = ms.length
       ? "<b>" + ms.length + " عميل</b> سجّل طلبه على مناطق قبل ما الوحدة دي تنزل. المطابقة محسوبة على 5 شروط، وكل شرط مكتوب اتحقق ولا لأ — مش نسبة من غير سبب."
       : "مفيش طلب مسجّل بينطبق على الوحدة دي دلوقتي. الطلبات بتتراكم، والمطابقة بتتعاد مع كل تحديث.";
@@ -205,6 +216,7 @@
         '<button class="btn" type="button">افتح الصور للعميل</button></div></div></article>';
     }).join("");
     M.stagger(mt);
+    }
 
     /* البدائل */
     var alts = D.UNITS.filter(function (x) { return x.d === u.d; })

@@ -32,16 +32,45 @@
       return D.REGIONS[r].districts.filter(function (x) { return D.DISTRICT_GEO[x[0]]; });
     }
 
-    /* ---------- النسخة الكاملة بالخرائط ---------- */
+    /* ---------- النسخة الكاملة بالخرائط ----------
+       سلسلة بدائل: Esri داكن (من غير مفتاح) ← OSM بفلتر داكن ← الرسم بأنفسنا.
+       لو مصدر وقع أو طلب مفتاح، بننتقل للي بعده لوحدنا. */
+    var TILES = [
+      { url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        attr: "&copy; Esri · OpenStreetMap contributors", max: 16, cls: "" },
+      { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr: "&copy; OpenStreetMap contributors", max: 19, cls: "osmdark" }
+    ];
+    var tileIdx = 0, tileLayer = null;
+
+    function addTiles() {
+      var t = TILES[tileIdx];
+      if (!t) return;                         // خلصت البدائل — الحدود لوحدها هتفضل باينة
+      var errs = 0, settled = false;
+      tileLayer = w.L.tileLayer(t.url, {
+        attribution: t.attr, maxZoom: t.max, className: t.cls,
+        subdomains: t.url.indexOf("{s}") > -1 ? "abc" : undefined
+      });
+      tileLayer.on("tileerror", function () {
+        errs++;
+        if (errs >= 4 && !settled) {          // المصدر ده مش شغال
+          settled = true;
+          map.removeLayer(tileLayer);
+          tileIdx++;
+          addTiles();
+        }
+      });
+      tileLayer.on("load", function () { settled = true; });
+      tileLayer.addTo(map);
+    }
+
     function buildLeaflet() {
       var geo = D.REGION_GEO[region];
       map = w.L.map(host, {
         center: geo.center, zoom: geo.zoom, zoomControl: true,
         scrollWheelZoom: false, attributionControl: true
       });
-      w.L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-        attribution: '&copy; OpenStreetMap &copy; CARTO', maxZoom: 19, subdomains: "abcd"
-      }).addTo(map);
+      addTiles();
       draw();
       return true;
     }
