@@ -176,7 +176,7 @@
         if (!pt) return;
         var col = VD[M.verdict(u)[0]] || "#94A0AF";
         svg += '<circle class="upt" data-u="' + u.id + '" cx="' + X(pt[1]).toFixed(1) + '" cy="' + Y(pt[0]).toFixed(1) +
-          '" r="6" fill="#07090C" stroke="' + col + '" stroke-width="2.2" style="animation-delay:' + (500 + i * 70) + 'ms">' +
+          '" r="6" stroke="' + col + '" stroke-width="2.2" style="animation-delay:' + (500 + i * 70) + 'ms">' +
           '<title>' + u.id + ' · ' + u.t + ' · ' + M.f0(M.realPpm(u)) + ' ج.م/م²</title></circle>';
       });
       svg += '</svg>';

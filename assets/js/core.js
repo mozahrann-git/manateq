@@ -508,6 +508,7 @@
     host.innerHTML =
       '<div class="wrap">' +
       '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
+      '<button class="thm" id="mqTheme" type="button" aria-label="تغيير الثيم"></button>' +
       '<nav class="tabs">' + NAV.map(function (x) {
         return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
           '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
@@ -518,10 +519,28 @@
       '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
       '<span class="bn">Manateq<i>investment</i></span></a>' +
       '</div>';
+    bindTheme();
     tickClock();
     d.body.setAttribute("data-tier", tier());
     tierBar();
     bindGate();
+  }
+  var SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
+  var MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  function setTheme(t) {
+    d.documentElement.setAttribute("data-theme", t);
+    var b = d.getElementById("mqTheme");
+    if (b) b.innerHTML = t === "light" ? MOON : SUN;
+    try { w.localStorage.setItem("mqTheme", t); } catch (e) {}
+  }
+  function bindTheme() {
+    var t = "dark";
+    try { t = w.localStorage.getItem("mqTheme") || "dark"; } catch (e) {}
+    setTheme(t);
+    var b = d.getElementById("mqTheme");
+    if (b) b.addEventListener("click", function () {
+      setTheme(d.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light");
+    });
   }
   function tickClock() {
     var el = d.getElementById("mqClock");

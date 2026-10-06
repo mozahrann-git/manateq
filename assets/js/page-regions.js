@@ -75,16 +75,7 @@
       return '<circle class="hdot" cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="3.4" style="animation-delay:' + (0.5 + i * 0.07) + 's"/>';
     }).join("");
 
-    host.innerHTML =
-      '<div class="hxchart">' +
-        '<svg viewBox="0 0 ' + S + ' ' + S + '" class="hx" role="img" aria-label="مؤشرات ' + cur + '">' +
-          grid + spokes +
-          '<polygon class="hmean" points="' + poly(mean) + '"/>' +
-          '<polygon class="hcur" points="' + poly(cur2) + '"/>' + dots +
-        '</svg>' +
-        '<p class="hleg2"><span><i class="sw1"></i>' + cur + '</span><span><i class="sw2"></i>متوسط الأربع مناطق</span></p>' +
-      '</div>' +
-      '<div class="hxvals">' + AX.map(function (a, i) {
+    function card(a, i) {
         var v = cur2[a.k], m = mean[a.k];
         var better = a.inv ? v < m : v > m;
         var diff = m ? (v - m) / m * 100 : 0;
@@ -95,7 +86,18 @@
           '<span class="u">' + a.u + '</span>' +
           '<span class="d ' + (better ? "up" : "dn") + '">' + (better ? "أفضل من المتوسط بـ" : "أقل من المتوسط بـ") +
             Math.abs(diff).toFixed(0) + '%</span></div>';
-      }).join("") + '</div>';
+    }
+    function side(a0, a1) { return '<div class="hxside">' + AX.slice(a0, a1).map(function (a, j) { return card(a, a0 + j); }).join("") + '</div>'; }
+    host.innerHTML = side(0, 3) +
+      '<div class="hxchart">' +
+        '<svg viewBox="0 0 ' + S + ' ' + S + '" class="hx" role="img" aria-label="مؤشرات ' + cur + '">' +
+          grid + spokes +
+          '<polygon class="hmean" points="' + poly(mean) + '"/>' +
+          '<polygon class="hcur" points="' + poly(cur2) + '"/>' + dots +
+        '</svg>' +
+        '<p class="hleg2"><span><i class="sw1"></i>' + cur + '</span><span><i class="sw2"></i>متوسط الأربع مناطق</span></p>' +
+      '</div>' + side(3, 6);
+
   }
 
   /* ---------- منتقي المناطق ---------- */
@@ -123,7 +125,7 @@
   /* ---------- رسم المنطقة ---------- */
   function render() {
     var z = D.REGIONS[cur];
-    d.getElementById("rCode").textContent = z.code + " · REGION FILE";
+    if (d.getElementById("rName")) {
     d.getElementById("rName").textContent = cur;
     d.getElementById("rReview").textContent = z.review;
     M.count(d.getElementById("kPpm"), z.ppm, f0, 1000);
@@ -137,7 +139,7 @@
     M.count(d.getElementById("kD"), z.demand, function (v) { return Math.round(v) + "/100"; }, 800);
     M.count(d.getElementById("kR"), z.resale, ints, 800);
     M.count(d.getElementById("kO"), z.off, ints, 800);
-    M.drawSpark(d.getElementById("spk"), z.spark, 300, 44, 5, false);
+    }
 
     /* الأحياء */
     d.getElementById("dTb").innerHTML = z.districts.map(function (x) {
@@ -254,8 +256,8 @@
     if (mqmap) mqmap.setRegion(cur);
 
     M.growBars();
-    M.swap(d.getElementById("rName"));
-    M.swap(d.getElementById("rReview"));
+    if (d.getElementById("rName")) { M.swap(d.getElementById("rName")); M.swap(d.getElementById("rReview")); }
+
     M.reveal();
   }
 

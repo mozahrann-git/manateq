@@ -12,7 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="assets/css/leaflet.css">
 <link rel="stylesheet" href="assets/css/manateq.css">
 </head>
 <body>
@@ -21,44 +21,18 @@
 <div data-tierbar></div>
 
 <main class="wrap">
-  <div class="claim">
-    <div>
-      <p class="lbl">MANATEQ · REAL ESTATE INVESTMENT INTELLIGENCE</p>
-      <h1>استخبارات الاستثمار العقاري</h1>
-      <p class="cl">السوق مليان أرقام، وإحنا بنقولك الرقم الصح. كل يوم بتوصلنا مئات الرسائل من <b>50 جروب مطوّر</b> في أربع مناطق — بنقراها، بنطلّع منها التكلفة الحقيقية، وبنقارنها بمتوسط <b>الحي نفسه</b> مش متوسط المدينة.</p>
-      <p class="cl" style="margin-top:9px">السداسي جنبك بيوصف المنطقة على ستة محاور، وكل رقم فيه مقارن بمتوسط الأربع مناطق.</p>
-    </div>
-    <div class="hexwrap" id="hexa"></div>
-  </div>
-
   <div class="pickhead">
     <h2>ابدأ من المنطقة</h2>
     <p class="note">كل منطقة ملف كامل: أحياؤها، مطوّروها بأدلتهم، والمعروض فيها بحكم منشور. مفيش مشروع ولا وحدة بره منطقتها.</p>
   </div>
   <div class="picker" id="picker"></div>
 
-  <div class="head">
+  <div class="claim" style="margin-top:14px;border-top:1px solid var(--line)">
     <div>
-      <p class="lbl" id="rCode">MQ · REGION FILE</p>
-      <h1 id="rName">—</h1>
-      <p class="review" id="rReview"></p>
-      <div class="kpi">
-        <div><p class="l">متوسط المتر</p><p class="v sig" id="kPpm">—</p></div>
-        <div><p class="l">العائد الصافي · ريسيل</p><p class="v up" id="kY">—</p></div>
-        <div><p class="l">أفق السيولة</p><p class="v" id="kLiq">—</p></div>
-        <div><p class="l">نشاط آخر 7 أيام</p><p class="v" id="kAct">—</p></div>
-      </div>
+      <p class="lbl">MANATEQ · REAL ESTATE INVESTMENT INTELLIGENCE</p>
+      <h1>استخبارات الاستثمار العقاري</h1>
     </div>
-    <div>
-      <p class="lbl">حركة متوسط المتر · 7 أسابيع</p>
-      <svg class="spark" id="spk" style="height:44px" viewBox="0 0 300 44" preserveAspectRatio="none" aria-label="منحنى متوسط المتر"></svg>
-      <div class="kpi" style="margin-top:4px">
-        <div><p class="l">عقود مسجّلة</p><p class="v" id="kC">—</p></div>
-        <div><p class="l">مؤشر الطلب</p><p class="v" id="kD">—</p></div>
-        <div><p class="l">ريسيل متاح</p><p class="v" id="kR">—</p></div>
-        <div><p class="l">تحت الإنشاء</p><p class="v" id="kO">—</p></div>
-      </div>
-    </div>
+    <div class="hexwrap" id="hexa"></div>
   </div>
 
   <section>
