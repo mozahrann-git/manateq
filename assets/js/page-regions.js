@@ -48,12 +48,18 @@
     cur = b.dataset.r; picker(); render();
   });
 
+  /* ---------- الخريطة ---------- */
+  var mqmap = w.MQMap ? w.MQMap("map", {
+    region: cur,
+    onDistrict: function (dist) { w.location.href = M.LINK.district(dist); }
+  }) : null;
+
   /* ---------- رسم المنطقة ---------- */
   function render() {
     var z = D.REGIONS[cur];
     d.getElementById("rCode").textContent = z.code + " · REGION FILE";
     d.getElementById("rName").textContent = cur;
-    d.getElementById("rReview").textContent = "رأي محلل مناطق: " + z.review;
+    d.getElementById("rReview").textContent = z.review;
     M.count(d.getElementById("kPpm"), z.ppm, f0, 1000);
     M.count(d.getElementById("kY"), z.yld, function (v) { return v.toFixed(1) + "%"; }, 900);
     M.count(d.getElementById("kLiq"), z.saleDays, function (v) { return Math.round(v) + " يوم"; }, 900);
@@ -176,6 +182,9 @@
     }).join("") : '<p class="empty">مفيش وحدة عدّت القاعدة في ' + cur +
       ' دلوقتي. مناطق مبتعرضش فرصة من غير دليل — والقايمة بتتحدّث مع كل تحديث جديد.</p>';
     M.stagger(oc);
+
+    d.getElementById("mapReg").textContent = cur;
+    if (mqmap) mqmap.setRegion(cur);
 
     M.growBars();
     M.swap(d.getElementById("rName"));

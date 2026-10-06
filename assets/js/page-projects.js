@@ -75,7 +75,7 @@
     d.getElementById("cProj").textContent = p.nm;
     d.getElementById("pCode").textContent = p.id + " · PROJECT FILE";
     d.getElementById("pName").textContent = p.nm;
-    d.getElementById("pReview").textContent = "رأي محلل مناطق: " + p.review;
+    d.getElementById("pReview").textContent = p.review;
     var chips = d.getElementById("pChips");
     if (chips) {
       chips.innerHTML =

@@ -9,6 +9,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="assets/css/manateq.css">
 </head>
 <body>
@@ -57,6 +58,17 @@
   </section>
 
   <section>
+    <div class="mapwrap">
+      <div class="maphead">
+        <h2>الحي على الخريطة</h2>
+        <p class="mapnote">الحي متعلّم، وجيرانه حواليه بسعر مترهم · اضغط على أي نقطة تشوف الوحدة</p>
+      </div>
+      <div class="mapbox" id="map"></div>
+      <p class="mapcap">حدود الأحياء <b>تقريبية</b> للتوجيه البصري، ومواقع الوحدات تقريبية لحماية خصوصية الملاك.</p>
+    </div>
+  </section>
+
+  <section>
     <div class="rowhead">
       <h2>مشاريع الحي</h2>
       <p class="note" id="projNote"></p>
@@ -77,7 +89,6 @@
   <section>
     <div class="rowhead">
       <h2>وحدات المطوّرين</h2>
-      <p class="note">تحت الإنشاء أو إطلاقات — العائد الإيجاري فيها مبيتحسبش قبل التسليم، ومناطق مبتفترضوش.</p>
     </div>
     <div class="tw"><table><thead><tr>
       <th>الكود</th><th>الوحدة</th><th>المطوّر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
@@ -87,20 +98,19 @@
   <section id="opps">
     <div class="rowhead">
       <h2>فرص الحي</h2>
-      <p class="note">اللي عدّى القاعدة بس. اضغط على أي فرصة تفتح ملفها الكامل.</p>
     </div>
     <div class="cards" id="oppCards"></div>
   </section>
 
   <div class="foot">
-    سعر متر الحي محسوب من المعروض والعقود المسجّلة عند مناطق. الحي اللي عيّنته أقل من 5 عمليات بيتعلّم عليه <b>تقديري</b>.<br>
-    <b>أفق السيولة</b> = متوسط أيام البيع المسجّلة في الحي نفسه — ومكتوب جنبه من كام عملية.<br>
-    قواعد الحكم منشورة: <b>فرصة</b> = أقل من متوسط الحي بـ5%+ ومعاه استلام فوري أو خصم كاش 25%+ · <b>متضخّم</b> = أعلى بـ8%+ · <b>انتظر</b> = ورقة ناقصة.
+    سعر متر الحي من المعروض والعقود المسجّلة، والعيّنة الصغيرة متعلّمة <b>تقديري</b> — <a href="method.html" class="lnk">المنهجية كاملة</a>.
   </div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/core.js"></script>
+<script src="assets/js/map.js"></script>
 <script src="assets/js/page-district.js"></script>
 </body>
 </html>

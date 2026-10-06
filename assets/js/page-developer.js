@@ -22,7 +22,7 @@
   var g = d.getElementById("vGrade");
   g.className = "grade " + (dev.grade === "أ" ? "a" : dev.grade === "ب" ? "b" : "c");
   g.textContent = "فئة " + dev.grade;
-  d.getElementById("vNote").textContent = "قراءة مناطق: " + dev.note;
+  d.getElementById("vNote").textContent = dev.note;
 
   d.getElementById("vChips").innerHTML =
     '<a class="chip" href="' + L.district(projs.length ? projs[0].p.dist : "") + '" style="text-decoration:none">المنطقة <b>' + region + '</b></a>' +

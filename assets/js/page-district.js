@@ -139,6 +139,14 @@
     ' دلوقتي. مناطق مبتعرضش فرصة من غير دليل.</p>';
   M.stagger(oc);
 
+  /* الخريطة — الحي الحالي متعلّم */
+  if (w.MQMap) {
+    w.MQMap("map", {
+      region: region, focus: dist,
+      onDistrict: function (x) { if (x !== dist) w.location.href = L.district(x); }
+    });
+  }
+
   M.markSections();
   M.growBars();
   M.reveal();

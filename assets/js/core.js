@@ -307,7 +307,8 @@
     ["01", "المناطق", "index.html"],
     ["02", "المشاريع", "projects.html"],
     ["03", "الوحدات", "units.html"],
-    ["04", "نبض السوق", "pulse.html"]
+    ["04", "نبض السوق", "pulse.html"],
+    ["05", "المنهجية", "method.html"]
   ];
   function buildHeader(active) {
     var host = d.querySelector("[data-header]");

@@ -12,6 +12,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="assets/css/manateq.css">
 </head>
 <body>
@@ -59,9 +60,30 @@
   </div>
 
   <section>
+    <div class="mapwrap">
+      <div class="maphead">
+        <h2>خريطة <span id="mapReg" class="sig">—</span></h2>
+        <p class="mapnote">اضغط على أي حي تفتح ملفه · اضغط على أي نقطة تشوف الوحدة</p>
+      </div>
+      <div class="mapbox" id="map"></div>
+      <div class="maplegend">
+        <span class="lg"><b>سعر المتر:</b></span>
+        <span class="lg"><i class="sw" style="background:rgba(255,122,26,.14)"></i>أرخص</span>
+        <span class="lg"><i class="sw" style="background:rgba(255,122,26,.34)"></i></span>
+        <span class="lg"><i class="sw" style="background:rgba(255,122,26,.52)"></i>أغلى</span>
+        <span class="lg" style="margin-inline-start:14px"><b>الوحدات:</b></span>
+        <span class="lg"><i style="border-color:#3AD483"></i>فرصة</span>
+        <span class="lg"><i style="border-color:#F2B233"></i>محايد</span>
+        <span class="lg"><i style="border-color:#FF5E55"></i>متضخّم</span>
+      </div>
+      <p class="mapcap">حدود الأحياء <b>تقريبية</b> ومرسومة للتوجيه البصري — مش حدود مساحية رسمية. مواقع الوحدات تقريبية كمان لحماية خصوصية الملاك، والعنوان الدقيق بيتقال بعد تأكيد المعاينة.</p>
+    </div>
+  </section>
+
+  <section>
     <div class="rowhead">
       <h2>أحياء المنطقة</h2>
-      <p class="note">سعر المتر لكل حي محسوب من المعروض والعقود. اضغط على أي حي تفتح ملفه الكامل — ليه سعره كده، مشاريعه، ووحداته. الحي اللي عيّنته صغيرة بيتعلّم عليه <b>تقديري</b>.</p>
+      <p class="note">اضغط على أي حي تفتح ملفه الكامل. اللي عيّنته صغيرة متعلّم <b>تقديري</b>.</p>
     </div>
     <div class="tw"><table><thead><tr>
       <th>الحي</th><th>سعر المتر</th><th>مقابل المنطقة</th><th>العائد الصافي</th><th>مؤشر الطلب</th><th>الحالة</th><th></th>
@@ -87,7 +109,7 @@
   <section>
     <div class="rowhead">
       <h2>ريسيل من الملاك</h2>
-      <p class="note">وحدات جاهزة بعقود مسجّلة واستلام فوري. دي اللي ليها عائد إيجاري محسوب دلوقتي — مش بعد سنتين.</p>
+      <p class="note">جاهزة بعقود مسجّلة — ودي اللي ليها عائد إيجاري محسوب دلوقتي.</p>
     </div>
     <div class="tw"><table><thead><tr>
       <th>الكود</th><th>الوحدة</th><th>الحي</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th>
@@ -132,7 +154,7 @@
   <section id="request">
     <div class="rowhead">
       <h2>سجّل طلبك</h2>
-      <p class="note">مش بنسألك على بياناتك عشان نكلمك. بنسألك عشان لما تنزل وحدة مطابقة من أي جروب، تكون أنت أول واحد يعرف — قبل ما تتنشر.</p>
+      <p class="note">عشان لما تنزل وحدة مطابقة من أي جروب، تكون أنت أول واحد يعرف — قبل ما تتنشر.</p>
     </div>
     <div class="req">
       <div>
@@ -170,15 +192,16 @@
   </section>
 
   <div class="foot">
-    <b>التكلفة الحقيقية</b> = السعر المعلن + وديعة الصيانة + الجراج + اشتراك النادي · <b>سعر المتر الحقيقي</b> = التكلفة الحقيقية ÷ المساحة · <b>العائد الصافي</b> = (الإيجار السنوي − 10% إدارة وشواغر) ÷ التكلفة الحقيقية.<br>
-    قواعد الحكم منشورة: <b>فرصة</b> = أقل من متوسط الحي بـ5%+ ومعاه استلام فوري أو خصم كاش 25%+ · <b>متضخّم</b> = أعلى بـ8%+ · <b>انتظر</b> = ورقة ناقصة أو إنجاز غير مرصود.<br>
-    كل رقم أصله رسالة واتساب مؤرخة من جروب مطوّر مسجّل، أو عقد، أو زيارة ميدانية موثّقة. صور الوحدات بتتشفّر وتتقفل لو المالك طلب كده. الأسعار قابلة للتغيير وتُراجَع قبل التعاقد.<br>
+    كل رقم هنا أصله رسالة واتساب مؤرخة من جروب مطوّر مسجّل، أو عقد، أو زيارة ميدانية موثّقة —
+    <a href="method.html" class="lnk">إزاي بنحسب وإزاي بنحكم</a>.
     مناطق بتاخد عمولتها من البيع، ومش بتاخد فلوس مقابل ترتيب وحدة في القايمة. الترتيب محسوب، مش مباع.
   </div>
 </main>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="assets/js/data.js"></script>
 <script src="assets/js/core.js"></script>
+<script src="assets/js/map.js"></script>
 <script src="assets/js/page-regions.js"></script>
 </body>
 </html>
