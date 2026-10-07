@@ -545,6 +545,7 @@
       '</div>';
     bindTheme();
     tickClock();
+    focusTab(host);
     d.body.setAttribute("data-tier", tier());
     tierBar();
     bindGate();
@@ -594,6 +595,17 @@
     ["09", "المستخدمين", "admin-users.html"],
     ["10", "الإعدادات", "admin-settings.html"]
   ];
+  /* على الموبايل القائمة بتتزحلق — نودّي التبويب الحالي قدام عين المستخدم */
+  function focusTab(host) {
+    var on = host && host.querySelector(".tabs .on");
+    if (!on) return;
+    var nav = on.parentNode;
+    setTimeout(function () {
+      if (nav.scrollWidth <= nav.clientWidth + 4) return;
+      nav.scrollLeft = on.offsetLeft - (nav.clientWidth - on.offsetWidth) / 2;
+    }, 30);
+  }
+
   function buildAdminHeader(active) {
     var host = d.querySelector("[data-adminhead]");
     if (!host) return;
@@ -611,6 +623,7 @@
       '<span class="bn">Manateq<i>operations</i></span></a>' +
       '</div>';
     tickClock();
+    focusTab(host);
   }
 
   /* ---------- بلوك البرهان (بيتكرر في أكتر من صفحة) ---------- */
