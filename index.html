@@ -12,8 +12,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/leaflet.css?v=20261007i">
-<link rel="stylesheet" href="assets/css/manateq.css?v=20261007i">
+<link rel="stylesheet" href="assets/css/leaflet.css?v=20261007m">
+<link rel="stylesheet" href="assets/css/manateq.css?v=20261007m">
 </head>
 <body>
 
@@ -87,6 +87,13 @@
     </tr></thead><tbody id="dTb"></tbody></table></div>
   </section>
 
+  <div class="zc" id="zcDevs">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcDevsB">
+      <span class="zct"><span class="lbl">MANATEQ · DEVELOPERS</span><b>المطوّرون داخل المنطقة</b></span>
+      <span class="zcs" id="zcsDevs">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcDevsB"><div>
   <section>
     <div class="rowhead">
       <h2>المطوّرون داخل المنطقة</h2>
@@ -94,7 +101,17 @@
     </div>
     <div class="devs" id="devs"></div>
   </section>
+    </div></div>
+  </div>
 
+
+  <div class="zc" id="zcRes">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcResB">
+      <span class="zct"><span class="lbl">MANATEQ · RESALE</span><b>ريسيل من الملاك</b></span>
+      <span class="zcs" id="zcsRes">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcResB"><div>
   <section>
     <div class="rowhead">
       <h2>ريسيل من الملاك</h2>
@@ -105,7 +122,17 @@
       <th>مقابل الحي</th><th>العائد الصافي</th><th>حكم مناطق</th>
     </tr></thead><tbody id="resTb"></tbody></table></div>
   </section>
+    </div></div>
+  </div>
 
+
+  <div class="zc" id="zcOff">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcOffB">
+      <span class="zct"><span class="lbl">MANATEQ · PRIMARY</span><b>وحدات المطوّرين</b></span>
+      <span class="zcs" id="zcsOff">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcOffB"><div>
   <section>
     <div class="rowhead">
       <h2>وحدات المطوّرين</h2>
@@ -116,7 +143,17 @@
       <th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
     </tr></thead><tbody id="offTb"></tbody></table></div>
   </section>
+    </div></div>
+  </div>
 
+
+  <div class="zc" id="zcPulse">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcPulseB">
+      <span class="zct"><span class="lbl">MANATEQ · PULSE</span><b>نبض المنطقة</b></span>
+      <span class="zcs" id="zcsPulse">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcPulseB"><div>
   <section id="pulseTeaser">
     <div class="rowhead">
       <h2>نبض <span id="pulseReg"></span></h2>
@@ -125,7 +162,17 @@
     <div class="feed" id="pulse"></div>
     <a class="b1" href="pulse.html" style="display:inline-block;margin-top:13px;text-decoration:none">افتح نبض السوق كامل ←</a>
   </section>
+    </div></div>
+  </div>
 
+
+  <div class="zc" id="zcProof">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcProofB">
+      <span class="zct"><span class="lbl">MANATEQ · PROOF</span><b>البرهان · ليه كل مقارنة في السوق غلط</b></span>
+      <span class="zcs" id="zcsProof">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcProofB"><div>
   <section>
     <div class="proof">
       <div class="pin">
@@ -139,6 +186,9 @@
       </p>
     </div>
   </section>
+    </div></div>
+  </div>
+
 
   <section id="oppSec">
     <div class="rowhead">
@@ -148,6 +198,13 @@
     <div class="opps" id="opps"></div>
   </section>
 
+  <div class="zc" id="zcReq">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcReqB">
+      <span class="zct"><span class="lbl">MANATEQ · REQUEST</span><b>سجّل طلبك</b></span>
+      <span class="zcs" id="zcsReq">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcReqB"><div>
   <section id="request">
     <div class="rowhead">
       <h2>سجّل طلبك</h2>
@@ -187,6 +244,9 @@
       </div>
     </div>
   </section>
+    </div></div>
+  </div>
+
 
   <div class="foot">
     كل رقم هنا أصله رسالة واتساب مؤرخة من جروب مطوّر مسجّل، أو عقد، أو زيارة ميدانية موثّقة —
@@ -196,9 +256,9 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="assets/js/data.js?v=20261007i"></script>
-<script src="assets/js/core.js?v=20261007i"></script>
-<script src="assets/js/map.js?v=20261007i"></script>
-<script src="assets/js/page-regions.js?v=20261007i"></script>
+<script src="assets/js/data.js?v=20261007m"></script>
+<script src="assets/js/core.js?v=20261007m"></script>
+<script src="assets/js/map.js?v=20261007m"></script>
+<script src="assets/js/page-regions.js?v=20261007m"></script>
 </body>
 </html>

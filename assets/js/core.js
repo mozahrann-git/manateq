@@ -328,8 +328,29 @@
 
     function flip() {
       if (open) {
+        /* البلوكات اللي في آخر الصفحة: لما تتقفل الصفحة بتقصر فجأة
+           والمتصفح بيشد السكرول لفوق غصب. بنقفل ارتفاع الصفحة مؤقتاً
+           عشان العنوان يفضل مكانه، وبعدين ننزل للمكان الصح بهدوء. */
+        var lock = d.documentElement.scrollHeight;
+        var hOpen = card.getBoundingClientRect().height;
+        d.body.style.minHeight = lock + "px";
         card.classList.remove("open");
         h.setAttribute("aria-expanded", "false");
+        setTimeout(function () {
+          /* بنحسب الارتفاع الطبيعي حسابياً — ممنوع نقيسه بفك القفل،
+             لأن المتصفح بيشد السكرول في نفس اللحظة اللي بيعيد فيها الحساب */
+          var nat = lock - (hOpen - card.getBoundingClientRect().height);
+          if (RM || nat >= lock - 1) { d.body.style.minHeight = ""; return; }
+          /* الصفحة بتقصر بالتدريج بدل ما تقصر فجأة — فالمتصفح بيسحب
+             السكرول بهدوء مع الحركة، والقارئ مبيتنططش */
+          void d.body.offsetHeight;
+          d.body.classList.add("zshrink");
+          d.body.style.minHeight = nat + "px";
+          setTimeout(function () {
+            d.body.classList.remove("zshrink");
+            d.body.style.minHeight = "";
+          }, 560);
+        }, RM ? 10 : 660);
       } else {
         card.classList.add("open");
         h.setAttribute("aria-expanded", "true");

@@ -1153,14 +1153,27 @@ body.admin{font-size:13px}
 .zc .mapwrap{border:0}
 .zc .maphead h2{display:none}            /* العنوان متقال فوق في شريط البلوك */
 .zc .maphead{padding-block:12px 0}
+.zc .rowhead h2{display:none}            /* نفس السبب — العنوان في الشريط */
+.zc .rowhead{margin:0 0 10px}
+.zc > .zcb > div > section{padding-block:15px 16px;padding-inline:15px}
+.zc > .zcb > div > section > .rowhead:first-child{margin-top:0}
 .zc section{padding-block:0}
-@media (max-width:560px){
-  .zch{padding:14px 13px;gap:10px}
+/* الموبايل: الملخّص بينزل سطر تحت العنوان بدل ما يختفي — الرقم ده
+   هو اللي بيخلّي العنوان المقفول مفيد */
+@media (max-width:620px){
+  .zch{padding:13px 13px;gap:10px;flex-wrap:wrap}
+  .zct{order:1}
   .zct b{font-size:14.5px}
-  .zcs{display:none}
+  .zci{order:2}
+  .zcs{order:3;flex:1 1 100%;max-width:none;text-align:start;margin-top:1px;
+    padding-top:8px;border-top:1px solid var(--line);color:var(--muted)}
+  .zc > .zcb > div > section{padding-inline:13px}
 }
 @media (prefers-reduced-motion:reduce){
   .zcb{transition:none}
   .zcb > div{transition:none;opacity:1;transform:none}
   .zci{transition:none}
 }
+
+body.zshrink{transition:min-height .5s cubic-bezier(.16,1,.3,1)}
+@media (prefers-reduced-motion:reduce){ body.zshrink{transition:none} }

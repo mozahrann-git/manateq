@@ -257,6 +257,15 @@
       ' دلوقتي. مناطق مبتعرضش فرصة من غير دليل — والقايمة بتتحدّث مع كل تحديث جديد.</p>';
     M.stagger(oc);
 
+    /* العناوين المطويّة بتشيل رقمها — عشان العنوان المقفول يبقى ملخّص
+       مش علبة فاضية. الزائر يقرر يفتح إيه من الأرقام دي. */
+    zsum("zcsDevs",  (D.DEVS[cur] || []).length + " مطوّر داخل المنطقة");
+    zsum("zcsRes",   res.length + " وحدة ريسيل بعقود مسجّلة");
+    zsum("zcsOff",   off.length + " وحدة من المطوّرين");
+    zsum("zcsPulse", D.EVENTS.filter(function (e) { return e.r === cur; }).length + " حدث وصل النهاردة");
+    zsum("zcsProof", "رسالة واحدة · تلات أسعار متر · فرق 49%");
+    zsum("zcsReq",   "خلّينا نبلّغك أول ما تنزل وحدة مطابقة");
+
     hexagon();
     d.getElementById("mapReg").textContent = cur;
     d.getElementById("mapRegH").textContent = cur;
@@ -267,6 +276,8 @@
 
     M.reveal();
   }
+
+  function zsum(id, t) { var e = d.getElementById(id); if (e) e.textContent = t; }
 
   /* فتح ملف الوحدة من الجداول */
   ["resTb", "offTb"].forEach(function (id) {
