@@ -852,3 +852,33 @@
     "MDN": [29.9805, 31.4465], "CAP": [29.9888, 31.7528], "ZYD": [30.0528, 30.9358]
   };
 })(window);
+/* ============================================================
+   طبقة التعديلات المحلية على الخريطة
+   محرّر الخريطة في الإدارة بيحفظ هنا، فالتعديل بيبان في الموقع كله
+   على الجهاز ده فوراً. التثبيت للزوّار بيحصل لما الملف ده يتحدّث.
+   ============================================================ */
+(function (w) {
+  "use strict";
+  var D = w.MQ_DATA;
+  try {
+    var o = JSON.parse(w.localStorage.getItem("mq_geo") || "null");
+    if (!o) return;
+    if (o.REGION_GEO)   { Object.keys(o.REGION_GEO).forEach(function (k) { D.REGION_GEO[k] = o.REGION_GEO[k]; }); }
+    if (o.DISTRICT_GEO) { Object.keys(o.DISTRICT_GEO).forEach(function (k) { D.DISTRICT_GEO[k] = o.DISTRICT_GEO[k]; }); }
+    if (o.REGIONS)      { Object.keys(o.REGIONS).forEach(function (k) {
+      D.REGIONS[k] = D.REGIONS[k] || { ppm: 0, yld: 0, demand: 0, saleDays: 60, g30: 0, districts: [] };
+      var r = o.REGIONS[k];
+      ["ppm","yld","demand","saleDays","g30","districts"].forEach(function (f) {
+        if (r[f] !== undefined) D.REGIONS[k][f] = r[f];
+      });
+    }); }
+    if (o.DROP) { o.DROP.forEach(function (k) {
+      delete D.DISTRICT_GEO[k];
+      Object.keys(D.REGIONS).forEach(function (r) {
+        D.REGIONS[r].districts = D.REGIONS[r].districts.filter(function (x) { return x[0] !== k; });
+      });
+    }); }
+    if (o.DROPR) { o.DROPR.forEach(function (k) { delete D.REGIONS[k]; delete D.REGION_GEO[k]; }); }
+  } catch (e) {}
+})(window);
+

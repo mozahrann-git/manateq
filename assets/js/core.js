@@ -781,11 +781,12 @@
     ["03", "الأرقام والجروبات", "admin-directory.html"],
     ["04", "اقتناص الفرص", "admin-radar.html"],
     ["05", "الخريطة", "admin-map.html"],
-    ["06", "الأخبار", "admin-news.html"],
-    ["07", "البيانات", "admin-data.html"],
-    ["08", "الإحصائيات", "admin-stats.html"],
-    ["09", "المستخدمين", "admin-users.html"],
-    ["10", "الإعدادات", "admin-settings.html"]
+    ["06", "محرّر الخريطة", "admin-geo.html"],
+    ["07", "الأخبار", "admin-news.html"],
+    ["08", "البيانات", "admin-data.html"],
+    ["09", "الإحصائيات", "admin-stats.html"],
+    ["10", "المستخدمين", "admin-users.html"],
+    ["11", "الإعدادات", "admin-settings.html"]
   ];
   /* على الموبايل القائمة بتتزحلق — نودّي التبويب الحالي قدام عين المستخدم */
   function focusTab(host) {

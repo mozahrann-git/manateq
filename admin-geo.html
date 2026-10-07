@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>محرّر الخريطة · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/leaflet.css?v=20261007q">
+<link rel="stylesheet" href="assets/css/manateq.css?v=20261007q">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <div class="opsline" id="gline"></div>
+
+  <section>
+    <div class="rowhead">
+      <h2>محرّر الخريطة</h2>
+      <p class="note">تحكّم كامل في الحدود: اضغط على أي حي عشان تحدّده، حرّك رؤوسه، ارسمه من جديد، أو امسحه. وتقدر تضيف أحياء ومناطق جديدة من تحت.</p>
+    </div>
+
+    <div class="ctrl">
+      <div class="cg"><span class="lbl">المنطقة</span><div class="seg" id="segReg"></div></div>
+      <div class="cg" style="flex:0 0 auto">
+        <button class="fx" type="button" id="setC">ثبّت مركز المنطقة على المنظر ده</button>
+        <button class="fx" type="button" id="delR">امسح المنطقة</button>
+      </div>
+    </div>
+
+    <div class="gbar" id="gbar"></div>
+
+    <div class="opsmap">
+      <div class="mapwrap" style="border:0">
+        <div class="mapbox" id="gmap"></div>
+        <p class="mapcap">الرسم بيتحفظ على الجهاز ده أول ما تخلّص، وبيبان في الموقع كله فوراً. الإحداثيات بتتخزّن بخمس خانات عشرية (دقة ~1 متر).</p>
+      </div>
+      <aside class="msde">
+        <p class="lbl">أحياء المنطقة</p>
+        <div id="glist" style="margin-top:10px"></div>
+      </aside>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>ضيف حي جديد</h2>
+      <p class="note">اكتب بياناته وبعدها هيفتحلك الرسم على طول.</p>
+    </div>
+    <div class="gform">
+      <label><span class="lbl">اسم الحي</span><input class="ginp" id="ndName" placeholder="الهضبة الشمالية"></label>
+      <label><span class="lbl">سعر المتر</span><input class="ginp" id="ndPpm" type="number" inputmode="numeric" placeholder="23500"></label>
+      <label><span class="lbl">العائد %</span><input class="ginp" id="ndYld" type="number" step="0.1" placeholder="7.5"></label>
+      <label><span class="lbl">الطلب /100</span><input class="ginp" id="ndDem" type="number" placeholder="60"></label>
+      <button class="fx" type="button" id="ndEst" aria-pressed="false">تقديري</button>
+      <button class="b1" type="button" id="addD">ضيف وارسم</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>ضيف منطقة جديدة</h2>
+      <p class="note">زوّد الخريطة على المكان اللي عايزه الأول، وبعدين ضيف المنطقة — مركزها وتقريبها بياخدوا المنظر اللي قدامك.</p>
+    </div>
+    <div class="gform">
+      <label style="flex:1 1 220px"><span class="lbl">اسم المنطقة</span><input class="ginp" id="nrName" placeholder="أكتوبر"></label>
+      <button class="b1" type="button" id="addR">ضيف المنطقة على المنظر ده</button>
+    </div>
+  </section>
+
+  <section>
+    <div class="rowhead">
+      <h2>تثبيت التعديلات</h2>
+    </div>
+    <p id="gdirty" class="hint"></p>
+    <div class="acts" style="margin-top:12px">
+      <button class="b1" type="button" id="expBtn">نزّل ملف البيانات</button>
+      <button class="btn" type="button" id="copyBtn">انسخ الكود</button>
+      <button class="btn" type="button" id="resetBtn">رجّع كل حاجة زي ما كانت</button>
+    </div>
+    <textarea class="nta" id="expOut" readonly style="margin-top:12px;min-height:150px;font-family:var(--mono);font-size:11px;direction:ltr;text-align:left" placeholder="الكود هيظهر هنا بعد ما تضغط نزّل أو انسخ"></textarea>
+  </section>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="assets/js/data.js?v=20261007q"></script>
+<script src="assets/js/core.js?v=20261007q"></script>
+<script src="assets/js/map.js?v=20261007q"></script>
+<script src="assets/js/page-geo.js?v=20261007q"></script>
+</body>
+</html>

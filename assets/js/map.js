@@ -209,5 +209,30 @@
     };
   }
 
+  /* نفس سلسلة البلاطات متاحة لمحرّر الخريطة — مصدر واحد للحقيقة */
+  MQMap.addTiles = function (map) {
+    var TILES = [
+      { url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+        attr: "&copy; OpenStreetMap contributors", max: 19, cls: "osmdark" },
+      { url: "https://services.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        attr: "&copy; Esri", max: 16, cls: "" }
+    ];
+    var i = 0, layer = null;
+    function go() {
+      var t = TILES[i];
+      if (!t) return;
+      var errs = 0, settled = false;
+      var o = { attribution: t.attr, maxZoom: t.max, className: t.cls };
+      if (t.url.indexOf("{s}") > -1) o.subdomains = "abc";
+      layer = w.L.tileLayer(t.url, o);
+      layer.on("tileerror", function () {
+        if (++errs >= 4 && !settled) { settled = true; map.removeLayer(layer); i++; go(); }
+      });
+      layer.on("load", function () { settled = true; });
+      layer.addTo(map);
+    }
+    go();
+  };
+
   w.MQMap = MQMap;
 })(window, document);
