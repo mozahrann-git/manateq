@@ -84,7 +84,7 @@
       var items = list.filter(function (x) { return funnelOf(x) === g[0]; });
       if (!items.length) return;
       html += '<div class="fgrp"><div class="fhead"><span class="fn ' + g[0] + '">' + g[1] +
-        '</span><span class="fc n">' + items.length + '</span><p class="fx">' + g[2] + '</p></div></div>';
+        '</span><span class="fc n">' + items.length + '</span><p class="fnote">' + g[2] + '</p></div></div>';
       html += items.map(function (x) {
         n++;
         return '<article class="evt" style="--i:' + n + '"><span class="tm"><b>' + x.t + '</b>' + x.d + '</span><div>' +

@@ -115,7 +115,7 @@ section{padding-block:14px}
 .plegend{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9.5px;color:var(--dim);margin-top:5px}
 
 /* ---------- الجداول ---------- */
-.tw{border:1px solid var(--line);background:var(--panel);overflow-x:auto}
+.tw{border:1px solid var(--line);background:var(--panel);overflow-x:auto;min-width:0;max-width:100%}
 table{border-collapse:collapse;width:100%;min-width:700px}
 th{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;color:var(--dim);text-align:start;
   padding:9px 12px;border-bottom:1px solid var(--line2);white-space:nowrap}
@@ -323,7 +323,7 @@ td.num{font-family:var(--mono);direction:ltr;font-variant-numeric:tabular-nums;w
 
 /* ---------- عام: النبض والفرص ---------- */
 .two{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-.two > div{background:var(--panel);padding:17px 15px}
+.two > div{background:var(--panel);padding:17px 15px;min-width:0}
 .evrow{display:grid;grid-template-columns:44px 1fr;gap:11px;padding:11px 0;border-top:1px solid var(--line);
   font-size:12.5px;line-height:23px}
 .evrow:first-of-type{border-top:0}
@@ -424,18 +424,19 @@ tbody tr{animation:rise .5s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(v
    الموبايل
    ============================================================ */
 @media (max-width:980px){
-  .claim,.head,.two,.hist,.scen,.req{grid-template-columns:1fr}
-  .reads{grid-template-columns:1fr}
+  .claim,.head,.two,.hist,.scen,.req{grid-template-columns:minmax(0,1fr)}
+  .claim>*,.head>*,.two>*,.hist>*,.scen>*,.req>*{min-width:0}
+  .reads{grid-template-columns:minmax(0,1fr)}
   .picker{grid-template-columns:1fr 1fr}
   .macro,.ops{grid-template-columns:1fr 1fr}
-  .m{grid-template-columns:1fr}
+  .m{grid-template-columns:minmax(0,1fr)}
   .claim > div{padding:22px 18px}
 
   /* القائمة على الموبايل: سطر تاني بيتزحلق بالإصبع — مش مخفية */
   .bar .wrap{flex-wrap:wrap;height:auto;padding-block:7px;gap:7px 12px}
   .bar .tick{order:1;margin-inline-start:0}
   .bar .brand{order:2;margin-inline-start:auto}
-  .bar .tabs{order:3;flex:1 1 100%;margin-inline-start:0;gap:0;
+  .bar .tabs{order:3;flex:1 1 100%;min-width:0;max-width:100%;margin-inline-start:0;gap:0;
     overflow-x:auto;overflow-y:hidden;-webkit-overflow-scrolling:touch;
     scrollbar-width:none;scroll-snap-type:x proximity;
     border-top:1px solid var(--line);padding-top:6px;margin-top:1px}
@@ -524,7 +525,7 @@ a.hit:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
 .fn.protect{color:var(--warn)}
 .fn.record{color:var(--muted)}
 .fc{font-family:var(--mono);font-size:10.5px;color:var(--dim);border:1px solid var(--line2);padding:1px 6px}
-.fx{font-size:11px;color:var(--dim);line-height:18px;margin:0;flex:1 1 100%}
+.fnote{font-size:11px;color:var(--dim);line-height:18px;margin:0;flex:1 1 100%;min-width:0}
 
 /* عناوين بنود «ليه سعره كده» */
 .ev .wt{display:block;font-style:normal;font-family:var(--disp);font-weight:700;font-size:12.5px;
@@ -734,8 +735,8 @@ body.admin{font-size:13px}
 .fk{color:var(--muted);font-size:11.5px}
 .fv{font-family:var(--mono);font-weight:700;direction:ltr;font-size:13px;overflow:hidden;text-overflow:ellipsis}
 .fr.miss .fv{font-family:var(--body);font-weight:400;color:var(--warn);font-size:11px}
-.fc{font-family:var(--mono);font-size:10px;text-align:center}
-.fc.up{color:var(--up)}.fc.wrn{color:var(--warn)}.fc.dn{color:var(--down)}
+.fcf{font-family:var(--mono);font-size:10px;text-align:center}
+.fcf.up{color:var(--up)}.fcf.wrn{color:var(--warn)}.fcf.dn{color:var(--down)}
 .fx{font-family:var(--body);font-size:10.5px;background:transparent;color:var(--dim);
   border:1px solid var(--line2);padding:3px 7px;cursor:pointer;white-space:nowrap}
 .fx:hover{color:var(--sig);border-color:var(--sig)}
@@ -1084,12 +1085,12 @@ body.admin{font-size:13px}
 .sv{flex:0 0 68px;display:flex;align-items:baseline;gap:3px;justify-content:flex-end;direction:ltr}
 .sv b{font-size:17px;font-weight:700;color:var(--sig)}
 .sv i{font-style:normal;font-family:var(--mono);font-size:10px;color:var(--dim)}
-.rng{flex:1 1 auto;min-width:0;appearance:none;-webkit-appearance:none;height:4px;
+.srng{flex:1 1 auto;min-width:0;appearance:none;-webkit-appearance:none;height:4px;
   background:var(--line2);cursor:pointer;border-radius:0}
-.rng::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:18px;background:var(--sig);
+.srng::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:18px;background:var(--sig);
   border:0;border-radius:0;cursor:pointer}
-.rng::-moz-range-thumb{width:13px;height:18px;background:var(--sig);border:0;border-radius:0;cursor:pointer}
-.rng:focus-visible{outline:1px solid var(--sig);outline-offset:4px}
+.srng::-moz-range-thumb{width:13px;height:18px;background:var(--sig);border:0;border-radius:0;cursor:pointer}
+.srng:focus-visible{outline:1px solid var(--sig);outline-offset:4px}
 @media (prefers-reduced-motion:reduce){ .setrow{animation:none;opacity:1;transform:none} }
 @media (max-width:720px){
   .setrow{grid-template-columns:1fr;gap:9px}

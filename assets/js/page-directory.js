@@ -99,7 +99,7 @@
       var x = p.rules[k];
       return '<div class="fr"><span class="fk">' + (LBL[k] || k) + '</span>' +
         '<span class="fv" style="font-family:var(--body);font-weight:600">«' + x.kw + '»</span>' +
-        '<span class="fc up">✓</span><span></span>' +
+        '<span class="fcf up">✓</span><span></span>' +
         '<span class="fsrc">بياخد ' + (x.pick === "last" ? "آخر" : "أول") + ' رقم في السطر اللي فيه الكلمة دي' +
         (x.min ? ' · والرقم لازم يكون أكبر من ' + M.f0(x.min) : '') + '</span></div>';
     }).join("") : '<p class="empty" style="padding:24px">مفيش قواعد لسه. أول تصحيح ليه في شاشة الاستقبال هيبني أول قاعدة.</p>';

@@ -72,7 +72,7 @@
       return '<div class="setrow" style="--i:' + i + '">' +
         '<div class="sl2"><b>' + f.t + '</b><span>' + f.w + '</span></div>' +
         '<div class="sc">' +
-          '<input class="rng" type="range" data-k="' + f.k + '" data-h="' + host + '" ' +
+          '<input class="srng" type="range" data-k="' + f.k + '" data-h="' + host + '" ' +
             'min="' + f.min + '" max="' + f.max + '" step="' + f.step + '" value="' + f.get() + '" ' +
             'aria-label="' + f.t + '">' +
           '<span class="sv"><b class="n" id="v_' + f.k + '">' + f.get() + '</b><i>' + f.u + '</i></span>' +

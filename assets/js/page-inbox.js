@@ -123,7 +123,7 @@
         return '<div class="fr' + (f.fixed ? " fixed" : "") + '">' +
           '<span class="fk">' + (LBL[k] || k) + '</span>' +
           '<span class="fv n">' + v + '</span>' +
-          '<span class="fc ' + cls + '" title="ثقة القراءة">' + Math.round(f.c * 100) + '%</span>' +
+          '<span class="fcf ' + cls + '" title="ثقة القراءة">' + Math.round(f.c * 100) + '%</span>' +
           '<button class="fx" type="button" data-fix="' + k + '">صحّح</button>' +
           '<span class="fsrc">' + f.rule + (f.learned ? ' <b class="up">·مُتعلَّم</b>' : '') +
           '<br><i>' + (f.line || "—").slice(0, 64) + '</i></span></div>';
