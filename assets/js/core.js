@@ -225,7 +225,7 @@
 
      القاعدة: مبنخبّيش حكم ولا سبب. بنخبّي الرقم اللي بتتصرف بيه.
      ============================================================ */
-  var TIERS = { guest: 0, member: 1, pro: 2 };
+  var TIERS = { guest: 0, member: 1, pro: 2, admin: 3 };
   function tier() {
     try { return localStorage.getItem("mq_tier") || "guest"; } catch (e) { return "guest"; }
   }
@@ -235,54 +235,56 @@
   }
   function can(need) { return TIERS[tier()] >= TIERS[need || "member"]; }
 
-  /* يلفّ أي قيمة: لو المستخدم مش مؤهّل بترجع مموّهة وجنبها قفل */
-  function val(text, need) {
-    need = need || "member";
-    if (can(need)) return String(text);
-    return '<span class="lk" data-need="' + need + '" role="button" tabindex="0" ' +
-      'title="سجّل عشان تشوف الرقم">' + String(text) + '</span>';
-  }
+  /* الأرقام كلها مفتوحة للكل.
+     مناطق بتنشر الحساب ومصدره — وتخبية الرقم اللي الزائر هيتصرف بيه
+     بتناقض ده. الدخول بقى مطلوب في مكانين بس: سيناريو 5 سنين،
+     وأدوات البروكر. الدالة سايبة عشان الصفحات متتغيّرش. */
+  function val(text) { return String(text); }
 
   /* نافذة التسجيل */
+  /* ============================================================
+     شاشة الدخول
+     مفيش عروض ولا أسعار هنا — ده دخول وبس. البروكر بيدخل بحسابه.
+     ============================================================ */
   function gateModal(need) {
-    var pro = need === "pro";
+    if (d.querySelector(".gate.lgate")) return;
+    need = need || "member";
+    var role = need === "pro" ? "pro" : "member";
     var el = d.createElement("div");
-    el.className = "gate";
+    el.className = "gate lgate";
     el.innerHTML =
-      '<div class="gbox" role="dialog" aria-modal="true" aria-label="تسجيل">' +
+      '<div class="gbox lbox" role="dialog" aria-modal="true" aria-label="تسجيل الدخول">' +
       '<button class="gx" type="button" aria-label="إغلاق">✕</button>' +
-      '<p class="lbl">' + (pro ? "MANATEQ PRO" : "MANATEQ · تسجيل") + '</p>' +
-      '<h2>' + (pro ? "أدوات البروكر" : "الرقم ده ليك — بس سجّل الأول") + '</h2>' +
-      '<p class="gnote">' + (pro
-        ? "الـ50 جروب مترجمين ومرتبين كل يوم، سجل أسعار كامل لكل مشروع، مطابقة عملائك أنت بالوحدات الجديدة، وأدوات إعلان بلينكات متتبعة."
-        : "الحكم وسببه مفتوحين للكل — دي مسؤوليتنا. بس التكلفة الحقيقية وسعر المتر والعائد دي الأرقام اللي بتتصرف بيها، وبنطلب مقابلها رقم واتساب واحد.") + '</p>' +
-      (pro
-        ? '<div class="glist">' +
-          '<span><b>✓</b>فيد الجروبات مترجم للمستثمر والمشتري والبروكر</span>' +
-          '<span><b>✓</b>سجل أسعار كل مشروع بتواريخه</span>' +
-          '<span><b>✓</b>مطابقة عملائك بالوحدات أول ما تنزل</span>' +
-          '<span><b>✓</b>نصوص إعلانات ولينكات متتبعة باسمك</span></div>'
-        : '<div class="glist">' +
-          '<span><b>✓</b>التكلفة الحقيقية مفصّلة بندًا بند</span>' +
-          '<span><b>✓</b>سعر المتر الحقيقي والعائد الصافي</span>' +
-          '<span><b>✓</b>سيناريو 5 سنين مقابل البنك والذهب</span>' +
-          '<span><b>✓</b>ملفات أدلة المطوّرين كاملة</span></div>') +
+      '<p class="lbl">MANATEQ · دخول</p>' +
+      '<h2 id="gH">' + (role === "pro" ? "دخول البروكرز" : "سجّل دخولك") + '</h2>' +
+      '<p class="gnote" id="gN">' + gnote(role) + '</p>' +
+      '<div class="seg lseg" id="gRole">' +
+        '<button type="button" data-v="member" aria-pressed="' + (role === "member") + '">مستثمر أو مشتري</button>' +
+        '<button type="button" data-v="pro" aria-pressed="' + (role === "pro") + '">بروكر</button>' +
+      '</div>' +
       '<label class="glab" for="gphone">رقم الواتساب</label>' +
       '<input id="gphone" class="ginp" type="tel" inputmode="numeric" placeholder="01xxxxxxxxx" autocomplete="tel">' +
-      '<button class="b1 gbtn" type="button">' + (pro ? "اشترك · 499 ج.م شهرياً" : "سجّل وافتح الأرقام") + '</button>' +
-      '<p class="gfine">' + (pro
-        ? "فيه نسخة تجريبية 7 أيام. تقدر تلغي في أي وقت."
-        : "مجاني. مبنبعتش إعلانات — بنبعت لما تنزل وحدة مطابقة لطلبك بس.") + '</p>' +
+      '<button class="b1 gbtn" type="button">دخول</button>' +
+      '<p class="gfine">مبنبعتش إعلانات. بنبعت لما تنزل وحدة مطابقة لطلبك بس.</p>' +
       '</div>';
     d.body.appendChild(el);
     requestAnimationFrame(function () { el.classList.add("in"); });
 
-    function close() { el.classList.remove("in"); setTimeout(function () { el.remove(); }, 220); }
+    function close() { el.classList.remove("in"); d.removeEventListener("keydown", esc); setTimeout(function () { el.remove(); }, 220); }
+    function esc(e) { if (e.key === "Escape") close(); }
     el.querySelector(".gx").onclick = close;
     el.onclick = function (e) { if (e.target === el) close(); };
-    d.addEventListener("keydown", function esc(e) {
-      if (e.key === "Escape") { close(); d.removeEventListener("keydown", esc); }
+    d.addEventListener("keydown", esc);
+
+    el.querySelector("#gRole").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-v]"); if (!b) return;
+      role = b.dataset.v;
+      this.querySelectorAll("button").forEach(function (x) {
+        x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+      el.querySelector("#gH").textContent = role === "pro" ? "دخول البروكرز" : "سجّل دخولك";
+      el.querySelector("#gN").textContent = gnote(role);
     });
+
     var inp = el.querySelector(".ginp");
     setTimeout(function () { inp.focus(); }, 120);
     el.querySelector(".gbtn").onclick = function () {
@@ -291,10 +293,15 @@
         setTimeout(function () { inp.classList.remove("bad"); }, 900);
         return;
       }
-      setTier(pro ? "pro" : "member");
+      setTier(role);
       close();
       setTimeout(function () { w.location.reload(); }, 240);
     };
+  }
+  function gnote(role) {
+    return role === "pro"
+      ? "أدوات البروكر: مطابقة عملائك بالوحدات أول ما تنزل، والفيد مترجم للعميل."
+      : "كل الأرقام والأحكام مفتوحة من غير دخول. الدخول بيفتح سيناريو 5 سنين ويخلّينا نبلّغك لما تنزل وحدة مطابقة لطلبك.";
   }
 
   /* ============================================================
@@ -326,6 +333,7 @@
     for (i = 0; i < cards.length; i++) {
       cards[i].classList.remove("hint");
       if (cards[i].id === last) li = i;
+      if (cards[i].hidden) continue;
       if (done.indexOf(cards[i].id) < 0) open.push(i);
     }
     if (!open.length) return;                 /* شاف كل حاجة — خلاص، مفيش علامات تاني */
@@ -336,6 +344,12 @@
   }
 
   function zoomInit(root) {
+    /* بلوك معلّم data-hide مبيظهرش خالص لغير أهله — مش بيظهر مقفول
+       ولا بيعرض اشتراك. اللي مش ليه، مش موجود. */
+    var hid = (root || d).querySelectorAll(".zc[data-need][data-hide]");
+    for (var k = 0; k < hid.length; k++) {
+      hid[k].hidden = !can(hid[k].getAttribute("data-need"));
+    }
     var hs = (root || d).querySelectorAll(".zch:not([data-zb])");
     for (var i = 0; i < hs.length; i++) bindZoom(hs[i]);
     trail(root);
@@ -359,6 +373,11 @@
   }
 
   function toggleZoom(card, h) {
+    var need = card.getAttribute("data-need");
+    if (need && !can(need) && !card.classList.contains("open")) {
+      gateModal(need);                 /* طلب يفتحها؟ يبقى وقت الدخول */
+      return;
+    }
     var open = card.classList.contains("open");
 
     function flip() {
@@ -488,27 +507,13 @@
     });
   }
 
-  /* شريط علوي بيقول للمستخدم هو في أي طبقة */
-  function tierBar() {
+  /* الدخول في مكان واحد: الشريط العلوي. مفيش بانر ولا عروض. */
+  function authBtn() {
     var t = tier();
-    var host = d.querySelector("[data-tierbar]");
-    if (!host) return;
-    if (t === "guest") {
-      host.className = "tbar mini";
-      host.innerHTML = '<div class="wrap">' +
-        '<button class="tb-b" type="button" data-gate="member">🔓 افتح الأرقام</button>' +
-        '<button class="tb-c" type="button" data-hidebar aria-label="إخفاء">✕</button></div>';
-      try { if (localStorage.getItem("mq_barhid") === "1") host.hidden = true; } catch (e) {}
-    } else {
-      host.className = "tbar on";
-      host.innerHTML = '<div class="wrap"><span class="tb-l">' +
-        (t === "pro" ? '<b class="sig">Manateq Pro</b> · كل الأدوات مفتوحة'
-                     : '<b class="up">مسجّل</b> · الأرقام التفصيلية مفتوحة · أدوات البروكر لسه مقفولة') + '</span>' +
-        (t === "pro" ? '<button class="tb-x" type="button" data-signout>خروج</button>'
-                     : '<span><button class="tb-b" type="button" data-gate="pro">اشترك كبروكر</button>' +
-                       '<button class="tb-x" type="button" data-signout>خروج</button></span>') +
-        '</div>';
-    }
+    if (t === "guest") return '<button class="au" type="button" data-gate="member">دخول</button>';
+    var lab = t === "pro" ? "بروكر" : t === "admin" ? "أدمن" : "مسجّل";
+    return '<span class="au on"><b>' + lab + '</b>' +
+      '<button type="button" data-signout aria-label="خروج">خروج</button></span>';
   }
 
   /* أي ضغطة على رقم مقفول أو زر بوابة بتفتح النافذة */
@@ -724,6 +729,7 @@
       '<div class="wrap">' +
       '<span class="tick"><span class="bl"></span><span id="mqClock" class="n">00:00:00</span> · CAI</span>' +
       '<button class="thm" id="mqTheme" type="button" aria-label="تغيير الثيم"></button>' +
+      authBtn() +
       '<nav class="tabs">' + NAV.map(function (x) {
         return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
           '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
@@ -739,21 +745,39 @@
     focusTab(host);
     bindRegionTabs(host);
     d.body.setAttribute("data-tier", tier());
-    tierBar();
     bindGate();
   }
   var SUN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';
   var MOON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
-  function setTheme(t) {
+  /* الثيم بيتبع إعداد الجهاز. أول ما المستخدم يضغط الزرار بنفسه،
+     اختياره بيفضل محفوظ ومبنغلبوش على رأيه بعد كده. */
+  function sysTheme() {
+    try { return w.matchMedia && w.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark"; }
+    catch (e) { return "dark"; }
+  }
+  function paint(t) {
     d.documentElement.setAttribute("data-theme", t);
     var b = d.getElementById("mqTheme");
     if (b) b.innerHTML = t === "light" ? MOON : SUN;
+  }
+  function setTheme(t) {
+    paint(t);
     try { w.localStorage.setItem("mqTheme", t); } catch (e) {}
   }
   function bindTheme() {
-    var t = "dark";
-    try { t = w.localStorage.getItem("mqTheme") || "dark"; } catch (e) {}
-    setTheme(t);
+    var saved = null;
+    try { saved = w.localStorage.getItem("mqTheme"); } catch (e) {}
+    paint(saved || sysTheme());
+    if (!saved && w.matchMedia) {
+      var mq = w.matchMedia("(prefers-color-scheme: light)");
+      var onSys = function () {
+        var still = null;
+        try { still = w.localStorage.getItem("mqTheme"); } catch (e) {}
+        if (!still) paint(sysTheme());          /* الجهاز بدّل والمستخدم لسه مختارش */
+      };
+      if (mq.addEventListener) mq.addEventListener("change", onSys);
+      else if (mq.addListener) mq.addListener(onSys);
+    }
     var b = d.getElementById("mqTheme");
     if (b) b.addEventListener("click", function () {
       setTheme(d.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light");

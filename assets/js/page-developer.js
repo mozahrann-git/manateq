@@ -41,10 +41,6 @@
   /* الأدلة */
   var ev = d.getElementById("evList");
   ev.innerHTML = dev.ev.map(function (x) {
-    if (!M.can("member")) {
-      return '<span class="' + (x[1] ? "y" : "n2") + '"><b>' + (x[1] ? "✓" : "✕") + '</b><span>' + x[0] +
-        '<br><span class="mut" style="font-size:10.5px">' + M.val("موثّق · التفاصيل بعد التسجيل") + '</span></span></span>';
-    }
     return '<span class="' + (x[1] ? "y" : "n2") + '"><b>' + (x[1] ? "✓" : "✕") + '</b><span>' + x[0] +
       '<br><span class="mut" style="font-size:10.5px">' + x[2] + '</span></span></span>';
   }).join("");

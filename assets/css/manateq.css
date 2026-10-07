@@ -1224,3 +1224,24 @@ body.zshrink{transition:min-height .5s cubic-bezier(.16,1,.3,1)}
 .vtx.mid{background:transparent;border:2px dashed var(--warn);opacity:.75}
 .vtx:active{cursor:grabbing}
 @media (prefers-reduced-motion:reduce){ .grow{animation:none;opacity:1} }
+
+/* ---------- الدخول: زرار واحد في الشريط العلوي ---------- */
+.au{flex:0 0 auto;font-family:var(--body);font-size:11.5px;background:transparent;
+  border:1px solid var(--line2);color:var(--muted);padding:5px 12px;cursor:pointer;line-height:1.5;
+  transition:color .18s,border-color .18s}
+button.au:hover{color:var(--sig);border-color:var(--sig)}
+button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+.au.on{display:inline-flex;align-items:center;gap:8px;cursor:default;padding:4px 6px 4px 10px}
+.au.on b{color:var(--up);font-size:11px;font-weight:700}
+.au.on button{background:transparent;border:0;border-inline-start:1px solid var(--line2);
+  color:var(--dim);font-family:var(--body);font-size:10.5px;padding:2px 8px;cursor:pointer;line-height:1.4}
+.au.on button:hover{color:var(--down)}
+/* شاشة الدخول */
+.lbox{max-width:400px}
+.lseg{margin:14px 0 4px}
+.lseg button{flex:1 1 0;justify-content:center}
+.lbox .glab{margin-top:14px}
+@media (max-width:620px){
+  .bar .wrap .au{order:2}
+  .au{font-size:11px;padding:4px 10px}
+}
