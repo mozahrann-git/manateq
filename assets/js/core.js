@@ -301,9 +301,41 @@
      البلوكات المطويّة — عنوان بس، وبيكبر ناحيتك لما تضغط
      الصفحة تبقى فهرس يختار منه الزائر، مش حيطة بيعدّي عليها.
      ============================================================ */
+  /* ----- أثر الزائر -----
+     بنفتكر هو فتح إيه على جهازه هو، عشان نعلّم على اللي بعده.
+     قاعدة واحدة: علامة واحدة بس في الصفحة في أي لحظة — أكتر من كده
+     بتبقى ضوضاء مش إرشاد. ومش بترجع لحاجة فتحها قبل كده أبداً. */
+  var SEEN = "mq_seen", LASTZ = "mq_lastz";
+  function seen() { try { return JSON.parse(w.localStorage.getItem(SEEN) || "[]") || []; } catch (e) { return []; } }
+  function seenAdd(id) {
+    try {
+      var a = seen();
+      if (a.indexOf(id) < 0) { a.push(id); w.localStorage.setItem(SEEN, JSON.stringify(a)); }
+      w.localStorage.setItem(LASTZ, id);
+    } catch (e) {}
+  }
+  function lastZ() { try { return w.localStorage.getItem(LASTZ) || ""; } catch (e) { return ""; } }
+
+  function trail(root) {
+    var cards = (root || d).querySelectorAll(".zc");
+    if (!cards.length) return;
+    var done = seen(), last = lastZ(), li = -1, i, open = [];
+    for (i = 0; i < cards.length; i++) {
+      cards[i].classList.remove("hint");
+      if (cards[i].id === last) li = i;
+      if (done.indexOf(cards[i].id) < 0) open.push(i);
+    }
+    if (!open.length) return;                 /* شاف كل حاجة — خلاص، مفيش علامات تاني */
+    var next = -1;
+    for (i = 0; i < open.length; i++) if (open[i] > li) { next = open[i]; break; }
+    if (next < 0) next = open[0];             /* وصل لآخر الصفحة؟ نرجّعه لأول حاجة فاتته */
+    cards[next].classList.add("hint");
+  }
+
   function zoomInit(root) {
     var hs = (root || d).querySelectorAll(".zch:not([data-zb])");
     for (var i = 0; i < hs.length; i++) bindZoom(hs[i]);
+    trail(root);
   }
   function bindZoom(h) {
     h.setAttribute("data-zb", "1");
@@ -354,6 +386,8 @@
       } else {
         card.classList.add("open");
         h.setAttribute("aria-expanded", "true");
+        card.classList.remove("hint");
+        if (card.id) { seenAdd(card.id); trail(); }
         reveal(card);
         /* الخريطة وأي حاجة بتتقاس لازم تتقاس من تاني بعد ما المكان يفتح */
         setTimeout(function () { w.dispatchEvent(new Event("resize")); }, 70);
@@ -827,6 +861,6 @@
     peelInit: peelInit, peelAll: peelAll,
     buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
     tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal,
-    regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit
+    regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit, trail: trail
   };
 })(window, document);
