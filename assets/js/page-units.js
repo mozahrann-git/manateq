@@ -6,6 +6,12 @@
 
   M.buildHeader("units.html");
 
+  /* لو جاي من المنتقي المنبثق بـ ?r=منطقة */
+  (function () {
+    var r = M.qs("r");
+    if (r && D.REGIONS[r]) cur = r;
+  })();
+
   /* لو جاي من لينك فيه ?u=CODE */
   (function () {
     var q = new URLSearchParams(w.location.search).get("u");

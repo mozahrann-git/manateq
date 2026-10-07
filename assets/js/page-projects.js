@@ -6,6 +6,12 @@
 
   M.buildHeader("projects.html");
 
+  /* لو جاي من المنتقي المنبثق بـ ?r=منطقة */
+  (function () {
+    var r = M.qs("r");
+    if (r && D.PROJECTS[r]) cur = r;
+  })();
+
   /* لو جاي من لينك فيه ?p=CODE نفتح المشروع ده */
   (function () {
     var q = new URLSearchParams(w.location.search).get("p");

@@ -6,6 +6,12 @@
 
   M.buildHeader("index.html");
 
+  /* لو جاي من المنتقي المنبثق بـ ?r=منطقة */
+  (function () {
+    var r = M.qs("r");
+    if (r && D.REGIONS[r]) cur = r;
+  })();
+
   /* ---------- السداسي ----------
      ستة محاور بتوصف المنطقة. كل محور رقمه الحقيقي مكتوب عليه،
      والشكل البرتقالي هو المنطقة والرمادي متوسط الأربع مناطق. */
@@ -253,6 +259,7 @@
 
     hexagon();
     d.getElementById("mapReg").textContent = cur;
+    d.getElementById("mapRegH").textContent = cur;
     if (mqmap) mqmap.setRegion(cur);
 
     M.growBars();
@@ -344,5 +351,5 @@
 
   /* ---------- تشغيل ---------- */
   M.markSections();
-  picker(); render(); matchQ(); M.reveal();
+  picker(); render(); matchQ(); M.zoomInit(); M.reveal();
 })(window, document);

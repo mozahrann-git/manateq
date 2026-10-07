@@ -12,8 +12,8 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
-<link rel="stylesheet" href="assets/css/leaflet.css?v=20261007d">
-<link rel="stylesheet" href="assets/css/manateq.css?v=20261007d">
+<link rel="stylesheet" href="assets/css/leaflet.css?v=20261007i">
+<link rel="stylesheet" href="assets/css/manateq.css?v=20261007i">
 </head>
 <body>
 
@@ -27,15 +27,35 @@
   </div>
   <div class="picker" id="picker"></div>
 
-  <div class="claim" style="margin-top:14px;border-top:1px solid var(--line)">
-    <div>
-      <p class="lbl">MANATEQ · REAL ESTATE INVESTMENT INTELLIGENCE</p>
-      <h1>استخبارات الاستثمار العقاري</h1>
-    </div>
-    <div class="hexwrap" id="hexa"></div>
+  <div class="zc" id="zcClaim">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcClaimB">
+      <span class="zct">
+        <span class="lbl">MANATEQ · REAL ESTATE INVESTMENT INTELLIGENCE</span>
+        <b>استخبارات الاستثمار العقاري</b>
+      </span>
+      <span class="zcs">ستة محاور للمنطقة مقابل متوسط الأربعة</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcClaimB"><div>
+      <div class="claim">
+        <div>
+          <p class="note" style="margin:0">سعر الدخول، العائد الصافي، السيولة، الطلب، النمو، والمعروض — كل محور برقمه الحقيقي، والشكل الرمادي هو متوسط الأربع مناطق.</p>
+        </div>
+        <div class="hexwrap" id="hexa"></div>
+      </div>
+    </div></div>
   </div>
 
-  <section>
+  <div class="zc" id="zcMap">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcMapB">
+      <span class="zct">
+        <span class="lbl">MANATEQ · MAP</span>
+        <b>خريطة <span id="mapRegH" class="sig">المنطقة</span></b>
+      </span>
+      <span class="zcs">كل حي بلون سعر متره · كل وحدة على مكانها</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcMapB"><div>
     <div class="mapwrap">
       <div class="maphead">
         <h2>خريطة <span id="mapReg" class="sig">—</span></h2>
@@ -54,7 +74,8 @@
       </div>
       <p class="mapcap">حدود الأحياء <b>تقريبية</b> ومرسومة للتوجيه البصري — مش حدود مساحية رسمية. مواقع الوحدات تقريبية كمان لحماية خصوصية الملاك، والعنوان الدقيق بيتقال بعد تأكيد المعاينة.</p>
     </div>
-  </section>
+    </div></div>
+  </div>
 
   <section>
     <div class="rowhead">
@@ -175,9 +196,9 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="assets/js/data.js?v=20261007d"></script>
-<script src="assets/js/core.js?v=20261007d"></script>
-<script src="assets/js/map.js?v=20261007d"></script>
-<script src="assets/js/page-regions.js?v=20261007d"></script>
+<script src="assets/js/data.js?v=20261007i"></script>
+<script src="assets/js/core.js?v=20261007i"></script>
+<script src="assets/js/map.js?v=20261007i"></script>
+<script src="assets/js/page-regions.js?v=20261007i"></script>
 </body>
 </html>

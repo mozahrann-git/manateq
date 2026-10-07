@@ -297,6 +297,139 @@
     };
   }
 
+  /* ============================================================
+     البلوكات المطويّة — عنوان بس، وبيكبر ناحيتك لما تضغط
+     الصفحة تبقى فهرس يختار منه الزائر، مش حيطة بيعدّي عليها.
+     ============================================================ */
+  function zoomInit(root) {
+    var hs = (root || d).querySelectorAll(".zch:not([data-zb])");
+    for (var i = 0; i < hs.length; i++) bindZoom(hs[i]);
+  }
+  function bindZoom(h) {
+    h.setAttribute("data-zb", "1");
+    var card = h.closest(".zc");
+    h.addEventListener("click", function () { toggleZoom(card, h); });
+  }
+  var ZBAR = 62;   /* ارتفاع الشريط اللاصق */
+
+  /* بيثبّت العنوان تحت عين القارئ طول مدة الطي/الفتح — عشان الصفحة
+     متهربش من تحته لما ارتفاعها يتغيّر. */
+  function pinHead(h, ms) {
+    var target = h.getBoundingClientRect().top, t0 = Date.now();
+    (function step() {
+      var dy = h.getBoundingClientRect().top - target;
+      if (Math.abs(dy) > .5) w.scrollBy(0, dy);
+      if (Date.now() - t0 < ms) requestAnimationFrame(step);
+    })();
+  }
+
+  function toggleZoom(card, h) {
+    var open = card.classList.contains("open");
+
+    function flip() {
+      if (open) {
+        card.classList.remove("open");
+        h.setAttribute("aria-expanded", "false");
+      } else {
+        card.classList.add("open");
+        h.setAttribute("aria-expanded", "true");
+        reveal(card);
+        /* الخريطة وأي حاجة بتتقاس لازم تتقاس من تاني بعد ما المكان يفتح */
+        setTimeout(function () { w.dispatchEvent(new Event("resize")); }, 70);
+        setTimeout(function () { w.dispatchEvent(new Event("resize")); }, 500);
+        /* بعد ما الحركة تهدى: لو البلوك طالع برّه الشاشة، نرفع العنوان
+           تحت الشريط عشان يبان أكبر قدر منه — حركة واحدة هادية مش نطة */
+        if (!RM) setTimeout(function () {
+          var hr = h.getBoundingClientRect(), cr = card.getBoundingClientRect();
+          if (cr.bottom > w.innerHeight && hr.top > ZBAR + 20) {
+            w.scrollBy({ top: hr.top - (ZBAR + 14), behavior: "smooth" });
+          }
+        }, 700);
+      }
+      if (!RM) pinHead(h, 640);
+    }
+
+    if (RM) { flip(); return; }
+    /* العنوان بره الشاشة أو ملزوق في الشريط؟ نوديه مكان مريح الأول */
+    var top = h.getBoundingClientRect().top;
+    if (top < ZBAR + 10 || top > w.innerHeight - 120) {
+      w.scrollBy({ top: top - (ZBAR + 14), behavior: "smooth" });
+      setTimeout(flip, 340);
+    } else flip();
+  }
+
+  /* ============================================================
+     منتقي المنطقة المنبثق
+     المناطق والمشاريع والوحدات كلهم بيبدأوا من نفس السؤال: أنهي منطقة؟
+     فبدل ما الزائر يدخل الصفحة ويدوّر على المنتقي، بيختار الأول.
+     ============================================================ */
+  var REGPAGES = { "index.html": "المناطق", "projects.html": "المشاريع", "units.html": "الوحدات" };
+
+  function regionModal(page) {
+    if (d.querySelector(".gate.rgate")) return;
+    var label = REGPAGES[page] || "المناطق";
+    var here = (w.location.pathname.split("/").pop() || "index.html") === page;
+    var now = qs("r");
+
+    var el = d.createElement("div");
+    el.className = "gate rgate";
+    el.innerHTML =
+      '<div class="gbox rbox" role="dialog" aria-modal="true" aria-label="اختار المنطقة">' +
+      '<button class="gx" type="button" aria-label="إغلاق">✕</button>' +
+      '<p class="lbl">MANATEQ · ' + label + '</p>' +
+      '<h2>أنهي منطقة؟</h2>' +
+      '<p class="gnote">' +
+        (page === "index.html" ? "تقرير كامل للمنطقة: أحياؤها ومطوّروها والمعروض فيها."
+         : page === "projects.html" ? "هتشوف مشاريع المنطقة دي بس — كل مشروع بسعر متره الحقيقي مقابل حيّه."
+         : "هتشوف الوحدات المرصودة في المنطقة دي بس — كل وحدة بحكمها وسبب حكمها.") +
+      '</p>' +
+      '<div class="picker rpick">' + Object.keys(D.REGIONS).map(function (k) {
+        var z = D.REGIONS[k];
+        return '<button class="pk" type="button" data-r="' + k + '" aria-pressed="' +
+          (here && now === k) + '">' +
+          '<span class="nm">' + k + '</span><span class="pp">' + f0(z.ppm) + '</span>' +
+          '<span class="mt"><span>ج.م/م²</span><span class="' + (z.g30 >= 0 ? "up" : "dn") + '">' +
+          pc(z.g30) + ' · 30ي</span></span></button>';
+      }).join("") + '</div>' +
+      '<p class="gfine">كل رقم هنا متوسط المنطقة. المقارنة الحقيقية بتحصل على مستوى الحي جوه.</p>' +
+      '</div>';
+    d.body.appendChild(el);
+    requestAnimationFrame(function () { el.classList.add("in"); });
+
+    function close() {
+      el.classList.remove("in");
+      d.removeEventListener("keydown", esc);
+      setTimeout(function () { el.remove(); }, 220);
+    }
+    function esc(e) { if (e.key === "Escape") close(); }
+    el.querySelector(".gx").onclick = close;
+    el.onclick = function (e) { if (e.target === el) close(); };
+    d.addEventListener("keydown", esc);
+    setTimeout(function () { var f = el.querySelector(".pk"); if (f) f.focus(); }, 120);
+
+    el.querySelector(".rpick").addEventListener("click", function (e) {
+      var b = e.target.closest("[data-r]");
+      if (!b) return;
+      var r = b.dataset.r;
+      /* نفس الصفحة ونفس المنطقة؟ مفيش داعي نعيد التحميل */
+      if (here && now === r) { close(); return; }
+      w.location.href = page + "?r=" + encodeURIComponent(r);
+    });
+  }
+
+  /* بيمسك ضغطة التبويب قبل ما ينتقل — وبيسيب الـ ctrl/⌘ click يفتح تاب جديد زي ما هو */
+  function bindRegionTabs(host) {
+    if (!host) return;
+    host.addEventListener("click", function (e) {
+      var a = e.target.closest(".tabs a");
+      if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+      var page = (a.getAttribute("href") || "").split("?")[0];
+      if (!REGPAGES[page]) return;
+      e.preventDefault();
+      regionModal(page);
+    });
+  }
+
   /* شريط علوي بيقول للمستخدم هو في أي طبقة */
   function tierBar() {
     var t = tier();
@@ -546,6 +679,7 @@
     bindTheme();
     tickClock();
     focusTab(host);
+    bindRegionTabs(host);
     d.body.setAttribute("data-tier", tier());
     tierBar();
     bindGate();
@@ -671,6 +805,7 @@
     growBars: growBars, swap: swap, drawSpark: drawSpark,
     peelInit: peelInit, peelAll: peelAll,
     buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
-    tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal
+    tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal,
+    regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit
   };
 })(window, document);
