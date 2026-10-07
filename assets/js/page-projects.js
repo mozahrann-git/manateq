@@ -187,12 +187,18 @@
     M.stagger(dv);
     d.getElementById("analyst").textContent = p.analyst;
 
+    zsum("zcsPay",   p.plans.length + " خطة معلنة · أقل مقدّم وأطول تقسيط");
+    zsum("zcsUnits", us.length + " وحدة متاحة في المشروع");
+    zsum("zcsRaw",   "الرسالة زي ما وصلت — وجنبها اللي قريناه منها");
+    zsum("zcsDocs",  p.docs.filter(function (x) { return x[1]; }).length + " من " + p.docs.length + " ورقة متأكّد منها");
+
     M.growBars();
     M.swap(d.getElementById("pName"));
     M.swap(d.getElementById("pReview"));
     M.reveal();
   }
+  function zsum(id, t) { var e = d.getElementById(id); if (e) e.textContent = t; }
 
   M.markSections();
-  picker(); plist(); render(); M.reveal();
+  picker(); plist(); render(); M.zoomInit(); M.reveal();
 })(window, document);

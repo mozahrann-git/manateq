@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="assets/css/manateq.css?v=20261007n">
+<link rel="stylesheet" href="assets/css/manateq.css?v=20261007p">
 </head>
 <body>
 
@@ -44,6 +44,14 @@
     </div>
   </div>
 
+
+  <div class="zc" id="zcFit">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcFitB">
+      <span class="zct"><span class="lbl">MANATEQ · FIT</span><b>مناسب لمين</b></span>
+      <span class="zcs" id="zcsFit">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcFitB"><div>
   <section>
     <div class="rowhead">
       <h2>مناسب لمين</h2>
@@ -60,7 +68,77 @@
       </div>
     </div>
   </section>
+    </div></div>
+  </div>
 
+  <section id="opps">
+    <div class="rowhead">
+      <h2>فرص الحي</h2>
+    </div>
+    <div class="cards" id="oppCards"></div>
+  </section>
+
+  <div class="zc" id="zcRes">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcResB">
+      <span class="zct"><span class="lbl">MANATEQ · RESALE</span><b>ريسيل من الملاك</b></span>
+      <span class="zcs" id="zcsRes">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcResB"><div>
+  <section>
+    <div class="rowhead">
+      <h2>ريسيل من الملاك</h2>
+      <p class="note">وحدات جاهزة بعقود مسجّلة واستلام فوري — وبعائد إيجاري محسوب على التكلفة الحقيقية.</p>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>العائد الصافي</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="resTb"></tbody></table></div>
+  </section>
+    </div></div>
+  </div>
+
+  <div class="zc" id="zcOff">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcOffB">
+      <span class="zct"><span class="lbl">MANATEQ · PRIMARY</span><b>وحدات المطوّرين</b></span>
+      <span class="zcs" id="zcsOff">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcOffB"><div>
+  <section>
+    <div class="rowhead">
+      <h2>وحدات المطوّرين</h2>
+    </div>
+    <div class="tw"><table><thead><tr>
+      <th>الكود</th><th>الوحدة</th><th>المطوّر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
+    </tr></thead><tbody id="offTb"></tbody></table></div>
+  </section>
+    </div></div>
+  </div>
+
+  <div class="zc" id="zcProj">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcProjB">
+      <span class="zct"><span class="lbl">MANATEQ · PROJECTS</span><b>مشاريع الحي</b></span>
+      <span class="zcs" id="zcsProj">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcProjB"><div>
+  <section>
+    <div class="rowhead">
+      <h2>مشاريع الحي</h2>
+      <p class="note" id="projNote"></p>
+    </div>
+    <div class="cards" id="projs"></div>
+  </section>
+    </div></div>
+  </div>
+
+  <div class="zc" id="zcMap">
+    <button class="zch" type="button" aria-expanded="false" aria-controls="zcMapB">
+      <span class="zct"><span class="lbl">MANATEQ · MAP</span><b>الحي على الخريطة</b></span>
+      <span class="zcs" id="zcsMap">—</span>
+      <span class="zci" aria-hidden="true">+</span>
+    </button>
+    <div class="zcb" id="zcMapB"><div>
   <section>
     <div class="mapwrap">
       <div class="maphead">
@@ -71,40 +149,19 @@
       <p class="mapcap">حدود الأحياء <b>تقريبية</b> للتوجيه البصري، ومواقع الوحدات تقريبية لحماية خصوصية الملاك.</p>
     </div>
   </section>
+    </div></div>
+  </div>
 
-  <section>
-    <div class="rowhead">
-      <h2>مشاريع الحي</h2>
-      <p class="note" id="projNote"></p>
-    </div>
-    <div class="cards" id="projs"></div>
-  </section>
 
-  <section>
-    <div class="rowhead">
-      <h2>ريسيل من الملاك</h2>
-      <p class="note">وحدات جاهزة بعقود مسجّلة واستلام فوري — وبعائد إيجاري محسوب على التكلفة الحقيقية.</p>
-    </div>
-    <div class="tw"><table><thead><tr>
-      <th>الكود</th><th>الوحدة</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>العائد الصافي</th><th>حكم مناطق</th>
-    </tr></thead><tbody id="resTb"></tbody></table></div>
-  </section>
 
-  <section>
-    <div class="rowhead">
-      <h2>وحدات المطوّرين</h2>
-    </div>
-    <div class="tw"><table><thead><tr>
-      <th>الكود</th><th>الوحدة</th><th>المطوّر</th><th>المساحة</th><th>التكلفة الحقيقية</th><th>متر حقيقي</th><th>مقابل الحي</th><th>التسليم</th><th>حكم مناطق</th>
-    </tr></thead><tbody id="offTb"></tbody></table></div>
-  </section>
 
-  <section id="opps">
-    <div class="rowhead">
-      <h2>فرص الحي</h2>
-    </div>
-    <div class="cards" id="oppCards"></div>
-  </section>
+
+
+
+
+
+
+
 
   <div class="foot">
     سعر متر الحي من المعروض والعقود المسجّلة، والعيّنة الصغيرة متعلّمة <b>تقديري</b> — <a href="method.html" class="lnk">المنهجية كاملة</a>.
@@ -112,9 +169,9 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="assets/js/data.js?v=20261007n"></script>
-<script src="assets/js/core.js?v=20261007n"></script>
-<script src="assets/js/map.js?v=20261007n"></script>
-<script src="assets/js/page-district.js?v=20261007n"></script>
+<script src="assets/js/data.js?v=20261007p"></script>
+<script src="assets/js/core.js?v=20261007p"></script>
+<script src="assets/js/map.js?v=20261007p"></script>
+<script src="assets/js/page-district.js?v=20261007p"></script>
 </body>
 </html>

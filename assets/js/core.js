@@ -305,7 +305,10 @@
      بنفتكر هو فتح إيه على جهازه هو، عشان نعلّم على اللي بعده.
      قاعدة واحدة: علامة واحدة بس في الصفحة في أي لحظة — أكتر من كده
      بتبقى ضوضاء مش إرشاد. ومش بترجع لحاجة فتحها قبل كده أبداً. */
-  var SEEN = "mq_seen", LASTZ = "mq_lastz";
+  /* المفتاح بإسم الصفحة — كل صفحة رحلتها لوحدها، ومينفعش بلوك
+     في الرئيسية يتحسب مفتوح في صفحة الحي لمجرد إن اسمه زيه */
+  var PG = (w.location.pathname.split("/").pop() || "index.html").replace(".html", "");
+  var SEEN = "mq_seen_" + PG, LASTZ = "mq_lastz_" + PG;
   function seen() { try { return JSON.parse(w.localStorage.getItem(SEEN) || "[]") || []; } catch (e) { return []; } }
   function seenAdd(id) {
     try {

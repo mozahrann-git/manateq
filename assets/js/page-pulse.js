@@ -132,6 +132,11 @@
     });
   })();
 
+  (function () {
+    var e = d.getElementById("zcsDens");
+    if (e) e.textContent = "المطوّرين طرحوا كام ونزّلوا كام في كل منطقة";
+  })();
+  M.zoomInit();
   M.markSections();
   M.reveal();
 })(window, document);

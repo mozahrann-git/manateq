@@ -158,8 +158,17 @@
     });
   }
 
+  /* العناوين المطويّة بتشيل رقمها — الزائر يقرر يفتح إيه قبل ما يفتح */
+  function zsum(id, t) { var e = d.getElementById(id); if (e) e.textContent = t; }
+  zsum("zcsFit",  (info.best || "مين يشتري هنا ومين ميشتريش"));
+  zsum("zcsRes",  res.length + " وحدة جاهزة بعقود مسجّلة");
+  zsum("zcsOff",  off.length + " وحدة من المطوّرين");
+  zsum("zcsProj", projs.length + " مشروع داخل الحي");
+  zsum("zcsMap",  "مكان الحي وحدوده التقريبية");
+
   M.peelInit();
   M.peelAll(d.getElementById("allBtn"));
+  M.zoomInit();
   M.markSections();
   M.growBars();
   M.reveal();

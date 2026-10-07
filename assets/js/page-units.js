@@ -247,12 +247,19 @@
     }).join("");
     M.stagger(d.getElementById("altTb"));
 
+    zsum("zcsScen", "لو احتفظت بيها " + C.holdYears + " سنين مقابل البنك والذهب");
+    var others = alts.length - 1;   /* الوحدة نفسها جوه الجدول — مش بديل لنفسها */
+    zsum("zcsAlt", others ? others + " بديل في نفس الحي" : "مفيش بديل مرصود في نفس الحي");
+    zsum("zcsMatch", M.matchesFor(u).length + " عميل طلبه ينطبق عليها");
+    zsum("zcsBrowse", M.unitsOf(cur).length + " وحدة مرصودة في " + cur);
+
     M.growBars();
     M.swap(d.getElementById("uName"));
     M.swap(d.getElementById("uWhy"));
     M.reveal();
   }
+  function zsum(id, t) { var e = d.getElementById(id); if (e) e.textContent = t; }
 
   M.markSections();
-  picker(); ulist(); render(); M.reveal();
+  picker(); ulist(); render(); M.zoomInit(); M.reveal();
 })(window, document);
