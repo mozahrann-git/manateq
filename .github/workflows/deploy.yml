@@ -27,8 +27,15 @@ jobs:
         with:
           # يفعّل Pages تلقائياً لو لسه مش مفعّل في الريبو
           enablement: true
+      # الموقع الساكن بس. خط الاستقبال بيشتغل على سيرفر تاني
+      # ومينفعش ينشر هنا — ولا حتى ملف بيئة بالغلط.
+      - name: جهّز الموقع من غير الخادم
+        run: |
+          mkdir -p _site
+          cp -r assets *.html _site/
+          test ! -e _site/server
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: _site
       - id: deployment
         uses: actions/deploy-pages@v4

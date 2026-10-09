@@ -58,6 +58,12 @@
     var m = line.match(/\d+(?:\.\d+)?/g);
     return m ? m.map(Number) : [];
   }
+  /* نفس الأرقام ومعاها مكانها في السطر — عشان نعرف مين بعد الكلمة الدالة */
+  function numsAt(line) {
+    var re = /\d+(?:\.\d+)?/g, m, out = [];
+    while ((m = re.exec(line))) out.push({ v: Number(m[0]), i: m.index });
+    return out;
+  }
   function hasKw(line, kws) {
     var l = line.toLowerCase();
     for (var i = 0; i < kws.length; i++) if (l.indexOf(kws[i].toLowerCase()) > -1) return kws[i];
@@ -92,12 +98,18 @@
       for (var i = 0; i < L.length; i++) {
         var kw = hasKw(L[i], R.kw);
         if (!kw) continue;
-        var ns = numsIn(L[i]).filter(function (n) {
-          return n >= (R.min || 0) && (!R.max || n <= R.max);
+        var all = numsAt(L[i]).filter(function (n) {
+          return n.v >= (R.min || 0) && (!R.max || n.v <= R.max);
         });
-        if (!ns.length) continue;
+        if (!all.length) continue;
         /* النسب لازم يبقى جنبها % */
         if (R.pct && L[i].indexOf("%") === -1) continue;
+        /* الرقم اللي بعد الكلمة الدالة هو المقصود — «Point 90 — مساحه 120 م»
+           مساحتها 120 مش 90. لو مفيش رقم بعدها، نرجع لكل أرقام السطر. */
+        var ki = L[i].indexOf(kw);
+        var after = all.filter(function (n) { return n.i > ki; });
+        var pool = after.length ? after : all;
+        var ns = pool.map(function (n) { return n.v; });
         var v = R.pick === "first" ? ns[0] : ns[ns.length - 1];
         /* الثقة: أعلى لو السطر فيه رقم واحد بس، وأقل لو فيه أرقام كتير */
         var conf = ns.length === 1 ? 0.92 : (ns.length === 2 ? 0.78 : 0.6);
