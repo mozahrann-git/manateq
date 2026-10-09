@@ -192,6 +192,8 @@
     zsum("zcsRaw",   "الرسالة زي ما وصلت — وجنبها اللي قريناه منها");
     zsum("zcsDocs",  p.docs.filter(function (x) { return x[1]; }).length + " من " + p.docs.length + " ورقة متأكّد منها");
 
+    M.countView(p.id);          /* السيلز بيشوف ده في بوابته */
+
     M.growBars();
     M.swap(d.getElementById("pName"));
     M.swap(d.getElementById("pReview"));

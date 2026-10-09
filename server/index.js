@@ -11,9 +11,13 @@ const http = require("http");
 const crypto = require("crypto");
 const cfg = require("./config");
 const Store = require("./store");
+const Portal = require("./portal");
 const { readMessage, learnFrom } = require("./parse");
 
 const store = new Store(cfg.dataDir);
+/* البوابة بتوقّع بمفتاح مستقل عن توكن الإدارة — لو واحد اتسرّب
+   ميجرّش التاني وراه */
+const portal = new Portal(store, cfg.portalSecret);
 
 /* ---------- أدوات ---------- */
 function send(res, code, obj, extra) {
@@ -134,6 +138,36 @@ async function webhookReceive(req, res) {
   }
 }
 
+/* ---------- بوابة السيلز ----------
+   مفيش توكن إدارة هنا. اللينك الموقّع هو الهوية، وبيشوف صاحبه بس. */
+async function portalApi(req, res, url) {
+  const p = url.pathname.replace(/^\/api\/portal\/?/, "");
+
+  /* عدّاد المشاهدات — مفتوح، بيتندَه من صفحات الموقع العامة */
+  if (p === "view" && req.method === "POST") {
+    let b = {};
+    try { b = JSON.parse((await readBody(req, 4096)).toString("utf8") || "{}"); } catch (e) {}
+    portal.view(b.project);
+    return send(res, 204, "");
+  }
+
+  const token = url.searchParams.get("t") ||
+    (req.headers["x-portal-token"] || "");
+  const rep = portal.verify(token);
+  if (!rep) return send(res, 401, { error: "اللينك مش صالح أو اتلغى" });
+
+  if (p === "me" && req.method === "GET") return send(res, 200, portal.me(rep));
+
+  if (p === "submit" && req.method === "POST") {
+    let b = {};
+    try { b = JSON.parse((await readBody(req, 32768)).toString("utf8") || "{}"); }
+    catch (e) { return send(res, 400, { error: "bad json" }); }
+    const r = portal.submit(rep, b);
+    return send(res, r.error ? 409 : 200, r);
+  }
+  send(res, 404, { error: "no such route" });
+}
+
 /* ---------- واجهة الإدارة ---------- */
 async function api(req, res, url) {
   if (!authed(req)) return send(res, 401, { error: "unauthorized" });
@@ -153,7 +187,18 @@ async function api(req, res, url) {
     return send(res, 200, { rows });
   }
 
-  if (req.method === "GET" && p === "reps") return send(res, 200, { rows: store.reps() });
+  if (req.method === "GET" && p === "reps") {
+    /* اللينك بيترجع مع كل سيلز عشان تنسخه وتبعتهوله */
+    const rows = store.reps().map(r => {
+      const o = Object.assign({}, r);
+      o.link = r.rev ? (cfg.portalBase + "/portal.html#" + portal.issue(r.phone, false).token) : "";
+      return o;
+    });
+    return send(res, 200, { rows });
+  }
+  if (req.method === "GET" && p === "subs") {
+    return send(res, 200, { rows: portal.subs({ status: url.searchParams.get("status") || null }) });
+  }
 
   if (req.method === "POST") {
     let body = {};
@@ -167,6 +212,19 @@ async function api(req, res, url) {
     if (p === "rep") {
       const r = store.setRep(body.phone, body);
       return send(res, r ? 200 : 404, { rep: r });
+    }
+    /* لينك البوابة: أول مرة، أو تدوير لو ضاع */
+    if (p === "link") {
+      const t = portal.issue(body.phone, !!body.rotate);
+      if (!t) return send(res, 404, { error: "unknown rep" });
+      return send(res, 200, { link: cfg.portalBase + "/portal.html#" + t.token, rev: t.rev });
+    }
+    if (p === "unlink") {
+      return send(res, portal.revoke(body.phone) ? 200 : 404, { ok: true });
+    }
+    if (p === "subdecide") {
+      const r = portal.decideSub(body.id, body.status, body.who, body.note);
+      return send(res, r ? 200 : 404, { sub: r });
     }
     /* تصحيح بشري: بيتعلّم قاعدة للشخص ده، وبيعيد قراءة الرسالة فوراً */
     if (p === "correct") {
@@ -215,12 +273,14 @@ const server = http.createServer(async (req, res) => {
     if (req.method === "POST") return webhookReceive(req, res);
     return send(res, 405, { error: "method" });
   }
+  if (url.pathname.startsWith("/api/portal")) return portalApi(req, res, url);
   if (url.pathname.startsWith("/api/")) return api(req, res, url);
   send(res, 404, { error: "not found" });
 });
 
 if (require.main === module) {
   cfg.assert();
+  portal.startFlush(10000);
   server.listen(cfg.port, () => {
     console.log("[مناطق] خط الاستقبال شغال على " + cfg.port);
     console.log("        التخزين: " + cfg.dataDir);
@@ -229,4 +289,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { server, store, intake };
+module.exports = { server, store, portal, intake };

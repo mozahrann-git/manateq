@@ -783,6 +783,25 @@
       setTheme(d.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light");
     });
   }
+  /* عدّاد المشاهدات: بنقول لخط الاستقبال إن ملف المشروع ده اتفتح.
+     مفيش هوية ولا كوكي — عدّاد لكل مشروع في اليوم وبس. السيلز
+     بيشوف الرقم ده في بوابته، وهو اللي بيخلّيه يفضل يبعت. */
+  function countView(project) {
+    var api = (w.MQ_API || "").replace(/\/+$/, "");
+    if (!api || !project) return;
+    try {
+      var body = JSON.stringify({ project: project });
+      if (w.navigator && w.navigator.sendBeacon) {
+        w.navigator.sendBeacon(api + "/api/portal/view",
+          new Blob([body], { type: "application/json" }));
+      } else if (w.fetch) {
+        w.fetch(api + "/api/portal/view",
+          { method: "POST", headers: { "content-type": "application/json" },
+            body: body, keepalive: true }).catch(function () {});
+      }
+    } catch (e) {}      /* العدّاد عمره ما يوقّع صفحة */
+  }
+
   function tickClock() {
     var el = d.getElementById("mqClock");
     if (!el) return;
@@ -806,11 +825,12 @@
     ["04", "اقتناص الفرص", "admin-radar.html"],
     ["05", "الخريطة", "admin-map.html"],
     ["06", "محرّر الخريطة", "admin-geo.html"],
-    ["07", "الأخبار", "admin-news.html"],
-    ["08", "البيانات", "admin-data.html"],
-    ["09", "الإحصائيات", "admin-stats.html"],
-    ["10", "المستخدمين", "admin-users.html"],
-    ["11", "الإعدادات", "admin-settings.html"]
+    ["07", "البوابات", "admin-portal.html"],
+    ["08", "الأخبار", "admin-news.html"],
+    ["09", "البيانات", "admin-data.html"],
+    ["10", "الإحصائيات", "admin-stats.html"],
+    ["11", "المستخدمين", "admin-users.html"],
+    ["12", "الإعدادات", "admin-settings.html"]
   ];
   /* على الموبايل القائمة بتتزحلق — نودّي التبويب الحالي قدام عين المستخدم */
   function focusTab(host) {
@@ -889,6 +909,7 @@
     peelInit: peelInit, peelAll: peelAll,
     buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
     tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal,
-    regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit, trail: trail
+    regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit, trail: trail,
+    countView: countView
   };
 })(window, document);

@@ -1245,3 +1245,60 @@ button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
   .bar .wrap .au{order:2}
   .au{font-size:11px;padding:4px 10px}
 }
+
+/* ---------- بوابة الشركاء ---------- */
+.pload{padding:60px 16px;text-align:center;color:var(--muted);font-size:13px}
+.pempty{background:var(--panel);border:1px solid var(--line);padding:40px 22px;text-align:center;margin-top:24px}
+.pempty h2{font-size:19px;margin:9px 0 10px}
+.pempty .note{margin:0 auto;max-width:44ch}
+.phead{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:1px;background:var(--line);
+  border:1px solid var(--line);margin-top:16px}
+.phead > div{background:var(--panel);padding:18px 17px;min-width:0}
+.phead h1{font-size:clamp(20px,4.6vw,27px);margin-top:5px}
+.pdev{font-size:12.5px;color:var(--muted);margin-top:7px}
+.pdev b{color:var(--sig)}
+.pwho{display:flex;align-items:center}
+.pcard{background:var(--panel);border:1px solid var(--line);padding:15px 16px;margin-top:12px}
+.prow{display:flex;align-items:center;gap:11px;padding:12px 13px;background:var(--panel);
+  border:1px solid var(--line);border-inline-start:2px solid var(--sig);text-decoration:none;color:inherit;
+  margin-bottom:6px;opacity:0;animation:rise2 .45s cubic-bezier(.16,1,.3,1) forwards;
+  animation-delay:calc(var(--i,0) * 50ms)}
+.prow:hover{background:var(--raised)}
+.prow .mt2{flex:1 1 auto}
+.prow .mv{flex:0 0 auto;text-align:center;min-width:52px}
+.prow .mv b{display:block;font-size:14px}
+.prow .mv i{display:block;font-style:normal;font-size:9.5px;color:var(--dim);margin-top:2px}
+.pbars{display:grid;gap:9px}
+.pbar{display:flex;align-items:center;gap:10px}
+.pbar .l{flex:0 0 150px;font-size:11.5px;color:var(--muted)}
+.pbar .t{flex:1 1 auto;height:6px;background:var(--raised);min-width:0}
+.pbar .t i{display:block;height:100%;background:var(--sig);transition:width .8s cubic-bezier(.16,1,.3,1)}
+.pbar b{flex:0 0 30px;text-align:end;font-size:12.5px}
+.srow{display:flex;align-items:center;gap:9px;flex-wrap:wrap;background:var(--raised);
+  border:1px solid var(--line);padding:9px 11px;margin-bottom:5px;font-size:12.5px}
+.srow b{font-weight:600}
+.snote{flex:1 1 100%;font-size:11px;color:var(--warn);line-height:18px}
+@media (max-width:720px){
+  .phead{grid-template-columns:minmax(0,1fr)}
+  .pbar .l{flex:0 0 112px;font-size:11px}
+  .prow{gap:8px;padding:11px}
+  .prow .mv{min-width:44px}
+}
+@media (prefers-reduced-motion:reduce){ .prow{animation:none;opacity:1} }
+
+/* ---------- حالة الاتصال بخط الاستقبال ---------- */
+.cstate{border:1px solid var(--line2);background:var(--panel);padding:11px 14px;margin-top:14px;
+  font-size:12.5px;line-height:21px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.cstate b{color:var(--txt)}
+.cstate.on{border-color:var(--up);background:rgba(58,212,131,.06)}
+.cstate.off{border-color:var(--down);background:rgba(255,94,85,.06)}
+.cstate.wait,.cstate.ask{border-color:var(--warn);background:rgba(242,178,51,.06)}
+.cstate code{font-family:var(--mono);font-size:11px;background:var(--raised);padding:1px 6px;direction:ltr;display:inline-block}
+.cstate .fx{margin-inline-start:auto}
+.subrow{background:var(--panel);border:1px solid var(--line);border-inline-start:2px solid var(--line2);
+  padding:12px 13px;margin-bottom:7px}
+.sub1{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.sub1 b{font-size:13px}
+.sub2{font-size:11.5px;color:var(--muted);line-height:19px;margin-top:7px}
+.subrow .acts{margin-top:11px}
+.subrow .acts .b1,.subrow .acts .btn{flex:0 0 auto;padding:6px 14px;font-size:11.5px}

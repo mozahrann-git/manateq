@@ -65,9 +65,11 @@ class Store {
     };
     this._append(this.raw, row);
     if (row.wamid) this.seen.add(row.wamid);
+    /* الرسالة بتتنسب لصاحبها من لحظة وصولها — مش بعد ما تتقرا.
+       لو القارئ وقع، تفضل محسوبة عليه برضه. */
     this.state.msgs[id] = {
       wamid: row.wamid, from: row.from, at: row.at,
-      status: "new", read: null, rep: null
+      status: "new", read: null, rep: row.from || null
     };
     this._save();
     return id;

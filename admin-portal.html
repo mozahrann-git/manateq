@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>البوابات · لوحة مناطق</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#07090C">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' fill='%2307090C'/%3E%3Cpath d='M3 21V8l9-5 9 5v13M9 21v-7h6v7' stroke='%23FF7A1A' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=Noto+Kufi+Arabic:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="assets/css/manateq.css?v=20261010a">
+</head>
+<body class="admin">
+
+<header data-adminhead></header>
+
+<main class="wrap">
+  <div class="cstate off" id="cState">—</div>
+  <div class="gform" id="cForm" hidden style="margin-top:0">
+    <label style="flex:1 1 260px"><span class="lbl">توكن الإدارة</span>
+      <input class="ginp" id="cTok" type="password" autocomplete="off"
+             placeholder="MQ_ADMIN_TOKEN" style="direction:ltr;text-align:left"></label>
+    <button class="b1" type="button" id="cBtn">ادخل</button>
+    <p class="fx">بيتحفظ في الجلسة دي بس — بيروح أول ما تقفل التاب.</p>
+  </div>
+
+  <div id="pWrap" hidden>
+    <div class="opsline" id="pline"></div>
+
+    <section>
+      <div class="rowhead">
+        <h2>طلبات السيلز</h2>
+        <p class="note" id="sCount">—</p>
+      </div>
+      <p class="note" style="margin-bottom:10px">اللي السيلز بيضيفه من بوابته بيقف هنا.
+      محدش بينشر على مناطق من غير ما نشوفه — المصداقية هي كل اللي عندنا.</p>
+      <div id="sList"></div>
+    </section>
+
+    <section>
+      <div class="rowhead">
+        <h2>السيلز وبواباتهم</h2>
+        <p class="note">اعمل بوابة، انسخ اللينك، ابعته على الواتساب. لو لينك ضاع، جدّده والقديم بيبطّل.</p>
+      </div>
+      <div class="tw"><table><thead><tr>
+        <th>السيلز</th><th>المطوّر</th><th>الرقم</th><th>مشاريع</th><th>رسايل</th><th>البوابة</th>
+      </tr></thead><tbody id="rTb"></tbody></table></div>
+    </section>
+  </div>
+</main>
+
+<script src="assets/js/data.js?v=20261010a"></script>
+<script src="assets/js/core.js?v=20261010a"></script>
+<script src="assets/js/api.js?v=20261010a"></script>
+<script src="assets/js/page-portals.js?v=20261010a"></script>
+</body>
+</html>
