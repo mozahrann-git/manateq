@@ -12,12 +12,14 @@ const crypto = require("crypto");
 const cfg = require("./config");
 const Store = require("./store");
 const Portal = require("./portal");
+const FirebaseAuth = require("./auth-firebase");
 const { readMessage, learnFrom } = require("./parse");
 
 const store = new Store(cfg.dataDir);
 /* البوابة بتوقّع بمفتاح مستقل عن توكن الإدارة — لو واحد اتسرّب
    ميجرّش التاني وراه */
 const portal = new Portal(store, cfg.portalSecret);
+const fbAuth = new FirebaseAuth(cfg.fbProject, cfg.adminEmails);
 
 /* ---------- أدوات ---------- */
 function send(res, code, obj, extra) {
@@ -57,11 +59,22 @@ function signedOk(raw, header) {
   const want = "sha256=" + crypto.createHmac("sha256", cfg.appSecret).update(raw).digest("hex");
   return sameSecret(want, header);
 }
-function authed(req) {
+/* الدخول بطريقتين:
+   1. توكن Firebase — ده الطبيعي، الأدمن بيسجّل بإيميله
+   2. MQ_ADMIN_TOKEN — مفتاح طوارئ للسكربتات ولو Firebase وقع
+   الاتنين بيتفحصوا على الخادم. المتصفح مش بيتصدّق على كلامه. */
+async function who(req) {
   const h = req.headers.authorization || "";
   const m = h.match(/^Bearer\s+(.+)$/i);
-  return !!(m && sameSecret(m[1].trim(), cfg.adminToken));
+  if (!m) return null;
+  const t = m[1].trim();
+  if (cfg.adminToken && t.length === cfg.adminToken.length && sameSecret(t, cfg.adminToken)) {
+    return { email: "token", uid: "token", name: "مفتاح طوارئ" };
+  }
+  try { return await fbAuth.verify(t); }
+  catch (e) { lastAuthErr = e.message; return null; }
 }
+let lastAuthErr = "";
 
 /* ---------- استقبال رسالة واحدة ---------- */
 function intake(rec) {
@@ -170,7 +183,9 @@ async function portalApi(req, res, url) {
 
 /* ---------- واجهة الإدارة ---------- */
 async function api(req, res, url) {
-  if (!authed(req)) return send(res, 401, { error: "unauthorized" });
+  const me = await who(req);
+  if (!me) return send(res, 401, { error: "unauthorized", why: lastAuthErr || "محتاج دخول" });
+  if (url.pathname === "/api/me") return send(res, 200, { me });
   const p = url.pathname.replace(/^\/api\//, "");
 
   if (req.method === "GET" && p === "stats") return send(res, 200, store.stats());
@@ -256,6 +271,37 @@ async function api(req, res, url) {
   send(res, 404, { error: "no such route" });
 }
 
+/* ---------- تقديم صفحات الإدارة ----------
+   الإدارة اتشالت من الاستضافة العامة وبقت بتتقدّم من هنا.
+   الصفحة نفسها مفيهاش أي بيانات — الحارس الحقيقي على الواجهة،
+   ومفيش رقم ولا رسالة بتخرج من غير توكن متفحوص. */
+const path = require("path");
+const fs = require("fs");
+const ROOT = path.join(__dirname, "..");
+const TYPES = { ".html": "text/html; charset=utf-8", ".js": "application/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8", ".svg": "image/svg+xml", ".png": "image/png",
+  ".jpg": "image/jpeg", ".webp": "image/webp", ".json": "application/json; charset=utf-8" };
+
+function serveStatic(req, res, rel) {
+  /* المسار بيتنضّف قبل أي حاجة — مفيش ../ بيطلع برّه المجلد */
+  const clean = path.normalize(rel).replace(/^(\.\.[\/\\])+/, "");
+  const file = path.join(ROOT, clean);
+  if (!file.startsWith(ROOT + path.sep)) return send(res, 403, "forbidden");
+  const ext = path.extname(file).toLowerCase();
+  if (!TYPES[ext]) return send(res, 404, "not found");
+  fs.readFile(file, (err, buf) => {
+    if (err) return send(res, 404, "not found");
+    res.writeHead(200, {
+      "content-type": TYPES[ext],
+      "cache-control": ext === ".html" ? "no-store" : "public, max-age=300",
+      "x-content-type-options": "nosniff",
+      "referrer-policy": "no-referrer",
+      "x-frame-options": "DENY"
+    });
+    res.end(buf);
+  });
+}
+
 /* ---------- الخادم ---------- */
 const server = http.createServer(async (req, res) => {
   const url = new URL(req.url, "http://x");
@@ -275,6 +321,14 @@ const server = http.createServer(async (req, res) => {
   }
   if (url.pathname.startsWith("/api/portal")) return portalApi(req, res, url);
   if (url.pathname.startsWith("/api/")) return api(req, res, url);
+
+  /* الإدارة وملفاتها */
+  if (req.method === "GET") {
+    const p = url.pathname;
+    if (p === "/" || p === "/admin") return serveStatic(req, res, "admin.html");
+    if (/^\/admin[a-z0-9-]*\.html$/.test(p)) return serveStatic(req, res, p.slice(1));
+    if (/^\/assets\/[a-z0-9/_.-]+$/i.test(p)) return serveStatic(req, res, p.slice(1));
+  }
   send(res, 404, { error: "not found" });
 });
 

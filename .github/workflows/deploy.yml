@@ -29,11 +29,20 @@ jobs:
           enablement: true
       # الموقع الساكن بس. خط الاستقبال بيشتغل على سيرفر تاني
       # ومينفعش ينشر هنا — ولا حتى ملف بيئة بالغلط.
-      - name: جهّز الموقع من غير الخادم
+      # الموقع العام بس. الإدارة بتتقدّم من الخادم ورا دخول،
+      # وخط الاستقبال على سيرفر تاني — ولا واحد فيهم بيتنشر هنا.
+      - name: جهّز الموقع العام
         run: |
           mkdir -p _site
-          cp -r assets *.html _site/
+          cp -r assets _site/
+          for f in *.html; do
+            case "$f" in admin*|portal.html) continue;; esac
+            cp "$f" _site/
+          done
+          cp portal.html _site/          # بوابة السيلز عامة — اللينك الموقّع هو الحارس
           test ! -e _site/server
+          if ls _site/admin* >/dev/null 2>&1; then echo "صفحة إدارة اتسرّبت للنشر"; exit 1; fi
+          echo "اتنشر:"; ls _site/*.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

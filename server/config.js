@@ -24,6 +24,10 @@ module.exports = {
   /* دخول الإدارة */
   adminToken:  process.env.MQ_ADMIN_TOKEN || "",
 
+  /* Firebase — دخول الإدارة بالإيميل */
+  fbProject: process.env.FB_PROJECT_ID || "",
+  adminEmails: (process.env.MQ_ADMIN_EMAILS || "").split(",").map(x => x.trim()).filter(Boolean),
+
   /* بوابة السيلز — مفتاح مستقل عن توكن الإدارة */
   portalSecret: process.env.MQ_PORTAL_SECRET || "",
   portalBase:   (process.env.MQ_PORTAL_BASE || "https://mozahrann-git.github.io/manateq").replace(/\/+$/, ""),
@@ -40,6 +44,8 @@ module.exports = {
     if (!this.verifyToken) need("WA_VERIFY_TOKEN");
     if (!this.appSecret)   need("WA_APP_SECRET");
     if (!this.adminToken)  need("MQ_ADMIN_TOKEN");
+    if (!this.fbProject)   need("FB_PROJECT_ID");
+    if (!this.adminEmails.length) need("MQ_ADMIN_EMAILS");
     if (!this.portalSecret) need("MQ_PORTAL_SECRET");
     if (this.portalSecret.length < 24) {
       console.error("\n[مناطق] MQ_PORTAL_SECRET قصير. استخدم: openssl rand -hex 32\n");

@@ -6,3 +6,4 @@ node_modules/
 .idea/
 server/data/
 portal-links.csv
+_site/

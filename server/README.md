@@ -55,7 +55,9 @@ export WA_VERIFY_TOKEN="كلمة-من-دماغك"      # هتكتبها في Met
 export WA_APP_SECRET="App Secret من تطبيق Meta"
 export MQ_ADMIN_TOKEN="$(openssl rand -hex 32)"
 export MQ_PORTAL_SECRET="$(openssl rand -hex 32)"   # غير اللي فوق
-export MQ_PORTAL_BASE="https://mozahrann-git.github.io/manateq"
+export MQ_PORTAL_BASE="https://<مشروعك>.web.app"
+export FB_PROJECT_ID="manateq-xxxx"
+export MQ_ADMIN_EMAILS="mjz8381@gmail.com"
 export MQ_DATA_DIR="/var/lib/manateq"       # لازم يبقى على قرص دائم
 export MQ_ORIGIN="https://mozahrann-git.github.io"
 node server/index.js
@@ -133,6 +135,59 @@ curl -X POST https://دومينك/api/correct \
 ## حاجة متعملهاش
 
 في مكتبات بتربط واتساب العادي بالكود من غير API رسمي. **متقربش منها.** بتخالف شروط واتساب والرقم بيتقفل — ولو اتقفل بعد ما تكون جمّعت ٢٣ سيلز، هتخسرهم كلهم مرة واحدة.
+
+---
+
+## دخول الإدارة (Firebase)
+
+الإدارة **اتشالت من الاستضافة العامة**. مبقتش تتفتح من لينك الموقع خالص — بتتقدّم من الخادم ده ورا دخول بإيميلك.
+
+### اللي إنت لازم تعمله
+
+| الخطوة | المكان |
+|---|---|
+| مشروع Firebase جديد | console.firebase.google.com ← Add project |
+| فعّل الدخول بجوجل | Build ← Authentication ← Sign-in method ← Google ← Enable |
+| ضيف تطبيق ويب | ⚙ Project settings ← Your apps ← `</>` |
+| انسخ الـ config | نفس الصفحة — حطّه في `assets/js/firebase-config.js` |
+| صرّح بالنطاقات | Authentication ← Settings ← Authorized domains ← ضيف دومين السيرفر |
+
+وبعدين على السيرفر:
+
+```bash
+export FB_PROJECT_ID="manateq-xxxx"            # نفس projectId
+export MQ_ADMIN_EMAILS="mjz8381@gmail.com"     # مفصولين بفاصلة لو أكتر من واحد
+```
+
+### مين بيحرس مين
+
+الدخول في المتصفح **مريح مش آمن** — أي حد يعدّل الجافاسكريبت عنده ويعدّي. الحارس الحقيقي على الخادم:
+
+1. المتصفح بيسجّل دخول بجوجل وبياخد توكن من Firebase
+2. التوكن بيتبعت مع كل نداء
+3. **الخادم بيفك التوكن ويتأكد من توقيعه بمفاتيح جوجل العامة**، وبيتأكد إنه لمشروعك هو، ومش منتهي، والإيميل متأكَّد منه وموجود في `MQ_ADMIN_EMAILS`
+
+فالصفحة ممكن تتفتح — بس مش هيخرج منها رقم واحد من غير توكن سليم.
+
+اتفحص بـ 31 حالة: توقيع مزوّر، توكن بمفتاح تاني، `alg=none`، توكن لمشروع تاني، منتهي، إيميل مش متأكَّد منه، إيميل مش مسموح، وخروج من المجلد بـ `../`.
+
+`MQ_ADMIN_TOKEN` فاضل شغّال كمفتاح طوارئ للسكربتات ولو Firebase وقع.
+
+---
+
+## الموقع العام على Firebase Hosting
+
+```bash
+npm i -g firebase-tools
+firebase login
+firebase use --add            # اختار مشروعك
+./build-site.sh               # بيجهّز _site — الإدارة مستحيل تدخله
+firebase deploy --only hosting
+```
+
+بيطلّعلك لينك `https://<مشروعك>.web.app`.
+
+`build-site.sh` بيرفض يكمّل لو أي صفحة إدارة لقت طريقها لـ `_site`، ونفس الفحص في نشر GitHub Pages.
 
 ---
 

@@ -1302,3 +1302,17 @@ button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
 .sub2{font-size:11.5px;color:var(--muted);line-height:19px;margin-top:7px}
 .subrow .acts{margin-top:11px}
 .subrow .acts .b1,.subrow .acts .btn{flex:0 0 auto;padding:6px 14px;font-size:11.5px}
+
+/* ---------- حارس لوحة الإدارة ---------- */
+.agate{position:fixed;inset:0;z-index:300;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;padding:20px}
+.abox{background:var(--panel);border:1px solid var(--line2);max-width:380px;width:100%;
+  padding:30px 26px;text-align:center;position:relative}
+.abox::before{content:"";position:absolute;top:-1px;right:-1px;width:18px;height:18px;
+  border:2px solid var(--sig);border-left:0;border-bottom:0}
+.abox h2{font-size:19px;margin:8px 0 0}
+.abox .gnote{margin-top:10px}
+.abox .b1{margin-top:18px;width:100%}
+.abox code{font-family:var(--mono);font-size:11px;background:var(--raised);padding:1px 5px;
+  direction:ltr;display:inline-block}
+.abox svg{display:block;margin-inline:auto}

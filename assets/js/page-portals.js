@@ -8,9 +8,6 @@
   M.buildAdminHeader("admin-portal.html");
 
   var API = (w.MQ_API || "").replace(/\/+$/, "");
-  var KEY = "mq_admin_token";
-  var TOK = "";
-  try { TOK = w.sessionStorage.getItem(KEY) || ""; } catch (e) {}
   var REPS = [], SUBS = [];
 
   var $ = function (id) { return d.getElementById(id); };
@@ -25,13 +22,16 @@
     if (m < 1440) return "من " + Math.round(m / 60) + " ساعة";
     return "من " + Math.round(m / 1440) + " يوم";
   }
+  /* التوكن بييجي من Firebase مع كل نداء — ومبيتخزّنش في أي حتة */
   function api(path, opts) {
     opts = opts || {};
-    return w.fetch(API + "/api/" + path, {
-      method: opts.method || "GET",
-      headers: Object.assign({ authorization: "Bearer " + TOK },
-        opts.body ? { "content-type": "application/json" } : {}),
-      body: opts.body ? JSON.stringify(opts.body) : undefined
+    return w.MQAuth.token().then(function (tok) {
+      return w.fetch(API + "/api/" + path, {
+        method: opts.method || "GET",
+        headers: Object.assign({ authorization: "Bearer " + tok },
+          opts.body ? { "content-type": "application/json" } : {}),
+        body: opts.body ? JSON.stringify(opts.body) : undefined
+      });
     }).then(function (r) {
       return r.json().catch(function () { return {}; })
         .then(function (j) { return { status: r.status, json: j }; });
@@ -46,38 +46,20 @@
   }
   function connect() {
     if (!API) {
-      conn("off", "<b>خط الاستقبال لسه متحطّش.</b> افتح <code>assets/js/api.js</code> وحطّ دومين السيرفر، " +
-        "وبعدين ارجع هنا.");
+      conn("off", "<b>خط الاستقبال لسه متحطّش.</b> افتح <code>assets/js/api.js</code> وحطّ دومين السيرفر.");
       return;
     }
-    if (!TOK) { conn("ask", ""); askToken(); return; }
     conn("wait", "بنوصل…");
     api("stats").then(function (r) {
       if (r.status === 401) {
-        TOK = ""; try { w.sessionStorage.removeItem(KEY); } catch (e) {}
-        conn("off", "<b>التوكن مرفوض.</b>"); askToken(); return;
+        conn("off", "<b>السيرفر رفض دخولك.</b> " + (r.json && r.json.why ? r.json.why : "") +
+          " — اتأكد إن إيميلك في <code>MQ_ADMIN_EMAILS</code>.");
+        return;
       }
       if (r.status !== 200) { conn("off", "<b>السيرفر مش بيرد.</b>"); return; }
-      conn("on", '<b class="up">متصل</b> · ' + r.json.total + " رسالة · " + r.json.reps + " سيلز" +
-        ' <button class="fx" type="button" id="cOut">اقفل</button>');
-      $("cOut").onclick = function () {
-        TOK = ""; try { w.sessionStorage.removeItem(KEY); } catch (e) {}
-        w.location.reload();
-      };
+      conn("on", '<b class="up">متصل</b> · ' + r.json.total + " رسالة · " + r.json.reps + " سيلز");
       load();
     }).catch(function () { conn("off", "<b>مش قادر أوصل للسيرفر.</b> اتأكد إنه شغّال."); });
-  }
-  function askToken() {
-    $("cForm").hidden = false;
-    $("cBtn").onclick = function () {
-      var v = $("cTok").value.trim();
-      if (v.length < 24) { $("cTok").classList.add("bad");
-        setTimeout(function () { $("cTok").classList.remove("bad"); }, 800); return; }
-      TOK = v;
-      try { w.sessionStorage.setItem(KEY, v); } catch (e) {}
-      $("cForm").hidden = true; $("cTok").value = "";
-      connect();
-    };
   }
 
   /* ---------- التحميل ---------- */
@@ -195,6 +177,9 @@
     setTimeout(function () { el.classList.remove("in"); setTimeout(function () { el.remove(); }, 300); }, 3600);
   }
 
-  connect();
+  /* مش بنحاول نجيب أي بيانات قبل ما الحارس يعدّي */
+  (w.MQAuth ? w.MQAuth.ready() : Promise.resolve(null)).then(function (u) {
+    if (u) connect();
+  });
   M.markSections(); M.reveal();
 })(window, document);
