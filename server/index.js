@@ -322,11 +322,13 @@ const server = http.createServer(async (req, res) => {
   if (url.pathname.startsWith("/api/portal")) return portalApi(req, res, url);
   if (url.pathname.startsWith("/api/")) return api(req, res, url);
 
-  /* الإدارة وملفاتها */
+  /* الموقع كله من هنا: الصفحات العامة، والبوابة، والإدارة ورا دخول.
+     مكان واحد ولينك واحد — مش محتاج تنشر في حتتين. */
   if (req.method === "GET") {
     const p = url.pathname;
-    if (p === "/" || p === "/admin") return serveStatic(req, res, "admin.html");
-    if (/^\/admin[a-z0-9-]*\.html$/.test(p)) return serveStatic(req, res, p.slice(1));
+    if (p === "/") return serveStatic(req, res, "index.html");
+    if (p === "/admin") return serveStatic(req, res, "admin.html");
+    if (/^\/[a-z0-9-]+\.html$/i.test(p)) return serveStatic(req, res, p.slice(1));
     if (/^\/assets\/[a-z0-9/_.-]+$/i.test(p)) return serveStatic(req, res, p.slice(1));
   }
   send(res, 404, { error: "not found" });
