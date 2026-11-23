@@ -66,11 +66,35 @@
     });
   }
 
+  /* ----- امتى الحارس بيقفل؟ -----
+     الحارس بيحمي بيانات حقيقية، مش نسخة تجريبية. طول ما مفيش سيرفر
+     مربوط، اللوحة دي شغالة على بيانات متسلّمة مع الكود — مفيش رقم
+     عميل ولا رسالة ولا تليفون سيلز. قفلها ساعتها بيمنعني أنا وبس،
+     وبيحمي لا حاجة. أول ما السيرفر يتربط، الحارس بيشتغل غصب. */
+  var LIVE = !!(w.MQ_API || "").trim();
+
+  function demoBanner() {
+    if (d.getElementById("mqDemo")) return;
+    var b = d.createElement("div");
+    b.id = "mqDemo"; b.className = "ademo";
+    b.innerHTML = '<b>وضع تجريبي</b> — الأرقام اللي قدامك مش حقيقية، ' +
+      'والصفحة دي مفتوحة لأي حد يعرف لينكها. الدخول بيتفعّل لوحده أول ما تربط السيرفر.';
+    var m = d.querySelector("main");
+    if (m) m.insertBefore(b, m.firstChild); else d.body.appendChild(b);
+  }
+
   READY = new Promise(function (resolve) {
     if (!CFG.apiKey || !CFG.projectId) {
+      if (!LIVE) {
+        /* تجريبي ومفيش سيرفر: افتح، وقول للي فاتح إن ده تجريبي */
+        demoBanner();
+        resolve(null);
+        return;
+      }
+      /* فيه سيرفر بس الدخول متظبّطش → اقفل. مينفعش نسيب بيانات حقيقية مكشوفة */
       screen("الدخول لسه متظبّطش",
-        'افتح <code>assets/js/firebase-config.js</code> وحطّ إعدادات مشروعك من Firebase Console. ' +
-        'الخطوات بالترتيب في <code>server/README.md</code>.');
+        'السيرفر متربط بس Firebase لأ. افتح <code>assets/js/firebase-config.js</code> ' +
+        'وحطّ إعدادات مشروعك. الخطوات في <code>server/README.md</code>.');
       resolve(null);
       return;
     }

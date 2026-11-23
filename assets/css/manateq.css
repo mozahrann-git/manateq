@@ -1316,3 +1316,9 @@ button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
 .abox code{font-family:var(--mono);font-size:11px;background:var(--raised);padding:1px 5px;
   direction:ltr;display:inline-block}
 .abox svg{display:block;margin-inline:auto}
+
+/* شريط «وضع تجريبي» — بيبان لما الإدارة مفتوحة من غير سيرفر */
+.ademo{background:rgba(242,178,51,.09);border:1px solid var(--warn);
+  border-inline-start-width:2px;padding:10px 13px;margin-top:14px;
+  font-size:12.5px;line-height:1.7;color:var(--muted)}
+.ademo b{color:var(--warn)}
