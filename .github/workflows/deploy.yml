@@ -16,22 +16,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  # شغلانتين منفصلين: واحدة بتجهّز وترفع، والتانية بتنشر بعد ما الرفع
+  # يخلص خالص. لما كانوا في شغلانة واحدة، النشر كان ساعات بيدوّر على
+  # الملف المرفوع قبل ما GitHub يكون شافه («Found 0 artifact(s)»).
+  build:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
         with:
-          # يفعّل Pages تلقائياً لو لسه مش مفعّل في الريبو
           enablement: true
-      # الموقع الساكن بس. خط الاستقبال بيشتغل على سيرفر تاني
-      # ومينفعش ينشر هنا — ولا حتى ملف بيئة بالغلط.
-      # الموقع العام بس. الإدارة بتتقدّم من الخادم ورا دخول،
-      # وخط الاستقبال على سيرفر تاني — ولا واحد فيهم بيتنشر هنا.
-      - name: جهّز الموقع العام
+      - name: جهّز الموقع
         run: |
           mkdir -p _site
           cp -r assets _site/
@@ -49,5 +44,13 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v4
