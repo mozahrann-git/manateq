@@ -783,6 +783,13 @@
       setTheme(d.documentElement.getAttribute("data-theme") === "light" ? "dark" : "light");
     });
   }
+  /* رقم + وحدته. الرقم بس هو اللي بيتعزل شمال-ليمين؛ الوحدة («م²»، «ج»)
+     بتفضل في سطر العربي. لو السطر كله اتعمل ltr، الوحدات بتلزق في
+     الرقم الغلط وتتقرا بالعكس. */
+  function qty(v, unit) {
+    return '<span class="a3-q"><bdi class="n">' + v + "</bdi>" + (unit ? " " + unit : "") + "</span>";
+  }
+
   /* عدّاد المشاهدات: بنقول لخط الاستقبال إن ملف المشروع ده اتفتح.
      مفيش هوية ولا كوكي — عدّاد لكل مشروع في اليوم وبس. السيلز
      بيشوف الرقم ده في بوابته، وهو اللي بيخلّيه يفضل يبعت. */
@@ -818,19 +825,12 @@
 
 
   /* ---------- شريط لوحة التشغيل ---------- */
+  /* الإدارة 3 أماكن بس. كل حاجة تانية يا إما جوه واحدة منهم،
+     يا إما اتشالت لأنها كانت بتحلّل بيانات لسه مش موجودة. */
   var ANAV = [
-    ["01", "خط الإنتاج", "admin.html"],
-    ["02", "الاستقبال", "admin-inbox.html"],
-    ["03", "الأرقام والجروبات", "admin-directory.html"],
-    ["04", "اقتناص الفرص", "admin-radar.html"],
-    ["05", "الخريطة", "admin-map.html"],
-    ["06", "محرّر الخريطة", "admin-geo.html"],
-    ["07", "البوابات", "admin-portal.html"],
-    ["08", "الأخبار", "admin-news.html"],
-    ["09", "البيانات", "admin-data.html"],
-    ["10", "الإحصائيات", "admin-stats.html"],
-    ["11", "المستخدمين", "admin-users.html"],
-    ["12", "الإعدادات", "admin-settings.html"]
+    ["الوارد",  "admin.html"],
+    ["السيلز",  "admin-reps.html"],
+    ["المنشور", "admin-live.html"]
   ];
   /* على الموبايل القائمة بتتزحلق — نودّي التبويب الحالي قدام عين المستخدم */
   function focusTab(host) {
@@ -848,18 +848,16 @@
     if (!host) return;
     host.className = "bar admin";
     host.innerHTML = '<div class="wrap">' +
-      '<span class="tick"><a href="index.html" class="tb-x" style="margin:0 9px 0 0">الموقع ←</a>' +
-      '<span class="bl"></span><span id="mqClock" class="n">00:00:00</span></span>' +
-      '<nav class="tabs">' + ANAV.map(function (x) {
-        return '<a href="' + x[2] + '"' + (x[2] === active ? ' class="on" aria-current="page"' : '') +
-          '><i class="c">' + x[0] + '</i> ' + x[1] + '</a>';
+      '<a href="index.html" class="a3-back">الموقع ←</a>' +
+      '<nav class="tabs a3-tabs">' + ANAV.map(function (x) {
+        return '<a href="' + x[1] + '"' + (x[1] === active ? ' class="on" aria-current="page"' : '') +
+          '>' + x[0] + '</a>';
       }).join("") + '</nav>' +
       '<a class="brand" href="admin.html"><svg width="19" height="19" viewBox="0 0 24 24" aria-hidden="true">' +
       '<path d="M3 21V8l9-5 9 5v13" stroke="#FF7A1A" stroke-width="2.6" fill="none"/>' +
       '<path d="M9 21v-7h6v7" stroke="#FF7A1A" stroke-width="2.6" fill="none"/></svg>' +
       '<span class="bn">Manateq<i>operations</i></span></a>' +
       '</div>';
-    tickClock();
     focusTab(host);
   }
 
@@ -910,6 +908,6 @@
     buildHeader: buildHeader, buildAdminHeader: buildAdminHeader, markSections: markSections, renderProof: renderProof,
     tier: tier, setTier: setTier, can: can, val: val, gateModal: gateModal,
     regionModal: regionModal, REGPAGES: REGPAGES, zoomInit: zoomInit, trail: trail,
-    countView: countView
+    countView: countView, qty: qty
   };
 })(window, document);

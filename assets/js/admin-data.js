@@ -169,9 +169,28 @@
     { at:"النهاردة 11:04", who:"محمد زهران", act:"حوّل لفرصة", on:"M-5505", note:"أقل من متوسط الهضبة الوسطى 14%" }
   ];
 
+  /* كام يوم عدّى من آخر رسالة من كل سيلز — ده اللي بيقولك مين سكت.
+     (تجريبي: لما السيرفر يتربط ده بيتحسب من الرسايل الحقيقية) */
+  var LAST = { "R-001":0, "R-002":0, "R-003":0, "R-004":2, "R-005":0, "R-006":0, "R-007":0,
+    "R-008":9, "R-009":1, "R-010":0, "R-011":0, "R-012":3, "R-013":1, "R-014":14,
+    "R-015":2, "R-016":6, "R-017":1, "R-018":0, "R-019":21, "R-020":1 };
+  REPS.forEach(function (r) { r.last = LAST[r.id] === undefined ? 0 : LAST[r.id]; });
+
+  /* مشاريع طلب السيلز إضافتها من بوابته — بتستنى موافقتك */
+  var SUBS = [
+    { id:"S-1001", rep:"R-001", name:"Xland Marina", dist:"المقطم الجديد", del:"2028",
+      note:"المرحلة الأولى — شقق من 95 لـ 180 م²", at:"امبارح 18:20" }
+  ];
+
+  /* رقم بعت ومش متسجّل عندنا — لازم تعرّفه */
+  var UNKNOWN = [
+    { phone:"+20 114 902 3318", name:"Ahmed | Palm Hills", at:"النهاردة 08:41",
+      first:"Palm Hills New Cairo — 3BR 165 sqm — 12,450,000 EGP — DP 5% over 9 years" }
+  ];
+
   LINE.reps = REPS.length;
   LINE.groups = REPS.reduce(function (a, r) { return a + r.projects.length; }, 0);
 
   w.MQ_ADMIN = { LINE: LINE, REPS: REPS, QUEUE: QUEUE, HISTORY: HISTORY,
-                 POSTS: POSTS, repostOf: repostOf, LOG: LOG };
+                 POSTS: POSTS, repostOf: repostOf, LOG: LOG, SUBS: SUBS, UNKNOWN: UNKNOWN };
 })(window);

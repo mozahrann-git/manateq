@@ -269,9 +269,19 @@
     return { lvl: "جديد", c: "dn", pct: Math.min(40, seen * 8), auto: false };
   }
 
+  /* «مالهاش لازمة»: تهنئة أو رد أو صورة من غير كلام.
+     مش كفاية إن الرسالة مفيهاش سعر ولا مساحة — إعلان وحدة من غير سعر
+     («السعر حسب الدور يرجى التواصل») لسه وحدة، ومحتاج تسأل على سعرها
+     مش تخبّيها. فبنبص كمان على أي كلمة بتقول إن فيه وحدة. */
+  var UNITISH = /(غرف|غرفه|اوض|دور|م²|م2|متر|مساح|تسليم|استلام|مقدم|قسط|وحد|شق|فيلا|دوبلكس|تاون|توين|بنتهاوس|شاليه|فيو|كمبوند|مشروع|مرحل[ةه] (اولي|تاني|ثالث)|residence|tower|compound|villa|apartment|duplex|sqm|bua|delivery|\bdp\b)/i;
+  function junk(raw, fields) {
+    if (fields && (fields.price || fields.area)) return false;
+    return !UNITISH.test(norm(raw || ""));
+  }
+
   w.MQParse = {
     norm: norm, lines: lines, read: read, quality: quality, classify: classify,
     detect: detect, fingerprint: fingerprint, learn: learn, maturity: maturity,
-    RULES: RULES
+    junk: junk, RULES: RULES
   };
 })(window);

@@ -23,7 +23,7 @@ function readMessage(text, profile) {
   /* «مالهاش لازمة»: تهنئة، رد، صورة من غير بيانات. الفيصل بسيط —
      رسالة من غير سعر ولا مساحة مفيهاش وحدة أصلاً. دي بتتسجّل في
      الخام زي أي حاجة تانية، بس مبتاخدش وقت بني آدم. */
-  const junk = !r.fields.price && !r.fields.area;
+  const junk = P.junk(text, r.fields);   /* نفس القاعدة اللي في المتصفح */
 
   /* الاعتماد الآلي: النموذج ناضج + القراءة نضيفة + مفيش حقل ناقص */
   const auto = !!(mat.auto && q.score >= 8 && !q.missing.length && !junk);

@@ -1322,3 +1322,123 @@ button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
   border-inline-start-width:2px;padding:10px 13px;margin-top:14px;
   font-size:12.5px;line-height:1.7;color:var(--muted)}
 .ademo b{color:var(--warn)}
+
+/* ======================================================================
+   الإدارة المبسّطة — 3 صفحات، قايمة واحدة في كل صفحة، زرار واحد واضح.
+   كل الكلاسات بتبدأ بـ a3- عشان متتخانقش مع القديم.
+   ====================================================================== */
+.a3-back{font-size:12px;color:var(--muted);text-decoration:none;flex:0 0 auto;
+  padding:6px 0;margin-inline-end:4px}
+.a3-back:hover{color:var(--sig)}
+.bar.admin .a3-tabs{gap:4px}
+.bar.admin .a3-tabs a{font-size:13.5px;padding:7px 14px;font-weight:600}
+@media (max-width:980px){
+  .bar.admin .a3-tabs{justify-content:space-between}
+  .bar.admin .a3-tabs a{flex:1 1 0;text-align:center;padding:8px 6px}
+}
+
+.a3{max-width:760px;margin:0 auto;padding-block:22px 70px}
+.a3-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.a3-h h1{font-family:var(--disp);font-size:24px;font-weight:800;margin:0;letter-spacing:-.015em}
+.a3-sum{font-size:13px;color:var(--muted);margin:6px 0 0}
+.a3-sum b{color:var(--txt);font-weight:700}
+.a3-sum .wrn{color:var(--warn)}
+
+/* أي حاجة محتاجة قرارك دلوقتي */
+.a3-alert{background:var(--panel);border:1px solid var(--warn);border-inline-start-width:3px;
+  padding:13px 14px;margin-top:16px}
+.a3-alert h3{font-size:13.5px;font-weight:700;margin:0;color:var(--warn)}
+.a3-alert p{font-size:12.5px;color:var(--muted);margin:5px 0 0;line-height:1.7}
+.a3-alert .q{font-family:var(--mono);font-size:11.5px;color:var(--txt);background:var(--raised);
+  padding:8px 10px;margin-top:9px;direction:ltr;text-align:start;white-space:pre-wrap;word-break:break-word}
+
+/* القايمة */
+.a3-list{margin-top:16px;display:flex;flex-direction:column;gap:8px}
+.a3-card{background:var(--panel);border:1px solid var(--line);transition:border-color .2s}
+.a3-card.open{border-color:var(--line2)}
+.a3-card.gone{opacity:0;transform:translateX(-14px);transition:opacity .3s,transform .3s}
+.a3-row{display:flex;align-items:flex-start;gap:12px;padding:14px 15px;cursor:pointer;
+  background:none;border:0;width:100%;text-align:start;color:inherit;font:inherit}
+.a3-row:focus-visible{outline:2px solid var(--sig);outline-offset:-2px}
+.a3-main{flex:1 1 auto;min-width:0}
+.a3-who{font-size:12px;color:var(--muted);display:flex;gap:6px;flex-wrap:wrap;align-items:baseline}
+.a3-who b{color:var(--txt);font-weight:700;font-size:13px}
+.a3-what{font-size:14px;font-weight:600;margin-top:4px;line-height:1.55}
+.a3-what .n{font-family:var(--mono);font-weight:700}
+.a3-side{flex:0 0 auto;text-align:end;font-size:11px;color:var(--dim);white-space:nowrap}
+
+/* حالة صغيرة جنب الاسم */
+.a3-pill{display:inline-block;font-size:10.5px;font-weight:700;padding:2px 8px;line-height:1.6;
+  border:1px solid currentColor;white-space:nowrap}
+.a3-pill.ok{color:var(--up)} .a3-pill.wrn{color:var(--warn)} .a3-pill.bad{color:var(--down)}
+.a3-pill.mut{color:var(--dim)}
+
+/* الأزرار */
+.a3-acts{display:flex;gap:8px;padding:0 15px 14px;flex-wrap:wrap}
+.a3-btn{font-family:var(--body);font-size:13px;font-weight:700;padding:10px 18px;min-height:42px;
+  border:1px solid var(--line2);background:var(--raised);color:var(--txt);cursor:pointer}
+.a3-btn:hover{border-color:var(--sig)}
+.a3-btn.go{background:var(--sig);border-color:var(--sig);color:#111}
+.a3-btn.go:hover{filter:brightness(1.08)}
+.a3-btn.ghost{background:none}
+.a3-btn:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
+
+/* التفاصيل — بتظهر بس لما تضغط */
+.a3-more{border-top:1px solid var(--line);padding:14px 15px;display:none}
+.a3-card.open .a3-more{display:block}
+.a3-lbl{font-size:11px;color:var(--dim);margin:0 0 7px}
+.a3-raw{font-size:12.5px;line-height:1.85;white-space:pre-wrap;background:var(--raised);
+  padding:11px 12px;border-inline-start:2px solid var(--line2);color:var(--muted);word-break:break-word}
+.a3-fields{margin-top:14px;display:flex;flex-direction:column}
+.a3-f{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+.a3-f:last-child{border-bottom:0}
+.a3-f .k{flex:0 0 112px;color:var(--muted);font-size:12.5px}
+.a3-f .v{flex:1 1 auto;min-width:0;font-weight:600}
+.a3-f .v.n{font-family:var(--mono)}
+.a3-f.miss .v{color:var(--warn);font-weight:400}
+.a3-f .fix{flex:0 0 auto;background:none;border:0;color:var(--sig);font-family:var(--body);
+  font-size:12px;cursor:pointer;padding:6px 2px}
+.a3-f input{flex:1 1 auto;min-width:0;background:var(--raised);border:1px solid var(--sig);
+  color:var(--txt);font-family:var(--mono);font-size:13px;padding:7px 9px}
+.a3-learn{font-size:12px;color:var(--up);margin-top:10px}
+
+/* المرفوض لوحده */
+.a3-fold{margin-top:14px;font-size:12.5px;color:var(--dim);display:flex;align-items:center;gap:8px}
+.a3-fold button{background:none;border:0;color:var(--muted);font-family:var(--body);font-size:12.5px;
+  text-decoration:underline;cursor:pointer;padding:4px 0}
+
+/* فلاتر صغيرة */
+.a3-seg{display:flex;gap:6px;margin-top:16px;flex-wrap:wrap}
+.a3-seg button{font-family:var(--body);font-size:12.5px;padding:7px 14px;background:var(--panel);
+  border:1px solid var(--line);color:var(--muted);cursor:pointer}
+.a3-seg button[aria-pressed="true"]{border-color:var(--sig);color:var(--txt);background:var(--raised)}
+.a3-search{width:100%;margin-top:12px;background:var(--panel);border:1px solid var(--line);
+  color:var(--txt);font-family:var(--body);font-size:14px;padding:11px 13px}
+.a3-search:focus{outline:none;border-color:var(--sig)}
+
+.a3-kv{display:flex;flex-direction:column;gap:2px}
+.a3-kv div{display:flex;gap:10px;font-size:13px;padding:6px 0}
+.a3-kv span{flex:0 0 112px;color:var(--muted);font-size:12.5px}
+.a3-kv b{font-weight:600;min-width:0;word-break:break-word}
+.a3-note{font-size:12px;color:var(--dim);margin-top:10px;line-height:1.7}
+.a3-empty{text-align:center;padding:40px 16px;color:var(--muted);font-size:13.5px;
+  background:var(--panel);border:1px dashed var(--line2);margin-top:16px}
+.a3-empty b{display:block;color:var(--up);font-size:16px;margin-bottom:4px}
+.a3-foot{margin-top:28px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px}
+.a3-foot a{color:var(--sig);text-decoration:none}
+.a3-foot a:hover{text-decoration:underline}
+
+/* شريط «وضع تجريبي» — أصغر هنا */
+.a3 .ademo{margin-top:0;margin-bottom:16px;font-size:11.5px;padding:8px 12px}
+
+@media (max-width:520px){
+  .a3-h h1{font-size:21px}
+  .a3-f .k,.a3-kv span{flex-basis:92px}
+  .a3-acts .a3-btn{flex:1 1 0}
+}
+@media (prefers-reduced-motion:reduce){ .a3-card.gone{transition:none} }
+.a3-nums{display:block;margin-top:5px;font-size:15px;font-weight:700}
+.a3-q{white-space:nowrap}
+.a3-q .n{font-weight:700}
+.a3-dot{color:var(--dim);margin-inline:4px;font-weight:400}
+.a3-f .v .a3-q .n{font-weight:600}

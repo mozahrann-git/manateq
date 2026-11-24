@@ -5,7 +5,7 @@
 (function (w, d) {
   "use strict";
   var M = w.MQ, D = M.D, f0 = M.f0;
-  M.buildAdminHeader("admin-geo.html");
+  M.buildAdminHeader("admin-live.html");
 
   var KEY = "mq_geo";
   var cur = Object.keys(D.REGIONS)[0];
