@@ -38,7 +38,7 @@
     { f: "garage",   label: "الجراج",          kw: ["جراج","الجراج","garage","parking","موقف"], min: 20000, pick: "last" },
     { f: "maint",    label: "وديعة الصيانة",   kw: ["وديعه الصيانه","الصيانه","maintenance","وديعه"], min: 1, pick: "last" },
     { f: "club",     label: "اشتراك النادي",   kw: ["النادي","اشتراك","club"], min: 1000, pick: "last" },
-    { f: "downPct",  label: "نسبة المقدّم",    kw: ["مقدم","المقدم","دفعه اولي","down payment","dp","د.م"], min: 1, max: 100, pct: true, pick: "first" },
+    { f: "downPct",  label: "نسبة المقدّم",    kw: ["مقدم","المقدم","دفعه اولي","بدايه","down payment","dp","د.م"], min: 1, max: 100, pct: true, pick: "first" },
     { f: "down",     label: "قيمة المقدّم",    kw: ["مقدم","المقدم","دفعه اولي","down payment","dp"], min: 50000, pick: "last" },
     { f: "months",   label: "عدد الشهور",      kw: ["شهر","شهور","اقساط","قسط","months"], min: 6, max: 180, pick: "last" },
     { f: "years",    label: "عدد السنين",      kw: ["سنه","سنين","سنوات","years"], min: 1, max: 15, pick: "last" },
@@ -102,8 +102,17 @@
           return n.v >= (R.min || 0) && (!R.max || n.v <= R.max);
         });
         if (!all.length) continue;
-        /* النسب لازم يبقى جنبها % */
-        if (R.pct && L[i].indexOf("%") === -1) continue;
+        /* النسب لازم يبقى جنبها % — والرقم اللي لازق فيه الـ% هو النسبة:
+           «10% مقدم على 60 شهر» المقدّم 10 مش 60 */
+        if (R.pct) {
+          if (L[i].indexOf("%") === -1) continue;
+          var li = L[i];
+          var tagged = all.filter(function (n) {
+            var end = n.i + String(n.v).length, pre = li.slice(Math.max(0, n.i - 2), n.i);
+            return /^\s?%/.test(li.slice(end, end + 2)) || /%\s?$/.test(pre);
+          });
+          if (tagged.length) all = tagged;
+        }
         /* الرقم اللي بعد الكلمة الدالة هو المقصود — «Point 90 — مساحه 120 م»
            مساحتها 120 مش 90. لو مفيش رقم بعدها، نرجع لكل أرقام السطر. */
         var ki = L[i].indexOf(kw);
@@ -221,7 +230,7 @@
         why: "رابع طرح لنفس الوحدة من نفس الجروب خلال " + ctx.repost.days + " يوم"
           .replace("رابع", ctx.repost.times === 3 ? "تالت" : ctx.repost.times === 4 ? "رابع" : ctx.repost.times + " طرح") +
           (tr ? " · السعر " + (tr < 0 ? "نزل " : "طلع ") + Math.abs(tr).toFixed(1) + "% من أول طرح" : "") +
-          (tr < -2 ? " — فرصة تفاوض حقيقية" : " — الوحدة مش بتتباع") });
+          (tr < -2 ? " — فيه مجال تفاوض حقيقي" : " — الوحدة مش بتتباع") });
     }
     if (ctx.matches && ctx.matches.length) hits.push({ k: "match", t: "عميل مستني", c: "up",
       why: ctx.matches.length + " طلب مسجّل بينطبق على الوحدة دي" });

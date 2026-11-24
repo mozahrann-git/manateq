@@ -1442,3 +1442,19 @@ button.au:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
 .a3-q .n{font-weight:700}
 .a3-dot{color:var(--dim);margin-inline:4px;font-weight:400}
 .a3-f .v .a3-q .n{font-weight:600}
+
+/* الوارد: اللي مناطق هتقوله عن الرسالة */
+.a3-say{display:flex;gap:8px;align-items:flex-start;margin-top:8px;font-size:12.5px;line-height:1.6;color:var(--muted);font-weight:400}
+.a3-say .a3-pill{flex:0 0 auto;margin-top:1px}
+.a3-say>span:last-child{min-width:0}
+.a3-say.big{font-size:13.5px;color:var(--txt)}
+.a3-pill.news{color:var(--sig)}
+.a3-sel{flex:1 1 auto;min-width:0;font-family:var(--body);font-size:13px;padding:7px 8px;
+  background:var(--raised);color:var(--txt);border:1px solid var(--line2)}
+.a3-sig{margin:10px 0 0;padding:0 18px 0 0;font-size:12.5px;line-height:1.7;color:var(--muted)}
+.a3-sig b{color:var(--txt)}
+.a3-chk{display:flex;gap:8px;align-items:center;font-size:13px;cursor:pointer;padding:4px 0 8px}
+.a3-chk input{width:18px;height:18px;accent-color:var(--sig)}
+.a3-news{width:100%;box-sizing:border-box;font-family:var(--body);font-size:13.5px;line-height:1.7;
+  padding:9px 11px;background:var(--raised);color:var(--txt);border:1px solid var(--line2);resize:vertical}
+.a3-news:focus,.a3-sel:focus{outline:2px solid var(--sig);outline-offset:-1px}

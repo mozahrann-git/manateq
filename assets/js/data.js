@@ -567,6 +567,25 @@
   };
 })(window);
 
+/* الأخبار اللي اتنشرت من الوارد — بتظهر في النبض فوق الباقي.
+   (في التجريبي بتعيش في الجلسة دي بس؛ مع السيرفر بتيجي منه.) */
+(function (w) {
+  try {
+    var list = JSON.parse(w.sessionStorage.getItem("mq_news_new") || "[]");
+    var E = w.MQ_DATA.EVENTS, R = w.MQ_DATA.REGIONS;
+    var esc = function (s) { return String(s).replace(/[&<>"]/g, function (c) {
+      return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+    list.slice().reverse().forEach(function (n) {
+      if (!n || !n.text || !R[n.r]) return;
+      var t = String(n.text).split(/([A-Za-z0-9][A-Za-z0-9 .,'&\-]*[A-Za-z0-9])/).map(function (x, i) {
+        return i % 2 ? "<bdi>" + esc(x) + "</bdi>" : esc(x); }).join("");
+      E.unshift({ t: n.at ? String(n.at).replace(/^النهاردة\s*/, "") : "", d: "النهاردة", r: n.r,
+        k: n.k || "field", kT: n.kT || "خبر", i: "hot", exp: "", proj: "", fresh: true, nid: n.id,
+        src: "سيلز " + esc(n.dev || "") + (n.d ? " · " + esc(n.d) : ""), inv: t, buy: t, brk: t });
+    });
+  } catch (e) {}
+})(window);
+
 /* ============================================================
    مناطق · ملفات الأحياء
    كل حي له سبب في سعره. اللي ميعرفش السبب بيشتري بالرقم بس.
